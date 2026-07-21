@@ -33,7 +33,7 @@ jobs:
           if-no-files-found: ignore
 
   native:
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +62,7 @@ jobs:
   # so ctest is skipped; runtime acceptance happens on an ARM64 machine (see
   # docs/native-build.md).
   native-arm64:
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4

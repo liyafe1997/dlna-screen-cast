@@ -1,15 +1,15 @@
 {
   "version": 6,
   "cmakeMinimumRequired": {
-    "major": 3,
-    "minor": 28,
+    "major": 4,
+    "minor": 2,
     "patch": 0
   },
   "configurePresets": [
     {
       "name": "native-x64-release",
       "displayName": "Native x64 Release",
-      "generator": "Visual Studio 17 2022",
+      "generator": "Visual Studio 18 2026",
       "architecture": "x64",
       "binaryDir": "${sourceDir}/out/native-x64-release",
       "cacheVariables": {
@@ -23,7 +23,7 @@
     {
       "name": "native-arm64-release",
       "displayName": "Native ARM64 Release",
-      "generator": "Visual Studio 17 2022",
+      "generator": "Visual Studio 18 2026",
       "architecture": "ARM64",
       "binaryDir": "${sourceDir}/out/native-arm64-release",
       "cacheVariables": {

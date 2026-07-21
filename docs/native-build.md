@@ -38,14 +38,17 @@ Primary references:
 - <https://learn.microsoft.com/windows/win32/api/d3d11/nn-d3d11-id3d11videodevice>
 - <https://ffmpeg.org/ffmpeg-scaler.html>
 - <https://github.com/microsoft/vcpkg/tree/master/ports/ffmpeg>
+- <https://cmake.org/cmake/help/latest/generator/Visual%20Studio%2018%202026.html>
+- <https://learn.microsoft.com/cpp/overview/what-s-new-for-msvc>
 
 ## Prerequisites
 
-- Visual Studio 2022 Build Tools or Visual Studio with MSVC x64 C++ tools
-  (add the "MSVC ... ARM64/ARM64EC build tools" component for the arm64 target)
+- Visual Studio 2026 Build Tools or Visual Studio 2026 with the Desktop
+  development with C++ workload and MSVC 14.50 or later x64 C++ tools
+  (add the MSVC ARM64 build tools component for the arm64 target)
 - Windows 11 SDK 10.0.26100 or a later supported SDK (x64 and/or arm64 libs
   matching the targets you build)
-- CMake 3.28 or later
+- CMake 4.2 or later; CMake added the `Visual Studio 18 2026` generator in 4.2
 - Git
 - vcpkg at the pinned baseline
 
@@ -53,16 +56,32 @@ The native x64 Release target is tested with MSVC 14.51, Windows SDK 10.0.26100,
 
 ## Configure and build
 
+Run the following commands from the repository root. vcpkg is kept under the
+Git-ignored `out/tooling/vcpkg` directory so the native tool dependency stays
+with this workspace instead of writing into the user's profile:
+
 ```powershell
-git clone https://github.com/microsoft/vcpkg "$env:USERPROFILE\src\vcpkg"
-git -C "$env:USERPROFILE\src\vcpkg" checkout 0878b5224d4a4968940ee296a2e7fae2d3b62983
-& "$env:USERPROFILE\src\vcpkg\bootstrap-vcpkg.bat" -disableMetrics
-$env:VCPKG_ROOT = "$env:USERPROFILE\src\vcpkg"
+$vcpkg = Join-Path (Get-Location) "out\tooling\vcpkg"
+New-Item -ItemType Directory -Force (Split-Path $vcpkg) | Out-Null
+git clone https://github.com/microsoft/vcpkg $vcpkg
+git -C $vcpkg checkout 0878b5224d4a4968940ee296a2e7fae2d3b62983
+& "$vcpkg\bootstrap-vcpkg.bat" -disableMetrics
+$env:VCPKG_ROOT = $vcpkg
 
 cmake --preset native-x64-release
 cmake --build --preset native-x64-release
 ctest --preset native-x64-release
 ```
+
+This `VCPKG_ROOT` assignment affects only the current PowerShell session and
+its child processes. In a later session, restore it from the repository root:
+
+```powershell
+$env:VCPKG_ROOT = (Resolve-Path ".\out\tooling\vcpkg").Path
+```
+
+Deleting `out/` (including with `git clean -xfd`) deletes the repository-local
+vcpkg checkout as well, so repeat the bootstrap steps afterward.
 
 The arm64 target uses the parallel `native-arm64-release` presets with the
 `arm64-windows-desktopdlna` overlay triplet (same pinned baseline, features,
@@ -74,8 +93,8 @@ cmake --preset native-arm64-release
 cmake --build --preset native-arm64-release
 ```
 
-`vcpkg_installed`, CMake build outputs, and FFmpeg binaries are ignored by Git. When the preset output exists, the WinUI project copies `DesktopDlnaCast.Media.Native.dll` plus the required `avcodec`, `avformat`, `avutil`, and `swscale` DLLs into its build and publish outputs; the architecture is selected by the managed `RuntimeIdentifier` (`win-x64` → `out/native-x64-release`, `win-arm64` → `out/native-arm64-release`). The MSBuild integration also recognizes the repository's single-config development layout (`out/native-local-release` for x64, `out/native-local-arm64-release` for arm64) with dependencies under `out/native-vcpkg-workspace/<arch>-windows-workspace`. The WinUI application and native runtime probes fail early with an actionable message if the native DLL or any of those four FFmpeg DLLs is absent; they no longer defer this failure until the first cast attempt. The managed-only CI job explicitly disables this packaging check because the separate native job owns the CMake build gate. The source tree does not commit or distribute these binaries.
+The repository-local vcpkg checkout, `vcpkg_installed`, CMake build outputs, and FFmpeg binaries all live under `out/` and are ignored by Git. When the preset output exists, the WinUI project copies `DesktopDlnaCast.Media.Native.dll` plus the required `avcodec`, `avformat`, `avutil`, and `swscale` DLLs into its build and publish outputs; the architecture is selected by the managed `RuntimeIdentifier` (`win-x64` → `out/native-x64-release`, `win-arm64` → `out/native-arm64-release`). The MSBuild integration also recognizes the repository's single-config development layout (`out/native-local-release` for x64, `out/native-local-arm64-release` for arm64) with dependencies under `out/native-vcpkg-workspace/<arch>-windows-workspace`. The WinUI application and native runtime probes fail early with an actionable message if the native DLL or any of those four FFmpeg DLLs is absent; they no longer defer this failure until the first cast attempt. The managed-only CI job explicitly disables this packaging check because the separate native job owns the CMake build gate. The source tree does not commit or distribute these binaries.
 
-The GitHub Actions `native` job performs the same configure/build/CTest sequence on `windows-latest`. The `native-arm64` job cross-compiles the arm64 target on the same x64 runner as a compilation gate only — it cannot execute arm64 binaries, so arm64 CTest and runtime acceptance stay on an ARM64 machine. Neither job's presence is evidence that the current unpushed worktree has run remotely.
+The GitHub Actions `native` job performs the same configure/build/CTest sequence on the explicit `windows-2025-vs2026` image. The `native-arm64` job uses the same Visual Studio 2026 x64 runner to cross-compile the arm64 target as a compilation gate only — it cannot execute arm64 binaries, so arm64 CTest and runtime acceptance stay on an ARM64 machine. Neither job's presence is evidence that the current unpushed worktree has run remotely.
 
 Use [NativeCaptureProbe](../tools/NativeCaptureProbe/README.md) for a bounded capture-to-file check followed by StreamProbe. Use [NativeCastProbe](../tools/NativeCastProbe/README.md) for the no-disk production `WGC → H.264 → MPEG-TS → Kestrel → UPnP → MockRenderer` smoke or two-minute acceptance run.

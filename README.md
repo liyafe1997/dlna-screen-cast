@@ -20,22 +20,47 @@ Because the MSIX package is unsigned, it must be installed from an administrator
 
 - Windows 11 x64/ARM64 (this project is developed on Windows on Arm)
 - .NET SDK 10.0.302 or a newer version in the same feature band
-- Currently supported Visual Studio, Windows SDK, and Windows App SDK toolchains
+- Visual Studio 2026 or Build Tools 2026 with the **Desktop development with C++** workload, MSVC 14.50 or later x64/x86 tools, and Windows 11 SDK 10.0.26100 or later (add the MSVC ARM64 tools when building the ARM64 target)
+- CMake 4.2 or later (required for the `Visual Studio 18 2026` generator), Git, and vcpkg at the repository-pinned baseline
+- NSIS 3.x when producing a traditional `.exe` installer
 
 ## Build and Test
+
+### Clean-clone prerequisite: build the native runtime
+
+This repository contains a C++ native media core in addition to its .NET projects. Its generated DLL and the FFmpeg runtime DLLs are intentionally excluded from Git under `out/`; copying or cloning only the tracked files therefore does not copy them. A clean clone must build the native runtime before building, publishing, or packaging the WinUI application.
+
+The MSIX and NSIS packaging scripts do **not** invoke CMake or install the native toolchain. They require the matching native runtime to have already been built. Otherwise the build stops with `DesktopDlnaCast native media runtime is missing` even when the correct .NET SDK is installed.
+
+From the repository root, install the pinned vcpkg tree under the Git-ignored `out/tooling/vcpkg` directory and set `VCPKG_ROOT` in the PowerShell session used for the build:
+
+```powershell
+$vcpkg = Join-Path (Get-Location) "out\tooling\vcpkg"
+New-Item -ItemType Directory -Force (Split-Path $vcpkg) | Out-Null
+git clone https://github.com/microsoft/vcpkg $vcpkg
+git -C $vcpkg checkout 0878b5224d4a4968940ee296a2e7fae2d3b62983
+& "$vcpkg\bootstrap-vcpkg.bat" -disableMetrics
+$env:VCPKG_ROOT = $vcpkg
+```
+
+`VCPKG_ROOT` above is scoped to the current PowerShell session and its child processes; it does not modify the user- or machine-level environment. In a later PowerShell session, restore it from the repository root with `$env:VCPKG_ROOT = (Resolve-Path ".\out\tooling\vcpkg").Path`. Deleting `out/` (including with `git clean -xfd`) also deletes this repository-local vcpkg checkout, so the setup must then be repeated.
+
+Then configure, build, and test the native x64 runtime from the repository root. Use the corresponding `native-arm64-release` preset for an ARM64 package; ARM64 CTest must run on an ARM64 host.
+
+```powershell
+cmake --preset native-x64-release
+cmake --build --preset native-x64-release
+ctest --preset native-x64-release
+```
+
+The first configure may take some time because vcpkg downloads and builds the repository's constrained FFmpeg dependency set. A successful x64 build produces the native media DLL under `out/native-x64-release/src/DesktopDlnaCast.Media.Native/Release/` and its FFmpeg runtime DLLs under `out/native-x64-release/vcpkg_installed/x64-windows-desktopdlna/bin/`. Do not commit or manually copy these architecture-specific outputs into Git. See [docs/native-build.md](docs/native-build.md) for full prerequisites and troubleshooting details.
+
+After the native runtime exists, build and test the managed solution:
 
 ```powershell
 dotnet restore DesktopDlnaCast.sln
 dotnet build DesktopDlnaCast.sln --configuration Release --no-restore
 dotnet test DesktopDlnaCast.sln --configuration Release --no-build
-```
-
-With MSVC and the Windows SDK installed, build the native ABI using the separate, reproducible CMake presets (`x64` and `arm64` each have a corresponding set of presets):
-
-```powershell
-cmake --preset native-x64-release      # or native-arm64-release
-cmake --build --preset native-x64-release
-ctest --preset native-x64-release      # arm64 ctest must run on an ARM64 host
 ```
 
 Run the GUI:
@@ -48,9 +73,9 @@ The **Refresh Devices** button performs SSDP discovery across multiple network a
 
 For the standalone MockRenderer CLI, fault-injection options, and test query API, see [tools/MockRenderer/README.md](tools/MockRenderer/README.md). For protocol and security boundaries, see [docs/protocol-notes.md](docs/protocol-notes.md).
 
-## One-Click Build and Packaging
+## Build and Packaging Scripts
 
-The following scripts build the project and produce MSIX and NSIS (traditional `.exe`) installer packages.
+After building the matching native runtime as described above, the following scripts publish the application and produce MSIX and NSIS (traditional `.exe`) installer packages. They are packaging entry points, not native-toolchain bootstrap scripts.
 
 ### MSIX Packaging
 
@@ -102,22 +127,47 @@ MSIX由于没有签名，必须以管理员权限执行 `Add-AppxPackage -AllowU
 
 - Windows 11 x64/ARM64（该项目就是在WoA上开发的）
 - .NET SDK 10.0.302 或同一 feature band 的更新版本
-- 当前受支持的 Visual Studio、Windows SDK 与 Windows App SDK 工具链
+- Visual Studio 2026 或 Build Tools 2026，并安装 **使用 C++ 的桌面开发**工作负载、MSVC 14.50 或更高版本的 x64/x86 工具以及 Windows 11 SDK 10.0.26100 或更高版本（构建 ARM64 目标时还需安装 MSVC ARM64 工具）
+- CMake 4.2 或更高版本（`Visual Studio 18 2026` 生成器的最低要求）、Git，以及仓库指定基线版本的 vcpkg
+- 生成传统 `.exe` 安装包时需要 NSIS 3.x
 
 ## 构建与测试
+
+### 全新 Clone 的前置步骤：构建原生运行时
+
+本仓库除了 .NET 项目，还包含一个 C++ 原生媒体核心。它生成的 DLL 和 FFmpeg 运行时 DLL 位于 `out/`，并被 Git 有意忽略；因此，仅复制 Git 跟踪的文件或全新 Clone 都不会包含这些产物。在构建、发布或打包 WinUI 应用之前，必须先构建原生运行时。
+
+MSIX 和 NSIS 打包脚本**不会**自动调用 CMake，也不会安装原生工具链。它们要求对应架构的原生运行时已经构建完成。否则，即使已经正确安装 .NET SDK，构建仍会以 `DesktopDlnaCast native media runtime is missing` 报错停止。
+
+首次准备环境时，在仓库根目录将固定版本的 vcpkg 安装到被 Git 忽略的 `out/tooling/vcpkg`，并在执行构建的 PowerShell 会话中设置 `VCPKG_ROOT`：
+
+```powershell
+$vcpkg = Join-Path (Get-Location) "out\tooling\vcpkg"
+New-Item -ItemType Directory -Force (Split-Path $vcpkg) | Out-Null
+git clone https://github.com/microsoft/vcpkg $vcpkg
+git -C $vcpkg checkout 0878b5224d4a4968940ee296a2e7fae2d3b62983
+& "$vcpkg\bootstrap-vcpkg.bat" -disableMetrics
+$env:VCPKG_ROOT = $vcpkg
+```
+
+这里设置的 `VCPKG_ROOT` 只对当前 PowerShell 会话及其子进程有效，不会修改用户级或机器级环境变量。以后重新打开 PowerShell，可在仓库根目录执行 `$env:VCPKG_ROOT = (Resolve-Path ".\out\tooling\vcpkg").Path` 恢复设置。删除 `out/`（包括执行 `git clean -xfd`）也会删除这份仓库本地 vcpkg，届时需要重新执行上述准备步骤。
+
+然后在仓库根目录配置、构建和测试 x64 原生运行时。构建 ARM64 安装包时改用对应的 `native-arm64-release` Preset；ARM64 CTest 必须在 ARM64 主机上运行。
+
+```powershell
+cmake --preset native-x64-release
+cmake --build --preset native-x64-release
+ctest --preset native-x64-release
+```
+
+首次配置可能耗时较长，因为 vcpkg 会下载并构建本项目裁剪过的 FFmpeg 依赖。x64 构建成功后，原生媒体 DLL 位于 `out/native-x64-release/src/DesktopDlnaCast.Media.Native/Release/`，FFmpeg 运行时 DLL 位于 `out/native-x64-release/vcpkg_installed/x64-windows-desktopdlna/bin/`。不要把这些与架构相关的产物提交到 Git，也不要用旧开发目录中的产物代替 clean-clone 验证。完整前置条件和故障排查见 [docs/native-build.md](docs/native-build.md)。
+
+原生运行时生成后，再构建并测试托管 Solution：
 
 ```powershell
 dotnet restore DesktopDlnaCast.sln
 dotnet build DesktopDlnaCast.sln --configuration Release --no-restore
 dotnet test DesktopDlnaCast.sln --configuration Release --no-build
-```
-
-具备 MSVC/Windows SDK 后，原生 ABI 使用独立的可复现 CMake Preset 构建（`x64` 与 `arm64` 各有一组同名 Preset）：
-
-```powershell
-cmake --preset native-x64-release      # 或 native-arm64-release
-cmake --build --preset native-x64-release
-ctest --preset native-x64-release      # arm64 的 ctest 需在 ARM64 主机上执行
 ```
 
 运行 GUI：
@@ -130,8 +180,9 @@ dotnet run --project src/DesktopDlnaCast.App/DesktopDlnaCast.App.csproj -c Relea
 
 MockRenderer 的独立 CLI、故障注入参数和测试查询 API 见 [tools/MockRenderer/README.md](tools/MockRenderer/README.md)。协议与安全边界见 [docs/protocol-notes.md](docs/protocol-notes.md)。
 
-## 一键编译 & 打包
-以下脚本会执行build和打出MSIX/NSIS（传统.exe）安装包
+## 构建与打包脚本
+
+按照上面的说明构建好对应架构的原生运行时后，以下脚本会发布应用并生成 MSIX/NSIS（传统 `.exe`）安装包。它们是打包入口，不负责安装原生工具链或预先构建原生运行时。
 
 ### MSIX 打包
 
