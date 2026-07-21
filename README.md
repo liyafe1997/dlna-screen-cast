@@ -34,6 +34,8 @@ The MSIX and NSIS packaging scripts do **not** invoke CMake or install the nativ
 
 From the repository root, install the pinned vcpkg tree under the Git-ignored `out/tooling/vcpkg` directory and set `VCPKG_ROOT` in the PowerShell session used for the build:
 
+> Tip: Before running the commands below, open `Start > Visual Studio 2026 > Native Tools Command Prompt for VS`, use `cd` to navigate to the project directory, start `powershell` from the VS Command Prompt, and then run the following commands.
+
 ```powershell
 $vcpkg = Join-Path (Get-Location) "out\tooling\vcpkg"
 New-Item -ItemType Directory -Force (Split-Path $vcpkg) | Out-Null
@@ -140,6 +142,8 @@ MSIX由于没有签名，必须以管理员权限执行 `Add-AppxPackage -AllowU
 MSIX 和 NSIS 打包脚本**不会**自动调用 CMake，也不会安装原生工具链。它们要求对应架构的原生运行时已经构建完成。否则，即使已经正确安装 .NET SDK，构建仍会以 `DesktopDlnaCast native media runtime is missing` 报错停止。
 
 首次准备环境时，在仓库根目录将固定版本的 vcpkg 安装到被 Git 忽略的 `out/tooling/vcpkg`，并在执行构建的 PowerShell 会话中设置 `VCPKG_ROOT`：
+
+> Tip: 以下操作可以先打开 `开始 - Visual Studio 2026 - Native Tools Command Prompt for VS` 然后cd至项目路径，再在 VS Command Prompt 中执行 `powershell`，再运行以下操作
 
 ```powershell
 $vcpkg = Join-Path (Get-Location) "out\tooling\vcpkg"
