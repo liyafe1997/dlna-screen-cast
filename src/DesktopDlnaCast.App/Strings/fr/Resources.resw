@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>Diffusion d’écran DLNA</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>Actualiser les appareils</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>Tester le lecteur</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>Arrêter</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>État de la session</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>Recherche de lecteurs DLNA sur le réseau local…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>Recherche terminée. {0} lecteur(s) trouvé(s).</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>L’opération a été annulée.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>Le lecteur a demandé le flux de test et signalé l’état PLAYING.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>L’opération a échoué. Consultez le journal structuré pour plus de détails.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>Le composant multimédia natif ou une dépendance FFmpeg est manquant. Compilez native-x64-release comme décrit dans docs/native-build.md, puis regénérez et démarrez l’application.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>Inactif</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>Recherche des appareils</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>Vérification des capacités du lecteur</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>Démarrage du pipeline multimédia</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>En attente d’une image clé</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>Publication du flux</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>Envoi de l’adresse du flux</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>Démarrage de la lecture</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>Lecture en cours</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>Arrêt en cours</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>Échec</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>Démarrer la diffusion</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>Lecteur</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>Recherche de lecteurs DLNA…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>Aucun lecteur disponible</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Écran à dupliquer</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Résolution de diffusion</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Inclure le pointeur de la souris</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Inclure le son du système</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>Couper le son de ce PC pendant la diffusion (tout le son du périphérique de sortie actuel)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>Intervalle d’images clés (influe sur la latence)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0,5 s (latence plus faible)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 s (par défaut)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 s (meilleure qualité)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>Commencer à l’image la plus récente (latence plus faible, démarrage un peu plus lent)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>Qualité (débit)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>Haute qualité ({0} Mbit/s)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>Qualité moyenne ({0} Mbit/s, par défaut)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>Basse qualité ({0} Mbit/s, plus fluide)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>Écran {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>Écran {0} — principal ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (compatible)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (standard)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>Le lecteur récupère le flux en direct du Bureau Windows.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>Le lecteur a arrêté la lecture. La diffusion a été arrêtée automatiquement.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>Le lecteur n’est plus joignable. La diffusion a été arrêtée automatiquement.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0} ; {1} × {2} ; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>son système AAC activé</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>vidéo uniquement</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>Volume</value></data>
+</root>

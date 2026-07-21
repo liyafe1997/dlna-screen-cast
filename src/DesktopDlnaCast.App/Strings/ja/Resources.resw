@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>DLNA スクリーンキャスト</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>デバイスを更新</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>再生デバイスをテスト</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>停止</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>セッションの状態</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>ローカルネットワークで DLNA 再生デバイスを検索しています…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>検索が完了しました。{0} 台の再生デバイスが見つかりました。</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>操作はキャンセルされました。</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>再生デバイスがテストストリームを要求し、PLAYING 状態を報告しました。</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>操作に失敗しました。詳細は構造化ログを確認してください。</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>ネイティブメディアコンポーネントまたは FFmpeg の依存関係が見つかりません。docs/native-build.md の手順に従って native-x64-release をビルドしてから、アプリを再ビルドして起動してください。</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>待機中</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>デバイスを検索中</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>再生デバイスの機能を確認中</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>メディアパイプラインを起動中</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>キーフレームを待機中</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>ストリームを配信中</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>ストリームアドレスを送信中</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>再生を開始中</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>再生中</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>停止中</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>失敗</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>キャストを開始</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>再生デバイス</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>DLNA 再生デバイスを検索しています…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>利用可能な再生デバイスがありません</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>ミラーリングするディスプレイ</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>配信解像度</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>マウスポインターを含める</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>システム音声を含める</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>キャスト中はこの PC をミュート（現在の出力デバイスのすべての音声）</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>キーフレーム間隔（遅延に影響）</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5 秒（低遅延）</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 秒（既定）</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 秒（高画質）</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>最新の映像から再生を開始（低遅延、開始はやや遅め）</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>画質（ビットレート）</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>高画質（{0} Mbps）</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>中画質（{0} Mbps、既定）</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>低画質（{0} Mbps、より滑らか）</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>ディスプレイ {0}（{1} × {2}）</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>ディスプレイ {0} — プライマリ（{1} × {2}）</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720（互換性重視）</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080（標準）</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>再生デバイスが Windows デスクトップのライブストリームを取得しています。</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>再生デバイスが再生を停止したため、キャストを自動的に停止しました。</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>再生デバイスに接続できないため、キャストを自動的に停止しました。</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}；{1} × {2}；{3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>AAC システム音声が有効</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>映像のみ</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>音量</value></data>
+</root>

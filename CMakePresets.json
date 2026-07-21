@@ -1,0 +1,68 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "native-x64-release",
+      "displayName": "Native x64 Release",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/out/native-x64-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_MANIFEST_DIR": "${sourceDir}/src/DesktopDlnaCast.Media.Native",
+        "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/src/DesktopDlnaCast.Media.Native/triplets",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-desktopdlna"
+      }
+    },
+    {
+      "name": "native-arm64-release",
+      "displayName": "Native ARM64 Release",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "ARM64",
+      "binaryDir": "${sourceDir}/out/native-arm64-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_MANIFEST_DIR": "${sourceDir}/src/DesktopDlnaCast.Media.Native",
+        "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/src/DesktopDlnaCast.Media.Native/triplets",
+        "VCPKG_TARGET_TRIPLET": "arm64-windows-desktopdlna"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "native-x64-release",
+      "configurePreset": "native-x64-release",
+      "configuration": "Release"
+    },
+    {
+      "name": "native-arm64-release",
+      "configurePreset": "native-arm64-release",
+      "configuration": "Release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "native-x64-release",
+      "configurePreset": "native-x64-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "native-arm64-release",
+      "configurePreset": "native-arm64-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

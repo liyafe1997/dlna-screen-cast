@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>DLNA Ekran Yansıtma</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>Cihazları yenile</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>Oynatıcıyı test et</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>Durdur</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>Oturum durumu</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>Yerel ağda DLNA oynatıcıları aranıyor…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>Arama tamamlandı. {0} oynatıcı bulundu.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>İşlem iptal edildi.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>Oynatıcı test akışını istedi ve PLAYING durumunu bildirdi.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>İşlem başarısız oldu. Ayrıntılar için yapılandırılmış günlüğe bakın.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>Yerel medya bileşeni veya bir FFmpeg bağımlılığı eksik. docs/native-build.md içinde açıklandığı gibi native-x64-release derlemesini yapın, ardından uygulamayı yeniden derleyip başlatın.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>Boşta</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>Cihazlar aranıyor</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>Oynatıcı özellikleri denetleniyor</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>Medya işlem hattı başlatılıyor</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>Anahtar kare bekleniyor</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>Akış yayımlanıyor</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>Akış adresi gönderiliyor</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>Oynatma başlatılıyor</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>Oynatılıyor</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>Durduruluyor</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>Başarısız</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>Yansıtmayı başlat</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>Oynatıcı cihaz</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>DLNA oynatıcıları aranıyor…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>Kullanılabilir oynatıcı yok</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Yansıtılacak ekran</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Akış çözünürlüğü</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Fare işaretçisini dahil et</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Sistem sesini dahil et</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>Yansıtma sırasında bu bilgisayarı sessize al (geçerli çıkış cihazındaki tüm sesler)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>Anahtar kare aralığı (gecikmeyi etkiler)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0,5 sn (daha düşük gecikme)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 sn (varsayılan)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 sn (daha iyi kalite)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>En son görüntüden başla (daha düşük gecikme, biraz daha yavaş başlangıç)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>Kalite (bit hızı)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>Yüksek kalite ({0} Mb/sn)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>Orta kalite ({0} Mb/sn, varsayılan)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>Düşük kalite ({0} Mb/sn, daha akıcı)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>Ekran {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>Ekran {0} — birincil ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (uyumlu)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (standart)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>Oynatıcı, Windows masaüstünün canlı akışını alıyor.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>Oynatıcı oynatmayı durdurdu. Yansıtma otomatik olarak durduruldu.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>Oynatıcıya artık erişilemiyor. Yansıtma otomatik olarak durduruldu.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>AAC sistem sesi etkin</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>yalnızca video</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>Ses düzeyi</value></data>
+</root>

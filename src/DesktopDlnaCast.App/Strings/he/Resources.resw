@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>שידור מסך DLNA</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>רענן מכשירים</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>בדוק את הנגן</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>עצור</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>מצב הפעלה</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>מחפש נגני DLNA ברשת המקומית…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>החיפוש הושלם. נמצאו {0} נגנים.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>הפעולה בוטלה.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>הנגן ביקש את זרם הבדיקה ודיווח על מצב PLAYING.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>הפעולה נכשלה. עיין ביומן המובנה לקבלת פרטים.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>רכיב המדיה המקורי או תלות של FFmpeg חסרים. בנה את native-x64-release כמתואר ב-docs/native-build.md, ולאחר מכן בנה מחדש והפעל את האפליקציה.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>לא פעיל</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>מחפש מכשירים</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>בודק את יכולות הנגן</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>מפעיל את צינור המדיה</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>ממתין לפריים מפתח</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>מפרסם את הזרם</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>שולח את כתובת הזרם</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>מתחיל ניגון</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>מנגן</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>עוצר</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>נכשל</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>התחל שידור</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>מכשיר נגן</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>מחפש נגני DLNA…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>אין נגנים זמינים</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>מסך לשיקוף</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>רזולוציית השידור</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>כלול את מצביע העכבר</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>כלול את שמע המערכת</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>השתק מחשב זה בזמן השידור (כל השמע בהתקן הפלט הנוכחי)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>מרווח פריימים מפתח (משפיע על ההשהיה)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>‏0.5 שנ' (השהיה נמוכה יותר)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>‏1 שנ' (ברירת מחדל)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>‏2 שנ' (איכות טובה יותר)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>התחל מהתמונה העדכנית ביותר (השהיה נמוכה יותר, התחלה מעט איטית יותר)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>איכות (קצב סיביות)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>איכות גבוהה ({0} Mbps)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>איכות בינונית ({0} Mbps, ברירת מחדל)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>איכות נמוכה ({0} Mbps, חלק יותר)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>מסך {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>מסך {0} — ראשי ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>‏1280 × 720 (תאימות)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>‏1920 × 1080 (סטנדרטי)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>הנגן מושך את השידור החי של שולחן העבודה של Windows.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>הנגן הפסיק את הניגון. השידור הופסק אוטומטית.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>לא ניתן עוד להגיע לנגן. השידור הופסק אוטומטית.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>שמע מערכת AAC מופעל</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>וידאו בלבד</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>RTL</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>עוצמת קול</value></data>
+</root>

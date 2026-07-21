@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>بث الشاشة عبر DLNA</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>تحديث الأجهزة</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>اختبار جهاز العرض</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>إيقاف</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>حالة الجلسة</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>جارٍ البحث عن أجهزة عرض DLNA في الشبكة المحلية…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>اكتمل البحث. تم العثور على {0} من أجهزة العرض.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>تم إلغاء العملية.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>طلب جهاز العرض بث الاختبار وأبلغ عن الحالة PLAYING.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>فشلت العملية. راجع السجل المنظم للحصول على التفاصيل.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>المكوّن الأصلي للوسائط أو أحد تبعيات FFmpeg مفقود. قم ببناء native-x64-release كما هو موضح في docs/native-build.md، ثم أعد بناء التطبيق وابدأ تشغيله.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>خامل</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>جارٍ البحث عن الأجهزة</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>جارٍ التحقق من إمكانيات جهاز العرض</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>جارٍ بدء مسار الوسائط</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>في انتظار إطار رئيسي</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>جارٍ نشر البث</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>جارٍ إرسال عنوان البث</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>جارٍ بدء التشغيل</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>قيد التشغيل</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>جارٍ الإيقاف</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>فشل</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>بدء البث</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>جهاز العرض</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>جارٍ البحث عن أجهزة عرض DLNA…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>لا توجد أجهزة تشغيل متاحة</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>الشاشة المراد عرضها</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>دقة البث</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>تضمين مؤشر الماوس</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>تضمين صوت النظام</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>كتم صوت هذا الكمبيوتر أثناء البث (كل الصوت على جهاز الإخراج الحالي)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>الفاصل الزمني للإطارات الرئيسية (يؤثر على زمن الاستجابة)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5 ثانية (زمن استجابة أقل)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>ثانية واحدة (افتراضي)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>ثانيتان (جودة أفضل)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>البدء من أحدث صورة (زمن استجابة أقل، وبدء أبطأ قليلاً)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>الجودة (معدل البت)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>جودة عالية ({0} ميجابت/ث)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>جودة متوسطة ({0} ميجابت/ث، افتراضي)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>جودة منخفضة ({0} ميجابت/ث، أكثر سلاسة)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>الشاشة {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>الشاشة {0} — الرئيسية ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (متوافق)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (قياسي)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>جهاز العرض يسحب البث المباشر لسطح مكتب Windows.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>أوقف جهاز العرض التشغيل. تم إيقاف البث تلقائيًا.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>تعذر الوصول إلى جهاز العرض. تم إيقاف البث تلقائيًا.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}؛ {1} × {2}؛ {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>تم تمكين صوت النظام AAC</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>فيديو فقط</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>RTL</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>مستوى الصوت</value></data>
+</root>

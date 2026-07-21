@@ -1,0 +1,57 @@
+<Project>
+  <PropertyGroup Condition="'$(CopyDesktopDlnaCastNativeRuntime)' == 'true'">
+    <!-- The native runtime must match the managed RID; Directory.Build.targets
+         imports after the project body, so RuntimeIdentifier is resolved here. -->
+    <NativeMediaArchitecture Condition="'$(NativeMediaArchitecture)' == '' and '$(RuntimeIdentifier)' == 'win-arm64'">arm64</NativeMediaArchitecture>
+    <NativeMediaArchitecture Condition="'$(NativeMediaArchitecture)' == ''">x64</NativeMediaArchitecture>
+
+    <NativeMediaPresetOutputDirectory>$(MSBuildThisFileDirectory)out\native-$(NativeMediaArchitecture)-release\src\DesktopDlnaCast.Media.Native\Release</NativeMediaPresetOutputDirectory>
+    <NativeMediaPresetDependencyDirectory>$(MSBuildThisFileDirectory)out\native-$(NativeMediaArchitecture)-release\vcpkg_installed\$(NativeMediaArchitecture)-windows-desktopdlna\bin</NativeMediaPresetDependencyDirectory>
+    <!-- Single-config development layout (CMake+Ninja workspace toolchain).
+         x64 keeps its pre-arm64 directory name; arm64 carries the
+         architecture in the directory name. -->
+    <NativeMediaSingleConfigOutputDirectory Condition="'$(NativeMediaArchitecture)' == 'x64'">$(MSBuildThisFileDirectory)out\native-local-release\src\DesktopDlnaCast.Media.Native</NativeMediaSingleConfigOutputDirectory>
+    <NativeMediaSingleConfigOutputDirectory Condition="'$(NativeMediaArchitecture)' == 'arm64'">$(MSBuildThisFileDirectory)out\native-local-arm64-release\src\DesktopDlnaCast.Media.Native</NativeMediaSingleConfigOutputDirectory>
+    <!-- Each architecture keeps its own vcpkg install root: manifest installs
+         prune a shared root to the current plan, deleting the other
+         architecture's packages. -->
+    <NativeMediaSingleConfigDependencyDirectory Condition="'$(NativeMediaArchitecture)' == 'x64'">$(MSBuildThisFileDirectory)out\native-vcpkg-workspace\x64-windows-workspace\bin</NativeMediaSingleConfigDependencyDirectory>
+    <NativeMediaSingleConfigDependencyDirectory Condition="'$(NativeMediaArchitecture)' == 'arm64'">$(MSBuildThisFileDirectory)out\native-vcpkg-workspace-arm64\arm64-windows-workspace\bin</NativeMediaSingleConfigDependencyDirectory>
+
+    <NativeMediaOutputDirectory Condition="'$(NativeMediaOutputDirectory)' == '' and Exists('$(NativeMediaPresetOutputDirectory)\DesktopDlnaCast.Media.Native.dll')">$(NativeMediaPresetOutputDirectory)</NativeMediaOutputDirectory>
+    <NativeMediaOutputDirectory Condition="'$(NativeMediaOutputDirectory)' == '' and '$(NativeMediaSingleConfigOutputDirectory)' != '' and Exists('$(NativeMediaSingleConfigOutputDirectory)\DesktopDlnaCast.Media.Native.dll')">$(NativeMediaSingleConfigOutputDirectory)</NativeMediaOutputDirectory>
+    <NativeMediaOutputDirectory Condition="'$(NativeMediaOutputDirectory)' == ''">$(NativeMediaPresetOutputDirectory)</NativeMediaOutputDirectory>
+
+    <NativeMediaDependencyDirectory Condition="'$(NativeMediaDependencyDirectory)' == '' and Exists('$(NativeMediaPresetDependencyDirectory)')">$(NativeMediaPresetDependencyDirectory)</NativeMediaDependencyDirectory>
+    <NativeMediaDependencyDirectory Condition="'$(NativeMediaDependencyDirectory)' == '' and '$(NativeMediaSingleConfigDependencyDirectory)' != '' and Exists('$(NativeMediaSingleConfigDependencyDirectory)')">$(NativeMediaSingleConfigDependencyDirectory)</NativeMediaDependencyDirectory>
+    <NativeMediaDependencyDirectory Condition="'$(NativeMediaDependencyDirectory)' == ''">$(NativeMediaPresetDependencyDirectory)</NativeMediaDependencyDirectory>
+
+    <ValidateDesktopDlnaCastNativeRuntime Condition="'$(ValidateDesktopDlnaCastNativeRuntime)' == '' and '$(Configuration)' == 'Debug'">true</ValidateDesktopDlnaCastNativeRuntime>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(CopyDesktopDlnaCastNativeRuntime)' == 'true' and Exists('$(NativeMediaOutputDirectory)\DesktopDlnaCast.Media.Native.dll')">
+    <Content Include="$(NativeMediaOutputDirectory)\DesktopDlnaCast.Media.Native.dll"
+             Link="DesktopDlnaCast.Media.Native.dll"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(CopyDesktopDlnaCastNativeRuntime)' == 'true' and Exists('$(NativeMediaDependencyDirectory)')">
+    <Content Include="$(NativeMediaDependencyDirectory)\avcodec-*.dll;$(NativeMediaDependencyDirectory)\avformat-*.dll;$(NativeMediaDependencyDirectory)\avutil-*.dll;$(NativeMediaDependencyDirectory)\swscale-*.dll"
+             Link="%(Filename)%(Extension)"
+             CopyToOutputDirectory="PreserveNewest"
+             CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="ValidateDesktopDlnaCastNativeRuntimeFiles"
+          BeforeTargets="PrepareForBuild"
+          Condition="'$(CopyDesktopDlnaCastNativeRuntime)' == 'true' and '$(ValidateDesktopDlnaCastNativeRuntime)' == 'true' and '$(DesignTimeBuild)' != 'true'">
+    <Error Condition="!Exists('$(NativeMediaOutputDirectory)\DesktopDlnaCast.Media.Native.dll')"
+           Text="DesktopDlnaCast native media runtime is missing. Build it first with 'cmake --preset native-$(NativeMediaArchitecture)-release' and 'cmake --build --preset native-$(NativeMediaArchitecture)-release'. See docs/native-build.md. Expected: $(NativeMediaOutputDirectory)\DesktopDlnaCast.Media.Native.dll" />
+    <Error Condition="'@(_DesktopDlnaCastAvcodec)' == '' or '@(_DesktopDlnaCastAvformat)' == '' or '@(_DesktopDlnaCastAvutil)' == '' or '@(_DesktopDlnaCastSwscale)' == ''"
+           Text="DesktopDlnaCast FFmpeg runtime dependencies are incomplete. Build the native preset first. Expected avcodec, avformat, avutil, and swscale DLLs under: $(NativeMediaDependencyDirectory)" />
+  </Target>
+  <ItemGroup Condition="'$(CopyDesktopDlnaCastNativeRuntime)' == 'true' and Exists('$(NativeMediaDependencyDirectory)')">
+    <_DesktopDlnaCastAvcodec Include="$(NativeMediaDependencyDirectory)\avcodec-*.dll" />
+    <_DesktopDlnaCastAvformat Include="$(NativeMediaDependencyDirectory)\avformat-*.dll" />
+    <_DesktopDlnaCastAvutil Include="$(NativeMediaDependencyDirectory)\avutil-*.dll" />
+    <_DesktopDlnaCastSwscale Include="$(NativeMediaDependencyDirectory)\swscale-*.dll" />
+  </ItemGroup>
+</Project>

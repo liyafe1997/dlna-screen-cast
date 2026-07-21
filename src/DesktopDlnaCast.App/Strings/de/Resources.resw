@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>DLNA-Bildschirmübertragung</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>Geräte aktualisieren</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>Wiedergabegerät testen</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>Stopp</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>Sitzungsstatus</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>Im lokalen Netzwerk wird nach DLNA-Wiedergabegeräten gesucht…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>Suche abgeschlossen. {0} Wiedergabegerät(e) gefunden.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>Der Vorgang wurde abgebrochen.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>Das Wiedergabegerät hat den Teststream angefordert und den Status PLAYING gemeldet.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>Der Vorgang ist fehlgeschlagen. Details finden Sie im strukturierten Protokoll.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>Die native Medienkomponente oder eine FFmpeg-Abhängigkeit fehlt. Erstellen Sie native-x64-release wie in docs/native-build.md beschrieben, und erstellen und starten Sie die App anschließend neu.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>Leerlauf</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>Geräte werden gesucht</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>Funktionen des Wiedergabegeräts werden geprüft</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>Medienpipeline wird gestartet</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>Warten auf ein Keyframe</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>Stream wird veröffentlicht</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>Streamadresse wird gesendet</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>Wiedergabe wird gestartet</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>Wiedergabe läuft</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>Wird gestoppt</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>Fehlgeschlagen</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>Übertragung starten</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>Wiedergabegerät</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>DLNA-Wiedergabegeräte werden gesucht…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>Keine Wiedergabegeräte verfügbar</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Zu spiegelnder Bildschirm</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Streamingauflösung</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Mauszeiger einschließen</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Systemaudio einschließen</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>Diesen PC während der Übertragung stummschalten (gesamtes Audio auf dem aktuellen Ausgabegerät)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>Keyframe-Intervall (beeinflusst die Latenz)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0,5 s (geringere Latenz)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 s (Standard)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 s (bessere Qualität)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>Beim neuesten Bild beginnen (geringere Latenz, etwas langsamerer Start)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>Qualität (Bitrate)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>Hohe Qualität ({0} Mbit/s)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>Mittlere Qualität ({0} Mbit/s, Standard)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>Niedrige Qualität ({0} Mbit/s, flüssiger)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>Bildschirm {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>Bildschirm {0} — primär ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (kompatibel)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (Standard)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>Das Wiedergabegerät ruft den Livestream des Windows-Desktops ab.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>Das Wiedergabegerät hat die Wiedergabe beendet. Die Übertragung wurde automatisch gestoppt.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>Das Wiedergabegerät ist nicht mehr erreichbar. Die Übertragung wurde automatisch gestoppt.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>AAC-Systemaudio aktiviert</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>nur Video</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>Lautstärke</value></data>
+</root>

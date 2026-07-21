@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>DLNA 螢幕投放</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>重新整理裝置</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>測試電視</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>停止</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>工作階段狀態</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>正在區域網路中搜尋 DLNA 播放裝置…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>搜尋完成，共找到 {0} 個播放裝置。</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>操作已取消。</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>播放裝置已要求測試串流並回報 PLAYING 狀態。</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>操作失敗，請檢視結構化記錄以瞭解詳情。</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>缺少原生媒體元件或 FFmpeg 相依項目。請先依照 docs/native-build.md 建置 native-x64-release，然後重新建置並啟動應用程式。</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>閒置</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>正在探索裝置</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>正在偵測播放裝置功能</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>正在啟動媒體管線</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>正在等待關鍵影格</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>正在發佈串流</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>正在傳送串流位址</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>正在開始播放</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>正在播放</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>正在停止</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>失敗</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>開始投放</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>播放裝置</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>正在搜尋 DLNA 播放裝置...</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>無可用播放裝置</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>要鏡射的顯示器</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>投放解析度</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>包含滑鼠指標</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>包含系統音訊</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>投放時將本機靜音</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>關鍵影格間隔（影響延遲）</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5 秒（延遲較低）</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 秒（預設）</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 秒（畫質較佳）</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>從最新畫面起播（延遲較低，起播稍慢）</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>畫質（位元速率）</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>高畫質（{0} Mbps）</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>中畫質（{0} Mbps，預設）</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>低畫質（{0} Mbps，較流暢）</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>顯示器 {0}（{1} × {2}）</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>顯示器 {0} — 主顯示器（{1} × {2}）</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720（相容）</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080（標準）</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>播放裝置正在擷取 Windows 桌面即時串流。</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>播放裝置已停止播放，已自動停止投放。</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>無法連線到播放裝置，已自動停止投放。</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}；{1} × {2}；{3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>已啟用 AAC 系統音訊</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>僅視訊</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>音量</value></data>
+</root>

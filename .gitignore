@@ -1,0 +1,13 @@
+bin/
+obj/
+out/
+vcpkg_installed/
+.vs/
+.idea/
+TestResults/
+*.user
+*.suo
+*.VC.db
+*.opendb
+artifacts/
+publish/

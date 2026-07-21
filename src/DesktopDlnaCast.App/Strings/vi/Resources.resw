@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>Truyền màn hình DLNA</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>Làm mới thiết bị</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>Kiểm tra thiết bị phát</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>Dừng</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>Trạng thái phiên</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>Đang tìm thiết bị phát DLNA trong mạng cục bộ…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>Đã tìm xong. Tìm thấy {0} thiết bị phát.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>Thao tác đã bị hủy.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>Thiết bị phát đã yêu cầu luồng thử nghiệm và báo trạng thái PLAYING.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>Thao tác không thành công. Hãy xem nhật ký có cấu trúc để biết chi tiết.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>Thiếu thành phần phương tiện gốc hoặc phần phụ thuộc FFmpeg. Hãy dựng native-x64-release theo hướng dẫn trong docs/native-build.md, sau đó dựng lại và khởi động ứng dụng.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>Chờ</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>Đang tìm thiết bị</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>Đang kiểm tra khả năng của thiết bị phát</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>Đang khởi động đường ống phương tiện</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>Đang chờ khung hình chính</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>Đang phát hành luồng</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>Đang gửi địa chỉ luồng</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>Đang bắt đầu phát</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>Đang phát</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>Đang dừng</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>Thất bại</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>Bắt đầu truyền</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>Thiết bị phát</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>Đang tìm thiết bị phát DLNA…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>Không có thiết bị phát khả dụng</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Màn hình cần phản chiếu</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Độ phân giải truyền</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Bao gồm con trỏ chuột</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Bao gồm âm thanh hệ thống</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>Tắt tiếng máy tính này khi truyền (toàn bộ âm thanh trên thiết bị đầu ra hiện tại)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>Khoảng cách khung hình chính (ảnh hưởng đến độ trễ)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0,5 giây (độ trễ thấp hơn)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 giây (mặc định)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 giây (chất lượng tốt hơn)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>Bắt đầu từ hình ảnh mới nhất (độ trễ thấp hơn, khởi động chậm hơn một chút)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>Chất lượng (tốc độ bit)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>Chất lượng cao ({0} Mbps)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>Chất lượng trung bình ({0} Mbps, mặc định)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>Chất lượng thấp ({0} Mbps, mượt hơn)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>Màn hình {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>Màn hình {0} — chính ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (tương thích)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (chuẩn)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>Thiết bị phát đang lấy luồng trực tiếp của màn hình Windows.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>Thiết bị phát đã dừng phát. Đã tự động dừng truyền.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>Không thể kết nối với thiết bị phát. Đã tự động dừng truyền.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>đã bật âm thanh hệ thống AAC</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>chỉ video</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>Âm lượng</value></data>
+</root>

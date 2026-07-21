@@ -1,0 +1,86 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore
+        run: dotnet restore DesktopDlnaCast.sln
+      - name: Build
+        # The managed job intentionally does not build the separate CMake target;
+        # the native job below owns that gate.
+        run: dotnet build DesktopDlnaCast.sln --configuration Release --no-restore -p:ValidateDesktopDlnaCastNativeRuntime=false
+      - name: Test
+        run: dotnet test DesktopDlnaCast.sln --configuration Release --no-build --logger "trx;LogFileName=tests.trx"
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: "**/TestResults/*.trx"
+          if-no-files-found: ignore
+
+  native:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          ref: 0878b5224d4a4968940ee296a2e7fae2d3b62983
+          path: .vcpkg
+      - name: Bootstrap vcpkg
+        shell: pwsh
+        run: |
+          & "$env:GITHUB_WORKSPACE\.vcpkg\bootstrap-vcpkg.bat" -disableMetrics
+          "VCPKG_ROOT=$env:GITHUB_WORKSPACE\.vcpkg" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - uses: actions/cache@v4
+        with:
+          path: out/native-x64-release/vcpkg_installed
+          key: native-vcpkg-x64-${{ runner.os }}-${{ hashFiles('src/DesktopDlnaCast.Media.Native/vcpkg.json', 'src/DesktopDlnaCast.Media.Native/triplets/*') }}
+      - name: Configure native
+        run: cmake --preset native-x64-release
+      - name: Build native
+        run: cmake --build --preset native-x64-release
+      - name: Test native ABI
+        run: ctest --preset native-x64-release
+
+  # Cross-compilation gate only: the x64 runner cannot execute arm64 binaries,
+  # so ctest is skipped; runtime acceptance happens on an ARM64 machine (see
+  # docs/native-build.md).
+  native-arm64:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          ref: 0878b5224d4a4968940ee296a2e7fae2d3b62983
+          path: .vcpkg
+      - name: Bootstrap vcpkg
+        shell: pwsh
+        run: |
+          & "$env:GITHUB_WORKSPACE\.vcpkg\bootstrap-vcpkg.bat" -disableMetrics
+          "VCPKG_ROOT=$env:GITHUB_WORKSPACE\.vcpkg" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - uses: actions/cache@v4
+        with:
+          path: out/native-arm64-release/vcpkg_installed
+          key: native-vcpkg-arm64-${{ runner.os }}-${{ hashFiles('src/DesktopDlnaCast.Media.Native/vcpkg.json', 'src/DesktopDlnaCast.Media.Native/triplets/*') }}
+      - name: Configure native
+        run: cmake --preset native-arm64-release
+      - name: Build native
+        run: cmake --build --preset native-arm64-release

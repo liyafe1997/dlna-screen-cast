@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>DLNA 화면 캐스트</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>장치 새로 고침</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>재생 장치 테스트</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>중지</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>세션 상태</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>로컬 네트워크에서 DLNA 재생 장치를 검색하는 중…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>검색이 완료되었습니다. 재생 장치 {0}개를 찾았습니다.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>작업이 취소되었습니다.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>재생 장치가 테스트 스트림을 요청하고 PLAYING 상태를 보고했습니다.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>작업에 실패했습니다. 자세한 내용은 구조화된 로그를 확인하세요.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>네이티브 미디어 구성 요소 또는 FFmpeg 종속성이 없습니다. docs/native-build.md의 설명에 따라 native-x64-release를 빌드한 다음 앱을 다시 빌드하고 시작하세요.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>대기</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>장치 검색 중</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>재생 장치 기능 확인 중</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>미디어 파이프라인 시작 중</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>키 프레임 대기 중</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>스트림 게시 중</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>스트림 주소 전송 중</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>재생 시작 중</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>재생 중</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>중지하는 중</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>실패</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>캐스트 시작</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>재생 장치</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>DLNA 재생 장치를 검색하는 중…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>사용 가능한 재생 장치가 없습니다</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>미러링할 디스플레이</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>스트리밍 해상도</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>마우스 포인터 포함</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>시스템 소리 포함</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>캐스트 중 이 PC 음소거(현재 출력 장치의 모든 소리)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>키 프레임 간격(지연 시간에 영향)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5초(더 낮은 지연)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1초(기본값)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2초(더 좋은 화질)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>최신 화면부터 시작(지연 시간 감소, 시작은 약간 느림)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>화질(비트 전송률)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>고화질({0} Mbps)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>중간 화질({0} Mbps, 기본값)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>저화질({0} Mbps, 더 부드러움)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>디스플레이 {0}({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>디스플레이 {0} — 주 디스플레이({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720(호환성)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080(표준)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>재생 장치가 Windows 바탕 화면 라이브 스트림을 가져오고 있습니다.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>재생 장치가 재생을 중지하여 캐스트가 자동으로 중지되었습니다.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>재생 장치에 연결할 수 없어 캐스트가 자동으로 중지되었습니다.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>AAC 시스템 소리 사용</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>비디오만</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>볼륨</value></data>
+</root>

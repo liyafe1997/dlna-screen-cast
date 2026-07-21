@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>DLNA Screen Cast</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>Refresh devices</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>Test renderer</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>Stop</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>Session status</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>Searching the local network for DLNA renderers…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>Discovery completed. Found {0} renderer(s).</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>The operation was canceled.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>The renderer requested the test stream and reported PLAYING.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>The operation failed. Review the structured log for details.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>The native media component or an FFmpeg dependency is missing. Build native-x64-release as described in docs/native-build.md, then rebuild and start the app.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>Idle</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>Discovering devices</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>Checking renderer capabilities</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>Starting media pipeline</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>Waiting for a keyframe</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>Publishing stream</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>Sending stream address</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>Starting playback</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>Playing</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>Stopping</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>Failed</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>Start casting</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>Renderer device</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>Searching for DLNA renderers…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>No playback devices available</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Display to mirror</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Streaming resolution</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Include pointer</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Include system audio</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>Mute this PC while casting (all audio on the current output device)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>Keyframe interval (affects latency)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5 s (lower latency)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 s (default)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 s (better quality)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>Start at the live edge (lower latency, slightly slower start)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>Quality (bitrate)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>High quality ({0} Mbps)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>Medium quality ({0} Mbps, default)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>Low quality ({0} Mbps, smoother)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>Display {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>Display {0} — primary ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (compatible)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (standard)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>The renderer is pulling the live Windows desktop stream.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>The renderer stopped playback. Casting was stopped automatically.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>The renderer is no longer reachable. Casting was stopped automatically.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>AAC system audio enabled</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>video only</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>Volume</value></data>
+</root>

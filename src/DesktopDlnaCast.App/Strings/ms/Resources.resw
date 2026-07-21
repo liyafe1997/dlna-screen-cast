@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>Pencerminan Skrin DLNA</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>Muat semula peranti</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>Uji peranti pemain</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>Berhenti</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>Status sesi</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>Mencari peranti pemain DLNA dalam rangkaian setempat…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>Carian selesai. {0} peranti pemain ditemui.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>Operasi telah dibatalkan.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>Peranti pemain meminta strim ujian dan melaporkan status PLAYING.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>Operasi gagal. Semak log berstruktur untuk maklumat lanjut.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>Komponen media natif atau kebergantungan FFmpeg tiada. Bina native-x64-release seperti yang diterangkan dalam docs/native-build.md, kemudian bina semula dan mulakan aplikasi.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>Melahu</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>Mencari peranti</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>Menyemak keupayaan peranti pemain</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>Memulakan saluran media</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>Menunggu bingkai kunci</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>Menerbitkan strim</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>Menghantar alamat strim</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>Memulakan main balik</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>Sedang dimainkan</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>Menghentikan</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>Gagal</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>Mulakan pencerminan</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>Peranti pemain</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>Mencari peranti pemain DLNA…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>Tiada peranti pemain yang tersedia</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Paparan untuk dicerminkan</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Resolusi penstriman</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Sertakan penuding tetikus</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Sertakan audio sistem</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>Redamkan PC ini semasa pencerminan (semua audio pada peranti output semasa)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>Selang bingkai kunci (mempengaruhi kependaman)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5 s (kependaman lebih rendah)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 s (lalai)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 s (kualiti lebih baik)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>Mula dari paparan terkini (kependaman lebih rendah, permulaan sedikit perlahan)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>Kualiti (kadar bit)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>Kualiti tinggi ({0} Mbps)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>Kualiti sederhana ({0} Mbps, lalai)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>Kualiti rendah ({0} Mbps, lebih lancar)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>Paparan {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>Paparan {0} — utama ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (serasi)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (standard)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>Peranti pemain sedang menarik strim langsung desktop Windows.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>Peranti pemain menghentikan main balik. Pencerminan dihentikan secara automatik.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>Peranti pemain tidak lagi dapat dicapai. Pencerminan dihentikan secara automatik.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>audio sistem AAC didayakan</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>video sahaja</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>Kelantangan</value></data>
+</root>

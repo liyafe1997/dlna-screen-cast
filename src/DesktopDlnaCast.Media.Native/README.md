@@ -1,0 +1,7 @@
+# DesktopDlnaCast.Media.Native
+
+This directory contains the ABI v2 contract and CMake target for the Milestone 2 C++/WinRT media DLL. The native target contains the display/window WGC source with bounded latest-frame pacing for static desktops, a D3D11 BGRA-to-NV12 letterbox processor with `libswscale` CPU fallback, hardware-preferred Media Foundation H.264 selection with inbox software-MFT fallback through FFmpeg `h264_mf`, `libavformat` MPEG-TS muxing, a bounded packet queue, exception-safe C exports, backend/accepted-parameter diagnostics, and deterministic/idempotent cleanup. The component suite forces the software path so a no-GPU worker must encode real NV12 frames and verifies PAT/PMT, H.264, monotonic PTS, SPS/PPS, IDR cadence, packet alignment, and random-access startup evidence; a separate selector check exercises the production hardware-preferred policy.
+
+The implementation must follow [`include/ddc_media.h`](include/ddc_media.h): a small versioned C ABI, opaque handles, explicit ownership, bounded reads with cancellation timeouts, idempotent stop/destroy, and no C++ exceptions, STL containers, COM pointers, or WinRT objects crossing the boundary. A packet marked `DDC_PACKET_FLAG_RANDOM_ACCESS_POINT` must contain a complete MPEG-TS startup point including PAT/PMT, codec configuration, and IDR.
+
+See [`docs/native-build.md`](../../docs/native-build.md) for the pinned vcpkg/FFmpeg manifest, prerequisites, license policy, and build commands.

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>Трансляция экрана DLNA</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>Обновить устройства</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>Проверить проигрыватель</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>Остановить</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>Состояние сеанса</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>Поиск проигрывателей DLNA в локальной сети…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>Поиск завершен. Найдено проигрывателей: {0}.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>Операция отменена.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>Проигрыватель запросил тестовый поток и сообщил о состоянии PLAYING.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>Операция не выполнена. Подробности см. в структурированном журнале.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>Отсутствует нативный медиакомпонент или зависимость FFmpeg. Соберите native-x64-release, как описано в docs/native-build.md, затем пересоберите и запустите приложение.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>Ожидание</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>Поиск устройств</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>Проверка возможностей проигрывателя</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>Запуск медиаконвейера</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>Ожидание ключевого кадра</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>Публикация потока</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>Отправка адреса потока</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>Запуск воспроизведения</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>Воспроизведение</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>Остановка</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>Сбой</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>Начать трансляцию</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>Проигрыватель</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>Поиск проигрывателей DLNA…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>Нет доступных проигрывателей</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Дублируемый экран</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Разрешение трансляции</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Показывать указатель мыши</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Передавать системный звук</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>Отключать звук на этом ПК во время трансляции (весь звук на текущем устройстве вывода)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>Интервал ключевых кадров (влияет на задержку)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0,5 с (меньшая задержка)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 с (по умолчанию)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 с (лучшее качество)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>Начинать с последнего кадра (меньшая задержка, чуть более медленный старт)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>Качество (битрейт)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>Высокое качество ({0} Мбит/с)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>Среднее качество ({0} Мбит/с, по умолчанию)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>Низкое качество ({0} Мбит/с, плавнее)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>Экран {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>Экран {0} — основной ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (совместимое)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (стандартное)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>Проигрыватель получает живой поток рабочего стола Windows.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>Проигрыватель остановил воспроизведение. Трансляция автоматически остановлена.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>Проигрыватель больше недоступен. Трансляция автоматически остановлена.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>системный звук AAC включен</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>только видео</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>Громкость</value></data>
+</root>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>DLNA स्क्रीन कास्ट</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>डिवाइस रीफ़्रेश करें</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>प्लेयर का परीक्षण करें</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>रोकें</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>सत्र की स्थिति</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>स्थानीय नेटवर्क में DLNA प्लेयर खोजे जा रहे हैं…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>खोज पूरी हुई। {0} प्लेयर मिले।</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>कार्रवाई रद्द कर दी गई।</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>प्लेयर ने परीक्षण स्ट्रीम का अनुरोध किया और PLAYING स्थिति की सूचना दी।</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>कार्रवाई विफल रही। विवरण के लिए संरचित लॉग देखें।</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>नेटिव मीडिया घटक या कोई FFmpeg निर्भरता मौजूद नहीं है। docs/native-build.md में बताए अनुसार native-x64-release बनाएँ, फिर ऐप को दोबारा बनाकर शुरू करें।</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>निष्क्रिय</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>डिवाइस खोजे जा रहे हैं</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>प्लेयर की क्षमताएँ जाँची जा रही हैं</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>मीडिया पाइपलाइन शुरू की जा रही है</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>कीफ़्रेम की प्रतीक्षा की जा रही है</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>स्ट्रीम प्रकाशित की जा रही है</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>स्ट्रीम का पता भेजा जा रहा है</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>प्लेबैक शुरू किया जा रहा है</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>चल रहा है</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>रोका जा रहा है</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>विफल</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>कास्ट शुरू करें</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>प्लेयर डिवाइस</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>DLNA प्लेयर खोजे जा रहे हैं…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>कोई प्लेबैक डिवाइस उपलब्ध नहीं है</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>मिरर की जाने वाली डिस्प्ले</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>स्ट्रीमिंग रिज़ॉल्यूशन</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>माउस पॉइंटर शामिल करें</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>सिस्टम ऑडियो शामिल करें</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>कास्ट करते समय इस PC को म्यूट करें (वर्तमान आउटपुट डिवाइस का सारा ऑडियो)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>कीफ़्रेम अंतराल (विलंबता को प्रभावित करता है)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5 सेकंड (कम विलंबता)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 सेकंड (डिफ़ॉल्ट)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 सेकंड (बेहतर गुणवत्ता)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>सबसे नई तस्वीर से शुरू करें (कम विलंबता, शुरुआत थोड़ी धीमी)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>गुणवत्ता (बिटरेट)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>उच्च गुणवत्ता ({0} Mbps)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>मध्यम गुणवत्ता ({0} Mbps, डिफ़ॉल्ट)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>निम्न गुणवत्ता ({0} Mbps, अधिक सहज)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>डिस्प्ले {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>डिस्प्ले {0} — प्राथमिक ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (संगत)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (मानक)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>प्लेयर Windows डेस्कटॉप की लाइव स्ट्रीम प्राप्त कर रहा है।</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>प्लेयर ने प्लेबैक रोक दिया। कास्टिंग अपने आप रोक दी गई।</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>प्लेयर से अब संपर्क नहीं हो पा रहा है। कास्टिंग अपने आप रोक दी गई।</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>AAC सिस्टम ऑडियो सक्षम</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>केवल वीडियो</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>वॉल्यूम</value></data>
+</root>
