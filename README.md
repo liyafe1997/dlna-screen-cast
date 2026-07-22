@@ -55,6 +55,13 @@ cmake --build --preset native-x64-release
 ctest --preset native-x64-release
 ```
 
+Build target ARM64 native runtime (You need to use the `ARM64 Native Tools...` environment)
+```powershell
+cmake --preset native-arm64-release
+cmake --build --preset native-arm64-release
+ctest --preset native-arm64-release
+```
+
 The first configure may take some time because vcpkg downloads and builds the repository's constrained FFmpeg dependency set. A successful x64 build produces the native media DLL under `out/native-x64-release/src/DesktopDlnaCast.Media.Native/Release/` and its FFmpeg runtime DLLs under `out/native-x64-release/vcpkg_installed/x64-windows-desktopdlna/bin/`. Do not commit or manually copy these architecture-specific outputs into Git. See [docs/native-build.md](docs/native-build.md) for full prerequisites and troubleshooting details.
 
 After the native runtime exists, build and test the managed solution:
@@ -162,6 +169,13 @@ $env:VCPKG_ROOT = $vcpkg
 cmake --preset native-x64-release
 cmake --build --preset native-x64-release
 ctest --preset native-x64-release
+```
+
+构建 target ARM64 原生运行时（你需要使用 `ARM64 Native Tools...` 那个环境入口）
+```powershell
+cmake --preset native-arm64-release
+cmake --build --preset native-arm64-release
+ctest --preset native-arm64-release
 ```
 
 首次配置可能耗时较长，因为 vcpkg 会下载并构建本项目裁剪过的 FFmpeg 依赖。x64 构建成功后，原生媒体 DLL 位于 `out/native-x64-release/src/DesktopDlnaCast.Media.Native/Release/`，FFmpeg 运行时 DLL 位于 `out/native-x64-release/vcpkg_installed/x64-windows-desktopdlna/bin/`。不要把这些与架构相关的产物提交到 Git，也不要用旧开发目录中的产物代替 clean-clone 验证。完整前置条件和故障排查见 [docs/native-build.md](docs/native-build.md)。
