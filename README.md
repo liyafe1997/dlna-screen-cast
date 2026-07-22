@@ -6,6 +6,9 @@ Cast your entire Windows desktop over DLNA. This is especially useful when your 
 
 This project was brought to life with Claude Code and Codex.
 
+<img width="1135" height="728" alt="图片" src="https://github.com/user-attachments/assets/6d373b77-6ae2-4fdb-8aa6-bb37a0e08ad8" />
+
+
 ## Download and Installation
 
 Download the latest release from the [Releases](https://github.com/liyafe1997/dlna-screen-cast/releases) page.
@@ -122,6 +125,9 @@ Run `build-release-nsis-x64.bat` or `build-release-nsis-arm64.bat` (both are thi
 通过 DLNA 协议来投放你的整个Windows桌面。对于电视或电脑（Wi-Fi网卡）对Miracast支持不佳的情况非常有用。
 
 该项目使用 Claude Code 和 Codex 落地。
+
+<img width="1136" height="721" alt="图片" src="https://github.com/user-attachments/assets/345e00e0-2db2-4f6c-b5aa-5311573a0f23" />
+
 
 ## 下载和安装
 前往 [Release](https://github.com/liyafe1997/dlna-screen-cast/releases) 下载。
