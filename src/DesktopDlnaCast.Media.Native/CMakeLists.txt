@@ -86,7 +86,8 @@ if(BUILD_TESTING)
     d3d11
     mf
     mfplat
-    mfuuid)
+    mfuuid
+    runtimeobject)
   add_test(NAME DesktopDlnaCast.Media.Native.Components
     COMMAND DesktopDlnaCast.Media.Native.Tests)
 endif()
