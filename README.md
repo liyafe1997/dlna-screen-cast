@@ -1,6 +1,7 @@
+[☕Buy me a coffee](https://ko-fi.com/strawing)
 # English [(简体中文)](#简体中文)
 
-# DLNA Screen Casting
+## DLNA Screen Casting
 
 Cast your entire Windows desktop over DLNA. This is especially useful when your TV or computer (Wi-Fi adapter) has poor Miracast support.
 
@@ -122,7 +123,7 @@ Run `build-release-nsis-x64.bat` or `build-release-nsis-arm64.bat` (both are thi
 
 # 简体中文 
 
-# DLNA 投屏
+## DLNA 投屏
 
 通过 DLNA 协议来投放你的整个Windows桌面。对于电视或电脑（Wi-Fi网卡）对Miracast支持不佳的情况非常有用。
 
