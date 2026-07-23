@@ -133,9 +133,18 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         GopOptions.Add(new(resources.GetString("GopOneSecond"), 30));
         GopOptions.Add(new(resources.GetString("GopTwoSeconds"), 60));
         SelectedGopOption = GopOptions[1];
-        AspectRatioOptions.Add(new(resources.GetString("AspectRatioStretch"), AspectRatioMode.Stretch));
-        AspectRatioOptions.Add(new(resources.GetString("AspectRatioCenterCrop"), AspectRatioMode.CenterCrop));
-        AspectRatioOptions.Add(new(resources.GetString("AspectRatioLetterbox"), AspectRatioMode.Letterbox));
+        AspectRatioOptions.Add(new(
+            resources.GetString("AspectRatioStretch"),
+            AspectRatioMode.Stretch,
+            "ms-appx:///Assets/aspect-stretch.svg"));
+        AspectRatioOptions.Add(new(
+            resources.GetString("AspectRatioCenterCrop"),
+            AspectRatioMode.CenterCrop,
+            "ms-appx:///Assets/aspect-center-crop.svg"));
+        AspectRatioOptions.Add(new(
+            resources.GetString("AspectRatioLetterbox"),
+            AspectRatioMode.Letterbox,
+            "ms-appx:///Assets/aspect-letterbox.svg"));
         SelectedAspectRatioOption = AspectRatioOptions[2];
         RefreshDisplays();
     }

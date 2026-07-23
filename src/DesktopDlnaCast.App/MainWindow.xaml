@@ -40,10 +40,38 @@
               TextWrapping="Wrap" />
         </Grid>
       </DataTemplate>
+      <DataTemplate x:Key="AspectRatioSelectionTemplate">
+        <TextBlock
+            VerticalAlignment="Center"
+            Text="{Binding DisplayName}"
+            TextTrimming="CharacterEllipsis" />
+      </DataTemplate>
+      <DataTemplate x:Key="AspectRatioDropDownTemplate">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+          <Border
+              Width="64"
+              Height="36"
+              VerticalAlignment="Center"
+              Background="#101820"
+              CornerRadius="3">
+            <Image
+                Source="{Binding IllustrationPath}"
+                Stretch="Uniform" />
+          </Border>
+          <TextBlock
+              VerticalAlignment="Center"
+              Text="{Binding DisplayName}"
+              TextWrapping="Wrap" />
+        </StackPanel>
+      </DataTemplate>
       <local:DisplayPickerTemplateSelector
           x:Key="DisplayPickerTemplateSelector"
           SelectionTemplate="{StaticResource DisplaySelectionTemplate}"
           DropDownTemplate="{StaticResource DisplayDropDownTemplate}" />
+      <local:DisplayPickerTemplateSelector
+          x:Key="AspectRatioTemplateSelector"
+          SelectionTemplate="{StaticResource AspectRatioSelectionTemplate}"
+          DropDownTemplate="{StaticResource AspectRatioDropDownTemplate}" />
     </Grid.Resources>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
@@ -199,20 +227,22 @@
               x:Uid="StartAtLiveEdgeToggle"
               IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
               IsChecked="{x:Bind ViewModel.StartAtLiveEdge, Mode=TwoWay}" />
-          <TextBlock
+          <StackPanel
               Grid.Row="6"
+              Grid.ColumnSpan="2"
               Margin="0,4,0,0"
-              x:Uid="AspectRatioModeLabel"
-              FontWeight="SemiBold" />
-          <ComboBox
-              Grid.Row="6"
-              Grid.Column="1"
-              HorizontalAlignment="Stretch"
-              MinHeight="28"
-              IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
-              ItemsSource="{x:Bind ViewModel.AspectRatioOptions}"
-              SelectedItem="{x:Bind ViewModel.SelectedAspectRatioOption, Mode=TwoWay}"
-              DisplayMemberPath="DisplayName" />
+              Spacing="4">
+            <TextBlock
+                x:Uid="AspectRatioModeLabel"
+                FontWeight="SemiBold" />
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                MinHeight="28"
+                IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
+                ItemsSource="{x:Bind ViewModel.AspectRatioOptions}"
+                SelectedItem="{x:Bind ViewModel.SelectedAspectRatioOption, Mode=TwoWay}"
+                ItemTemplateSelector="{StaticResource AspectRatioTemplateSelector}" />
+          </StackPanel>
         </Grid>
       </Border>
 
