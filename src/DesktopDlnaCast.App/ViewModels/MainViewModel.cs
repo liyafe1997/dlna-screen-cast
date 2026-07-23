@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Input;
 using DesktopDlnaCast.App.Commands;
 using DesktopDlnaCast.Core.Abstractions;
@@ -9,6 +10,7 @@ using DesktopDlnaCast.Core.Casting;
 using DesktopDlnaCast.Core.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.Windows.ApplicationModel.Resources;
 
 namespace DesktopDlnaCast.App.ViewModels;
@@ -27,11 +29,18 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             new EventId(401, nameof(LogVolumeOperationFailed)),
             "A renderer volume operation failed");
 
+    private static readonly Action<ILogger, long, Exception?> LogDisplayPreviewFailed =
+        LoggerMessage.Define<long>(
+            LogLevel.Warning,
+            new EventId(402, nameof(LogDisplayPreviewFailed)),
+            "Display preview capture failed for monitor handle {MonitorHandle}");
+
     private readonly IDlnaDiscoveryService discoveryService;
     private readonly IDlnaRendererClient rendererClient;
     private readonly IStaticMediaTestSession testSession;
     private readonly ICastSession liveSession;
     private readonly IDisplayCaptureSourceProvider displaySourceProvider;
+    private readonly IDisplayPreviewProvider displayPreviewProvider;
     private readonly IUserSettingsStore userSettingsStore;
     private readonly CastSessionStateMachine stateMachine;
     private readonly ILogger<MainViewModel> logger;
@@ -44,6 +53,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     private readonly DispatcherQueueTimer volumeSendTimer;
     private CancellationTokenSource? currentOperation;
     private CancellationTokenSource? volumeLoad;
+    private CancellationTokenSource? displayPreviewRefresh;
     private RendererDeviceViewModel? selectedDevice;
     private double volume = 50;
     private bool isVolumeAvailable;
@@ -72,6 +82,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         IStaticMediaTestSession testSession,
         ICastSession liveSession,
         IDisplayCaptureSourceProvider displaySourceProvider,
+        IDisplayPreviewProvider displayPreviewProvider,
         IUserSettingsStore userSettingsStore,
         CastSessionStateMachine stateMachine,
         ILogger<MainViewModel> logger)
@@ -81,6 +92,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         this.testSession = testSession;
         this.liveSession = liveSession;
         this.displaySourceProvider = displaySourceProvider;
+        this.displayPreviewProvider = displayPreviewProvider;
         this.userSettingsStore = userSettingsStore;
         this.stateMachine = stateMachine;
         this.logger = logger;
@@ -411,6 +423,37 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
 
     public void CancelCurrentOperation() => currentOperation?.Cancel();
 
+    public async Task RefreshDisplayPreviewsAsync()
+    {
+        displayPreviewRefresh?.Cancel();
+        displayPreviewRefresh?.Dispose();
+        displayPreviewRefresh = new CancellationTokenSource();
+        CancellationToken cancellationToken = displayPreviewRefresh.Token;
+
+        foreach (CaptureDisplayViewModel display in Displays)
+        {
+            try
+            {
+                DisplayPreviewFrame frame =
+                    await displayPreviewProvider.CaptureAsync(display.Source, cancellationToken)
+                        .ConfigureAwait(true);
+                cancellationToken.ThrowIfCancellationRequested();
+                WriteableBitmap bitmap = new(frame.Width, frame.Height);
+                using Stream pixelStream = bitmap.PixelBuffer.AsStream();
+                await pixelStream.WriteAsync(frame.BgraPixels, cancellationToken).ConfigureAwait(true);
+                display.Preview = bitmap;
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+            catch (Exception exception) when (exception is not OutOfMemoryException)
+            {
+                LogDisplayPreviewFailed(logger, display.Source.Handle, exception);
+            }
+        }
+    }
+
     public Task SaveSettingsAsync(CancellationToken cancellationToken)
     {
         DisplayCaptureSource? display = SelectedDisplay?.Source;
@@ -453,6 +496,8 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         volumeSendTimer.Stop();
         volumeLoad?.Cancel();
         volumeLoad?.Dispose();
+        displayPreviewRefresh?.Cancel();
+        displayPreviewRefresh?.Dispose();
         currentOperation?.Cancel();
         currentOperation?.Dispose();
         GC.SuppressFinalize(this);

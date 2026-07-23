@@ -90,6 +90,13 @@ public interface IDisplayCaptureSourceProvider
     IReadOnlyList<DisplayCaptureSource> GetDisplays();
 }
 
+public interface IDisplayPreviewProvider
+{
+    Task<DisplayPreviewFrame> CaptureAsync(
+        DisplayCaptureSource display,
+        CancellationToken cancellationToken);
+}
+
 public interface IUserSettingsStore
 {
     Task<UserSettings> LoadAsync(CancellationToken cancellationToken);

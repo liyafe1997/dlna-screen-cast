@@ -55,6 +55,10 @@ After the main window is activated, `MainViewModel.InitializeAsync` restores tho
 
 Every test/cast attempt has a correlation ID and a structured `CastFailure` containing stage, user message, original exception, protocol status, fallback advice, and safe diagnostic context.
 
+The display picker refreshes one bounded, downscaled snapshot per active monitor when its
+drop-down opens. Preview capture runs off the UI thread, is cancelled when a newer refresh
+starts, and stops after the still images are produced; the live stream continues to use WGC.
+
 SSDP datagrams, XML, SOAP, URIs, and renderer HTTP requests are untrusted. All network operations are cancellable, time-bounded, and size-bounded. XML DTDs and external entities are disabled. Full tokens, credentials, cookies, and media payloads must not enter diagnostics.
 
 ## Native boundary

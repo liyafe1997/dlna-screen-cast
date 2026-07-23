@@ -11,6 +11,7 @@ public static class MediaInteropServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(services);
         services.Replace(ServiceDescriptor.Singleton<IMediaCaptureSessionFactory, NativeMediaCaptureSessionFactory>());
         services.TryAddSingleton<IDisplayCaptureSourceProvider, WindowsDisplayCaptureSourceProvider>();
+        services.TryAddSingleton<IDisplayPreviewProvider, WindowsDisplayPreviewProvider>();
         return services;
     }
 }

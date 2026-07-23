@@ -30,6 +30,11 @@ public sealed partial class MainWindow : Window
 
     public MainViewModel ViewModel { get; }
 
+    private async void DisplayPicker_DropDownOpened(object sender, object e)
+    {
+        await ViewModel.RefreshDisplayPreviewsAsync();
+    }
+
     private void ApplyInitialSize()
     {
         nint hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);

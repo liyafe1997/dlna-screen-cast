@@ -15,6 +15,11 @@ public sealed record DisplayCaptureSource(
     int Height,
     bool IsPrimary);
 
+public sealed record DisplayPreviewFrame(
+    int Width,
+    int Height,
+    byte[] BgraPixels);
+
 public sealed record MediaCaptureConfiguration(
     CaptureSourceKind SourceKind,
     long SourceHandle,
