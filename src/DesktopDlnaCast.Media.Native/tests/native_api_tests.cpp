@@ -5,7 +5,9 @@
 
 #include <array>
 #include <cstdint>
+#include <iostream>
 #include <string>
+#include <vector>
 
 namespace
 {
@@ -41,14 +43,8 @@ int main()
 {
     winrt::init_apartment(winrt::apartment_type::multi_threaded);
 
-    run_bounded_packet_queue_tests();
-    run_d3d11_video_processor_tests();
-    run_media_foundation_h264_encoder_tests();
-    run_media_foundation_aac_encoder_tests();
-    run_mpeg_ts_muxer_tests();
-    run_software_video_processor_tests();
-    static_assert(DDC_ABI_VERSION == 4);
-    static_assert(sizeof(ddc_stream_config) == 64);
+    static_assert(DDC_ABI_VERSION == 6);
+    static_assert(sizeof(ddc_stream_config) == 72);
     static_assert(sizeof(ddc_session_statistics) == 96);
     static_assert(sizeof(ddc_encoder_diagnostics) == 64);
 
@@ -125,6 +121,60 @@ int main()
                10) == DDC_END_OF_STREAM);
     ddc_session_destroy(handle);
     ddc_session_destroy(nullptr);
+
+    // Audio-only sessions do not touch the capture-source handle and must
+    // produce a self-framing MP3 start point from WASAPI alone.
+    handle = nullptr;
+    config = valid_config();
+    config.source_handle = 0;
+    config.include_audio = 1;
+    config.audio_only = 1;
+    config.audio_profile = DDC_AUDIO_PROFILE_MP3;
+    DDC_TEST_CHECK(ddc_session_create(&config, &handle) == DDC_OK);
+    DDC_TEST_CHECK(ddc_session_start(handle) == DDC_OK);
+    std::vector<std::uint8_t> audio_packet(1024 * 1024);
+    bool audio_start_point_read{};
+    for (std::int32_t attempt = 0; attempt < 50 && !audio_start_point_read; ++attempt)
+    {
+        const std::int32_t read_result = ddc_session_read(
+            handle,
+            audio_packet.data(),
+            static_cast<std::int32_t>(audio_packet.size()),
+            &bytes_written,
+            &timestamp,
+            &flags,
+            100);
+        if (read_result != DDC_OK && read_result != DDC_TIMEOUT)
+        {
+            std::array<std::uint8_t, 4096> detail{};
+            std::int32_t detail_size{};
+            static_cast<void>(ddc_session_get_last_error(
+                handle,
+                detail.data(),
+                static_cast<std::int32_t>(detail.size()),
+                &detail_size));
+            std::cerr.write(
+                reinterpret_cast<const char*>(detail.data()),
+                detail_size);
+            std::cerr << '\n';
+        }
+        DDC_TEST_CHECK(read_result == DDC_OK || read_result == DDC_TIMEOUT);
+        audio_start_point_read =
+            read_result == DDC_OK && bytes_written > 0 &&
+            (flags & DDC_PACKET_FLAG_RANDOM_ACCESS_POINT) != 0;
+    }
+    DDC_TEST_CHECK(audio_start_point_read);
+    DDC_TEST_CHECK(audio_packet[0] == 0xFF);
+    DDC_TEST_CHECK((audio_packet[1] & 0xE0) == 0xE0);
+    DDC_TEST_CHECK(ddc_session_stop(handle) == DDC_OK);
+    ddc_session_destroy(handle);
+
+    run_bounded_packet_queue_tests();
+    run_d3d11_video_processor_tests();
+    run_media_foundation_h264_encoder_tests();
+    run_media_foundation_aac_encoder_tests();
+    run_mpeg_ts_muxer_tests();
+    run_software_video_processor_tests();
 
 
     // Exercise deterministic pre-start cleanup repeatedly without passing an

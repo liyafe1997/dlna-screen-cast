@@ -301,7 +301,7 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
             new Dictionary<string, string?>
             {
                 ["Source"] = string.Empty,
-                ["Sink"] = "http-get:*:video/mpeg:DLNA.ORG_PN=MPEG_TS_SD_NA_ISO",
+                ["Sink"] = options.SinkProtocolInfo,
             }).ConfigureAwait(false);
     }
 
@@ -370,6 +370,7 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
     private async Task PullMediaAsync(Uri uri, CancellationToken cancellationToken)
     {
         MpegTsInspector? inspector = null;
+        AudioPayloadValidator? audioValidator = null;
         int total = 0;
         try
         {
@@ -416,7 +417,16 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
 
             await using Stream stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
             byte[] buffer = new byte[16 * 1024];
-            inspector = new();
+            string contentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty;
+            if (contentType.StartsWith("audio/", StringComparison.OrdinalIgnoreCase))
+            {
+                audioValidator = new(contentType);
+            }
+            else
+            {
+                inspector = new();
+            }
+
             bool firstByteObserved = false;
             while (total < options.MaximumPullBytes)
             {
@@ -437,9 +447,10 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
                         ("elapsedMilliseconds", stopwatch.ElapsedMilliseconds.ToString(System.Globalization.CultureInfo.InvariantCulture)));
                 }
 
-                inspector.Push(buffer.AsSpan(0, read));
+                inspector?.Push(buffer.AsSpan(0, read));
+                audioValidator?.Push(buffer.AsSpan(0, read));
                 total += read;
-                if (total >= 188)
+                if (total >= (audioValidator is null ? 188 : 1))
                 {
                     SetTransportState("PLAYING");
                 }
@@ -456,7 +467,14 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
                 Events.Record("RendererHttpCompleted", ("reason", "ReadLimitReached"));
             }
 
-            RecordMediaValidation(inspector, total, allowTrailingPartialPacket: false);
+            if (inspector is not null)
+            {
+                RecordMediaValidation(inspector, total, allowTrailingPartialPacket: false);
+            }
+            else
+            {
+                RecordAudioValidation(audioValidator!, total);
+            }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -466,6 +484,17 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
                 try
                 {
                     RecordMediaValidation(inspector, total, allowTrailingPartialPacket: true);
+                }
+                catch (InvalidDataException exception)
+                {
+                    Events.Record("MediaValidationFailed", ("error", exception.Message));
+                }
+            }
+            else if (audioValidator is not null && total > 0)
+            {
+                try
+                {
+                    RecordAudioValidation(audioValidator, total);
                 }
                 catch (InvalidDataException exception)
                 {
@@ -492,13 +521,23 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
     {
         inspector.Complete(
             options.RequireAudio,
-            allowTrailingPartialPacket: allowTrailingPartialPacket);
+            allowTrailingPartialPacket: allowTrailingPartialPacket,
+            requireVideo: options.RequireVideo);
         Events.Record(
             "MediaValidationSucceeded",
             ("bytes", total.ToString(System.Globalization.CultureInfo.InvariantCulture)),
             ("packets", inspector.PacketCount.ToString(System.Globalization.CultureInfo.InvariantCulture)),
             ("h264", inspector.H264Seen.ToString()),
             ("aac", inspector.AacSeen.ToString()));
+    }
+
+    private void RecordAudioValidation(AudioPayloadValidator validator, int total)
+    {
+        validator.Complete();
+        Events.Record(
+            "MediaValidationSucceeded",
+            ("bytes", total.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+            ("audioFormat", validator.ContentType));
     }
 
     private async Task StopPullAsync(bool setStoppedState)
@@ -633,6 +672,50 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
         name.Equals("Proxy-Authorization", StringComparison.OrdinalIgnoreCase) ||
         name.Equals("Set-Cookie", StringComparison.OrdinalIgnoreCase);
 
+    private sealed class AudioPayloadValidator(string contentType)
+    {
+        private readonly byte[] prefix = new byte[4];
+        private int prefixLength;
+        private int totalBytes;
+
+        public string ContentType { get; } = contentType;
+
+        public void Push(ReadOnlySpan<byte> bytes)
+        {
+            int copy = Math.Min(prefix.Length - prefixLength, bytes.Length);
+            bytes[..copy].CopyTo(prefix.AsSpan(prefixLength));
+            prefixLength += copy;
+            totalBytes += bytes.Length;
+        }
+
+        public void Complete()
+        {
+            if (totalBytes <= 0)
+            {
+                throw new InvalidDataException("The audio stream did not contain media bytes.");
+            }
+
+            if (ContentType.Equals("audio/mpeg", StringComparison.OrdinalIgnoreCase) &&
+                (prefixLength < 2 || prefix[0] != 0xFF || (prefix[1] & 0xE0) != 0xE0))
+            {
+                throw new InvalidDataException("The audio/mpeg stream does not start with an MP3 frame.");
+            }
+
+            if ((ContentType.Equals("audio/vnd.dlna.adts", StringComparison.OrdinalIgnoreCase) ||
+                 ContentType.Equals("audio/aac", StringComparison.OrdinalIgnoreCase)) &&
+                (prefixLength < 2 || prefix[0] != 0xFF || (prefix[1] & 0xF6) != 0xF0))
+            {
+                throw new InvalidDataException("The AAC stream does not start with an ADTS frame.");
+            }
+
+            if (ContentType.Equals("audio/L16", StringComparison.OrdinalIgnoreCase) &&
+                totalBytes % 2 != 0)
+            {
+                throw new InvalidDataException("The audio/L16 stream is not 16-bit sample aligned.");
+            }
+        }
+    }
+
     private static void ValidateOptions(MockRendererOptions value)
     {
         if ((!IPAddress.IsLoopback(value.ListenAddress) && !value.AllowNonLoopback) ||
@@ -644,6 +727,8 @@ public sealed class MockRendererHost(MockRendererOptions options) : IAsyncDispos
             value.MaximumPullBytes is < 188 or > 512 * 1024 * 1024 ||
             value.Udn.Length is 0 or > 512 ||
             value.FriendlyName.Length is 0 or > 1024 ||
+            string.IsNullOrWhiteSpace(value.SinkProtocolInfo) ||
+            value.SinkProtocolInfo.Length > 16 * 1024 ||
             value.RequestHeaders.Count > 32 ||
             value.RequestHeaders.Any(pair =>
                 pair.Key.Length is 0 or > 128 || pair.Value.Length > 4096 ||

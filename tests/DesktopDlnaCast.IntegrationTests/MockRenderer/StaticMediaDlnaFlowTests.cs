@@ -381,6 +381,55 @@ public sealed class StaticMediaDlnaFlowTests
         await publisher.StopAsync(CancellationToken.None);
     }
 
+    [Fact]
+    public async Task ContinuousPublisherFeedsDeclaredMp3AudioToMockRenderer()
+    {
+        await using MockRendererHost mockRenderer = new(new()
+        {
+            MaximumPullBytes = 1024,
+            RequireAudio = true,
+            RequireVideo = false,
+        });
+        await mockRenderer.StartAsync(CancellationToken.None);
+        using HttpClient httpClient = CreateUpnpHttpClient();
+        (AvTransportClient client, UpnpServiceDescription service) =
+            await CreateTransportClientAsync(mockRenderer, httpClient);
+        await using ContinuousMpegTsPublisher publisher = CreateLivePublisher();
+        StreamPublication publication = await publisher.StartAsync(
+            CreateRenderer(mockRenderer),
+            new LiveStreamPublishOptions(AudioProfile: AudioCastProfile.Mp3),
+            CancellationToken.None);
+        byte[] frame = new byte[256];
+        frame[0] = 0xFF;
+        frame[1] = 0xFB;
+        await publisher.PublishAsync(
+            new(frame, TimeSpan.Zero, StartsAtRandomAccessPoint: true),
+            CancellationToken.None);
+        await client.SetTransportUriAsync(
+            service,
+            publication.PublicUri,
+            string.Empty,
+            CancellationToken.None);
+
+        await client.PlayAsync(service, CancellationToken.None);
+        await WaitForEventAsync(mockRenderer.Events, "FirstMediaByteReceived", TimeSpan.FromSeconds(3));
+        for (int index = 1; index < 4; index++)
+        {
+            await publisher.PublishAsync(
+                new(frame, TimeSpan.FromMilliseconds(index * 24), true),
+                CancellationToken.None);
+        }
+
+        await client.StopAsync(service, CancellationToken.None);
+        await WaitForEventAsync(mockRenderer.Events, "MediaValidationSucceeded", TimeSpan.FromSeconds(3));
+        Assert.Contains(
+            mockRenderer.Events.Snapshot(),
+            item => item.Type == "MediaValidationSucceeded" &&
+                item.Data.GetValueOrDefault("audioFormat") == "audio/mpeg");
+
+        await publisher.StopAsync(CancellationToken.None);
+    }
+
     private static async Task<(AvTransportClient Client, UpnpServiceDescription Service)>
         CreateTransportClientAsync(MockRendererHost mockRenderer, HttpClient httpClient)
     {

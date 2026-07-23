@@ -56,4 +56,5 @@
   <data name="AudioDisabled" xml:space="preserve"><value>chỉ video</value></data>
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Âm lượng</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Chỉ âm thanh</value></data>
 </root>

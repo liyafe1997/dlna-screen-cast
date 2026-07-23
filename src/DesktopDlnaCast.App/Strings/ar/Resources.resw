@@ -56,4 +56,5 @@
   <data name="AudioDisabled" xml:space="preserve"><value>فيديو فقط</value></data>
   <data name="LayoutDirection" xml:space="preserve"><value>RTL</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>مستوى الصوت</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Audio only</value></data>
 </root>

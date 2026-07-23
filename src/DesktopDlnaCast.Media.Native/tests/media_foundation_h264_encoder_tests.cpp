@@ -361,6 +361,7 @@ void run_media_foundation_h264_encoder_tests()
 
     std::vector<ddc::media_packet> transport_stream_packets;
     ddc::mpeg_ts_muxer muxer(
+        true,
         width,
         height,
         500'000,

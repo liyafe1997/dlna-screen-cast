@@ -26,7 +26,7 @@ The renderer's exact service type is authoritative when creating `SOAPAction`. T
 
 SOAP responses are capped at 256 KiB. AVTransport implements `SetAVTransportURI`, `Play` with speed `1`, `Stop`, and `GetTransportInfo`. ConnectionManager implements `GetProtocolInfo`; its sink list is advisory rather than an absolute compatibility gate.
 
-SOAP envelopes and DIDL-Lite are written with `XmlWriter`. The DIDL resource protocol info matches the actual `video/mpeg` output. A renderer UPnP error 714 while setting non-empty metadata allows one retry with an empty `CurrentURIMetaData`; no other automatic loop is allowed.
+SOAP envelopes and DIDL-Lite are written with `XmlWriter`. Every resource keeps its encoded bytes, URL extension, HTTP `Content-Type`, DIDL class, and `res@protocolInfo` consistent. A renderer UPnP error 714 while setting non-empty metadata allows one retry with an empty `CurrentURIMetaData`.
 
 ## Static test playback sequence
 
@@ -44,7 +44,18 @@ The HTTP endpoint is `GET|HEAD /stream/{token}/test.ts` with `Content-Type: vide
 
 The Milestone 2 managed endpoint is `GET|HEAD /stream/{token}/live.ts`. GET has no fixed `Content-Length`; Kestrel streams and flushes bounded media chunks until cancellation. HEAD returns the same MIME/cache headers without subscribing. Unsupported Range input is treated as a fresh `200 OK` live request.
 
-ABI v4 live MPEG-TS carries H.264 video and, when enabled, AAC-LC stereo at 48 kHz. The muxer writes both streams against one monotonic session clock, repeats PAT/PMT through the transport stream, and keeps keyframe-start chunks self-contained for newly connected renderer clients. If WASAPI or AAC initialization fails, the session remains available as video-only and reports that choice in encoder diagnostics. The optional local-playback mute controls the captured Windows render endpoint, not the DLNA payload: loopback remains the AAC source while the physical endpoint is muted. This option is invalid for video-only sessions and is restored during stop, cancellation, device changes, and error cleanup.
+ABI v6 live MPEG-TS carries H.264 video and, when enabled, AAC-LC stereo at 48 kHz. Pure-audio playback first parses the renderer's ordered `SinkProtocolInfo` entries, then constructs a finite candidate list. Explicitly advertised MP3, AAC ADTS, and LPCM profiles retain receiver order; unadvertised fallbacks are appended as MP3, AAC ADTS, LPCM, and finally AAC-only MPEG-TS. Each failed media/HTTP/transport-confirmation attempt is fully stopped and disposed before the next profile starts.
+
+Audio-native endpoints use `object.item.audioItem.musicTrack` and omit fake duration and size:
+
+| Profile | Endpoint | HTTP MIME | `protocolInfo` |
+| --- | --- | --- | --- |
+| MP3 | `live.mp3` | `audio/mpeg` | `http-get:*:audio/mpeg:DLNA.ORG_PN=MP3` |
+| AAC ADTS | `live.aac` | `audio/vnd.dlna.adts` | `http-get:*:audio/vnd.dlna.adts:DLNA.ORG_PN=AAC_ADTS` |
+| LPCM | `live.l16` | `audio/L16;rate=48000;channels=2` | matching LPCM profile and parameters |
+| TS compatibility | `live.ts` | `video/mpeg` | `http-get:*:video/mpeg:*` |
+
+Continuous responses have no fixed content length and return `transferMode.dlna.org: Streaming`. If WASAPI or audio encoding initialization fails, a video session remains available as video-only and reports that choice; a pure-audio attempt advances to the next finite candidate instead of publishing mislabeled or empty media.
 
 The in-memory buffer is bounded simultaneously by bytes, media duration, and per-client queued chunks. Each start-point chunk is contractually required to begin with everything a new decoder needs: PAT/PMT, codec configuration, and an IDR access unit. A new GET snapshots only from the newest retained start point. A subscriber that cannot keep up is disconnected when its bounded queue fills; it cannot force global memory growth.
 

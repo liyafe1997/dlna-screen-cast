@@ -88,6 +88,27 @@ namespace ddc
             next_output_timestamp_100ns_ = 0;
             video_processor_backend_ = video_processor_backend::undecided;
             video_processor_fallback_reason_.clear();
+            if (config_.audio_only != 0)
+            {
+                bool started{};
+                {
+                    std::scoped_lock lock(mutex_);
+                    if (state_ == state::starting)
+                    {
+                        state_ = state::running;
+                        started = true;
+                    }
+                }
+
+                if (!started)
+                {
+                    cleanup_pipeline();
+                    return DDC_E_MEDIA_PIPELINE;
+                }
+
+                return DDC_OK;
+            }
+
             video_processor_ = std::make_unique<d3d11_video_processor>(
                 config_.width,
                 config_.height,
@@ -252,47 +273,77 @@ namespace ddc
 
     void media_session::create_encoder_and_muxer()
     {
-        video_encoder_ = std::make_unique<media_foundation_h264_encoder>(
-            config_.width,
-            config_.height,
-            config_.frame_rate,
-            config_.video_bitrate,
-            config_.gop_frames,
-            [this](h264_encoded_sample sample)
-            {
-                if (!muxer_)
-                {
-                    throw std::logic_error("The MPEG-TS muxer is not initialized.");
-                }
-
-                muxer_->write_video({
-                    std::span<const std::uint8_t>(sample.bytes),
-                    sample.timestamp_100ns,
-                    sample.duration_100ns,
-                    sample.key_frame,
-                });
-                std::scoped_lock lock(mutex_);
-                ++statistics_.encoded_video_frames;
-            });
-        const auto& accepted = video_encoder_->diagnostics();
         ddc_encoder_diagnostics diagnostics{};
         diagnostics.struct_size = static_cast<std::int32_t>(sizeof(diagnostics));
         diagnostics.abi_version = DDC_ABI_VERSION;
-        diagnostics.is_hardware = accepted.is_hardware ? 1 : 0;
-        diagnostics.accepted_width = accepted.accepted_width;
-        diagnostics.accepted_height = accepted.accepted_height;
-        diagnostics.frame_rate_numerator = accepted.frame_rate_numerator;
-        diagnostics.frame_rate_denominator = accepted.frame_rate_denominator;
-        diagnostics.accepted_video_bitrate = accepted.accepted_video_bitrate;
-        diagnostics.h264_profile = accepted.h264_profile;
-        diagnostics.accepted_gop_frames = accepted.accepted_gop_frames;
-        diagnostics.accepted_b_frame_count = accepted.accepted_b_frame_count;
-        diagnostics.video_processor_backend = video_processor_backend_ == video_processor_backend::d3d11
-            ? DDC_VIDEO_PROCESSOR_D3D11
-            : DDC_VIDEO_PROCESSOR_LIBSWSCALE;
+        if (config_.audio_only == 0)
+        {
+            video_encoder_ = std::make_unique<media_foundation_h264_encoder>(
+                config_.width,
+                config_.height,
+                config_.frame_rate,
+                config_.video_bitrate,
+                config_.gop_frames,
+                [this](h264_encoded_sample sample)
+                {
+                    if (!muxer_)
+                    {
+                        throw std::logic_error("The MPEG-TS muxer is not initialized.");
+                    }
+
+                    muxer_->write_video({
+                        std::span<const std::uint8_t>(sample.bytes),
+                        sample.timestamp_100ns,
+                        sample.duration_100ns,
+                        sample.key_frame,
+                    });
+                    std::scoped_lock lock(mutex_);
+                    ++statistics_.encoded_video_frames;
+                });
+            const auto& accepted = video_encoder_->diagnostics();
+            diagnostics.is_hardware = accepted.is_hardware ? 1 : 0;
+            diagnostics.accepted_width = accepted.accepted_width;
+            diagnostics.accepted_height = accepted.accepted_height;
+            diagnostics.frame_rate_numerator = accepted.frame_rate_numerator;
+            diagnostics.frame_rate_denominator = accepted.frame_rate_denominator;
+            diagnostics.accepted_video_bitrate = accepted.accepted_video_bitrate;
+            diagnostics.h264_profile = accepted.h264_profile;
+            diagnostics.accepted_gop_frames = accepted.accepted_gop_frames;
+            diagnostics.accepted_b_frame_count = accepted.accepted_b_frame_count;
+            diagnostics.video_processor_backend =
+                video_processor_backend_ == video_processor_backend::d3d11
+                    ? DDC_VIDEO_PROCESSOR_D3D11
+                    : DDC_VIDEO_PROCESSOR_LIBSWSCALE;
+        }
 
         std::string audio_fallback_reason;
-        if (config_.include_audio != 0)
+        if (config_.include_audio != 0 &&
+            config_.audio_only != 0 &&
+            config_.audio_profile == DDC_AUDIO_PROFILE_MP3)
+        {
+            mp3_encoder_ = std::make_unique<media_foundation_mp3_encoder>(
+                config_.audio_bitrate,
+                [this](media_packet packet)
+                {
+                    static_cast<void>(output_packets_.push(std::move(packet)));
+                    std::scoped_lock lock(mutex_);
+                    ++statistics_.encoded_audio_frames;
+                });
+            diagnostics.audio_enabled = 1;
+            diagnostics.accepted_audio_bitrate = mp3_encoder_->accepted_bitrate();
+            diagnostics.audio_sample_rate = media_foundation_mp3_encoder::sample_rate;
+            diagnostics.audio_channels = media_foundation_mp3_encoder::channels;
+        }
+        else if (config_.include_audio != 0 &&
+                 config_.audio_only != 0 &&
+                 config_.audio_profile == DDC_AUDIO_PROFILE_LPCM)
+        {
+            diagnostics.audio_enabled = 1;
+            diagnostics.accepted_audio_bitrate = 1'536'000;
+            diagnostics.audio_sample_rate = wasapi_loopback_capture::sample_rate;
+            diagnostics.audio_channels = wasapi_loopback_capture::channels;
+        }
+        else if (config_.include_audio != 0)
         {
             try
             {
@@ -300,16 +351,29 @@ namespace ddc
                     config_.audio_bitrate,
                     [this](aac_encoded_sample sample)
                     {
-                        if (!muxer_)
+                        if (config_.audio_only != 0 &&
+                            config_.audio_profile == DDC_AUDIO_PROFILE_AAC_ADTS)
                         {
-                            throw std::logic_error("The MPEG-TS muxer is not initialized.");
-                        }
+                            if (!adts_writer_)
+                            {
+                                throw std::logic_error("The ADTS stream writer is not initialized.");
+                            }
 
-                        muxer_->write_audio({
-                            std::span<const std::uint8_t>(sample.bytes),
-                            sample.timestamp_100ns,
-                            sample.duration_100ns,
-                        });
+                            adts_writer_->write(std::move(sample));
+                        }
+                        else
+                        {
+                            if (!muxer_)
+                            {
+                                throw std::logic_error("The MPEG-TS muxer is not initialized.");
+                            }
+
+                            muxer_->write_audio({
+                                std::span<const std::uint8_t>(sample.bytes),
+                                sample.timestamp_100ns,
+                                sample.duration_100ns,
+                            });
+                        }
                         std::scoped_lock lock(mutex_);
                         ++statistics_.encoded_audio_frames;
                     });
@@ -320,6 +384,11 @@ namespace ddc
             }
             catch (...)
             {
+                if (config_.audio_only != 0)
+                {
+                    throw;
+                }
+
                 audio_fallback_reason = describe_exception(std::current_exception());
                 constexpr std::size_t maximum_audio_reason_bytes = 240;
                 if (audio_fallback_reason.size() > maximum_audio_reason_bytes)
@@ -331,21 +400,81 @@ namespace ddc
             }
         }
 
-        muxer_ = std::make_unique<mpeg_ts_muxer>(
-            config_.width,
-            config_.height,
-            config_.video_bitrate,
-            std::span<const std::uint8_t>(video_encoder_->codec_configuration()),
-            audio_encoder_ ? audio_encoder_->accepted_bitrate() : 0,
-            audio_encoder_
-                ? std::span<const std::uint8_t>(audio_encoder_->codec_configuration())
-                : std::span<const std::uint8_t>{},
-            [this](media_packet packet)
-            {
-                static_cast<void>(output_packets_.push(std::move(packet)));
-            });
+        if (mp3_encoder_ ||
+            (config_.audio_only != 0 &&
+             config_.audio_profile == DDC_AUDIO_PROFILE_LPCM))
+        {
+            // MP3 packets are already a self-framing HTTP audio stream.
+        }
+        else if (config_.audio_only != 0 &&
+            config_.audio_profile == DDC_AUDIO_PROFILE_AAC_ADTS)
+        {
+            adts_writer_ = std::make_unique<adts_stream_writer>(
+                [this](media_packet packet)
+                {
+                    static_cast<void>(output_packets_.push(std::move(packet)));
+                });
+        }
+        else
+        {
+            muxer_ = std::make_unique<mpeg_ts_muxer>(
+                config_.audio_only == 0,
+                config_.width,
+                config_.height,
+                config_.video_bitrate,
+                video_encoder_
+                    ? std::span<const std::uint8_t>(video_encoder_->codec_configuration())
+                    : std::span<const std::uint8_t>{},
+                audio_encoder_ ? audio_encoder_->accepted_bitrate() : 0,
+                audio_encoder_
+                    ? std::span<const std::uint8_t>(audio_encoder_->codec_configuration())
+                    : std::span<const std::uint8_t>{},
+                [this](media_packet packet)
+                {
+                    static_cast<void>(output_packets_.push(std::move(packet)));
+                });
+        }
 
-        if (audio_encoder_)
+        {
+            std::scoped_lock lock(mutex_);
+            encoder_diagnostics_ = diagnostics;
+            encoder_name_ = video_encoder_ ? video_encoder_->encoder_name() : "Audio-only";
+            if (video_encoder_ && video_processor_backend_ == video_processor_backend::software)
+            {
+                encoder_name_ += "; libswscale pixel fallback: " +
+                    video_processor_fallback_reason_;
+            }
+
+            if (audio_encoder_)
+            {
+                encoder_name_ += "; " + audio_encoder_->encoder_name();
+            }
+            else if (mp3_encoder_)
+            {
+                encoder_name_ += "; " + mp3_encoder_->encoder_name();
+            }
+            else if (config_.audio_only != 0 &&
+                     config_.audio_profile == DDC_AUDIO_PROFILE_LPCM)
+            {
+                encoder_name_ += "; LPCM L16 48 kHz stereo";
+            }
+            else if (config_.include_audio != 0)
+            {
+                encoder_name_ += "; audio disabled after AAC fallback: " + audio_fallback_reason;
+            }
+        }
+
+        if ((audio_encoder_ || mp3_encoder_) && config_.audio_only == 0)
+        {
+            start_audio_capture();
+        }
+    }
+
+    void media_session::start_audio_capture()
+    {
+        if (audio_encoder_ || mp3_encoder_ ||
+            (config_.audio_only != 0 &&
+             config_.audio_profile == DDC_AUDIO_PROFILE_LPCM))
         {
             audio_capture_ = std::make_unique<wasapi_loopback_capture>();
             audio_capture_->start(
@@ -353,7 +482,36 @@ namespace ddc
                 config_.mute_local_playback != 0,
                 [this](std::vector<std::int16_t> pcm, const std::int64_t start_sample)
                 {
-                    audio_encoder_->encode(std::span<const std::int16_t>(pcm), start_sample);
+                    if (mp3_encoder_)
+                    {
+                        mp3_encoder_->encode(std::span<const std::int16_t>(pcm), start_sample);
+                    }
+                    else if (config_.audio_only != 0 &&
+                             config_.audio_profile == DDC_AUDIO_PROFILE_LPCM)
+                    {
+                        std::vector<std::uint8_t> bytes(pcm.size() * sizeof(std::int16_t));
+                        for (std::size_t index = 0; index < pcm.size(); ++index)
+                        {
+                            const auto sample = static_cast<std::uint16_t>(pcm[index]);
+                            bytes[index * 2] = static_cast<std::uint8_t>(sample >> 8);
+                            bytes[index * 2 + 1] = static_cast<std::uint8_t>(sample & 0xFF);
+                        }
+
+                        const std::int64_t timestamp_100ns =
+                            start_sample * 10'000'000LL /
+                            wasapi_loopback_capture::sample_rate;
+                        static_cast<void>(output_packets_.push({
+                            std::move(bytes),
+                            timestamp_100ns,
+                            DDC_PACKET_FLAG_RANDOM_ACCESS_POINT,
+                        }));
+                        std::scoped_lock lock(mutex_);
+                        ++statistics_.encoded_audio_frames;
+                    }
+                    else
+                    {
+                        audio_encoder_->encode(std::span<const std::int16_t>(pcm), start_sample);
+                    }
                 },
                 [this]
                 {
@@ -384,26 +542,6 @@ namespace ddc
                 {
                     record_pipeline_failure(std::move(failure));
                 });
-        }
-
-        {
-            std::scoped_lock lock(mutex_);
-            encoder_diagnostics_ = diagnostics;
-            encoder_name_ = video_encoder_->encoder_name();
-            if (video_processor_backend_ == video_processor_backend::software)
-            {
-                encoder_name_ += "; libswscale pixel fallback: " +
-                    video_processor_fallback_reason_;
-            }
-
-            if (audio_encoder_)
-            {
-                encoder_name_ += "; " + audio_encoder_->encoder_name();
-            }
-            else if (config_.include_audio != 0)
-            {
-                encoder_name_ += "; audio disabled after AAC fallback: " + audio_fallback_reason;
-            }
         }
     }
 
@@ -444,6 +582,22 @@ namespace ddc
         *timestamp_100ns = 0;
         *packet_flags = 0;
         std::scoped_lock read_lock(read_mutex_);
+        if (config_.audio_only != 0 && !audio_start_thread_.joinable())
+        {
+            audio_start_thread_ = std::thread([this]
+            {
+                try
+                {
+                    create_encoder_and_muxer();
+                    start_audio_capture();
+                }
+                catch (...)
+                {
+                    record_pipeline_failure(std::current_exception());
+                }
+            });
+        }
+
         media_packet packet;
         {
             std::scoped_lock lock(mutex_);
@@ -605,6 +759,11 @@ namespace ddc
 
     void media_session::cleanup_pipeline() noexcept
     {
+        if (audio_start_thread_.joinable())
+        {
+            audio_start_thread_.join();
+        }
+
         if (capture_)
         {
             capture_->stop();
@@ -639,6 +798,18 @@ namespace ddc
             }
         }
 
+        if (mp3_encoder_)
+        {
+            try
+            {
+                mp3_encoder_->drain();
+            }
+            catch (...)
+            {
+                record_pipeline_failure(std::current_exception());
+            }
+        }
+
         if (muxer_)
         {
             try
@@ -653,7 +824,9 @@ namespace ddc
 
         capture_.reset();
         audio_capture_.reset();
+        adts_writer_.reset();
         audio_encoder_.reset();
+        mp3_encoder_.reset();
         video_encoder_.reset();
         muxer_.reset();
         video_processor_.reset();
@@ -710,7 +883,7 @@ namespace ddc
             config->abi_version != DDC_ABI_VERSION ||
             (config->source_kind != DDC_CAPTURE_SOURCE_DISPLAY &&
              config->source_kind != DDC_CAPTURE_SOURCE_WINDOW) ||
-            config->source_handle == 0 ||
+            (config->audio_only == 0 && config->source_handle == 0) ||
             config->width < 2 || config->width > 7680 || (config->width & 1) != 0 ||
             config->height < 2 || config->height > 4320 || (config->height & 1) != 0 ||
             config->frame_rate < 1 || config->frame_rate > 30 ||
@@ -719,6 +892,16 @@ namespace ddc
             config->include_cursor < 0 || config->include_cursor > 1 ||
             config->include_audio < 0 || config->include_audio > 1 ||
             config->mute_local_playback < 0 || config->mute_local_playback > 1 ||
+            config->audio_only < 0 || config->audio_only > 1 ||
+            config->audio_profile < DDC_AUDIO_PROFILE_NONE ||
+            config->audio_profile > DDC_AUDIO_PROFILE_AAC_MPEG_TS ||
+            (config->audio_only != 0 && config->include_audio == 0) ||
+            (config->audio_only != 0 &&
+             config->audio_profile != DDC_AUDIO_PROFILE_AAC_ADTS &&
+             config->audio_profile != DDC_AUDIO_PROFILE_MP3 &&
+             config->audio_profile != DDC_AUDIO_PROFILE_LPCM &&
+             config->audio_profile != DDC_AUDIO_PROFILE_AAC_MPEG_TS) ||
+            (config->audio_only == 0 && config->audio_profile != DDC_AUDIO_PROFILE_NONE) ||
             (config->mute_local_playback != 0 && config->include_audio == 0) ||
             config->audio_bitrate < 32'000 || config->audio_bitrate > 512'000 ||
             config->stream_mode != mpeg_ts_continuous_mode)

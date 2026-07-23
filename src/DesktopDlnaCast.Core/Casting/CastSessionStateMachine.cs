@@ -11,10 +11,14 @@ public sealed class CastSessionStateMachine(ILogger<CastSessionStateMachine> log
             [CastSessionState.Discovering] = [CastSessionState.ProbingRenderer],
             [CastSessionState.ProbingRenderer] = [CastSessionState.StartingMediaPipeline],
             [CastSessionState.StartingMediaPipeline] = [CastSessionState.WaitingForKeyframe],
-            [CastSessionState.WaitingForKeyframe] = [CastSessionState.Publishing],
-            [CastSessionState.Publishing] = [CastSessionState.SendingTransportUri],
-            [CastSessionState.SendingTransportUri] = [CastSessionState.StartingPlayback],
-            [CastSessionState.StartingPlayback] = [CastSessionState.Playing],
+            [CastSessionState.WaitingForKeyframe] =
+                [CastSessionState.Publishing, CastSessionState.StartingMediaPipeline],
+            [CastSessionState.Publishing] =
+                [CastSessionState.SendingTransportUri, CastSessionState.StartingMediaPipeline],
+            [CastSessionState.SendingTransportUri] =
+                [CastSessionState.StartingPlayback, CastSessionState.StartingMediaPipeline],
+            [CastSessionState.StartingPlayback] =
+                [CastSessionState.Playing, CastSessionState.StartingMediaPipeline],
             [CastSessionState.Playing] = [],
             [CastSessionState.Stopping] = [CastSessionState.Idle],
             [CastSessionState.Faulted] = [CastSessionState.Stopping],

@@ -1,11 +1,13 @@
 #pragma once
 
 #include "ddc_media.h"
+#include "adts_stream_writer.h"
 #include "bounded_packet_queue.h"
 #include "d3d11_video_processor.h"
 #include "graphics_capture_source.h"
 #include "media_foundation_aac_encoder.h"
 #include "media_foundation_h264_encoder.h"
+#include "media_foundation_mp3_encoder.h"
 #include "mpeg_ts_muxer.h"
 #include "software_video_processor.h"
 #include "wasapi_loopback_capture.h"
@@ -15,6 +17,7 @@
 #include <mutex>
 #include <optional>
 #include <string>
+#include <thread>
 
 namespace ddc
 {
@@ -71,6 +74,7 @@ namespace ddc
             std::int64_t timestamp_100ns,
             bool is_repeated_frame);
         void create_encoder_and_muxer();
+        void start_audio_capture();
         void record_pipeline_failure(std::exception_ptr failure) noexcept;
         void cleanup_pipeline() noexcept;
         void set_error_locked(std::string message);
@@ -92,7 +96,10 @@ namespace ddc
         std::unique_ptr<software_video_processor> software_video_processor_;
         std::unique_ptr<media_foundation_h264_encoder> video_encoder_;
         std::unique_ptr<media_foundation_aac_encoder> audio_encoder_;
+        std::unique_ptr<media_foundation_mp3_encoder> mp3_encoder_;
         std::unique_ptr<wasapi_loopback_capture> audio_capture_;
+        std::unique_ptr<adts_stream_writer> adts_writer_;
+        std::thread audio_start_thread_;
         std::unique_ptr<mpeg_ts_muxer> muxer_;
         std::int64_t session_start_timestamp_100ns_{};
         std::int64_t next_output_timestamp_100ns_{};

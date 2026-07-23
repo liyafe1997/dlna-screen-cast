@@ -56,4 +56,5 @@
   <data name="AudioDisabled" xml:space="preserve"><value>yalnızca video</value></data>
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Ses düzeyi</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Yalnızca ses</value></data>
 </root>

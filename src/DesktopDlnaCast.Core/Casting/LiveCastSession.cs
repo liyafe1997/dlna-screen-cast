@@ -49,6 +49,11 @@ public sealed class LiveCastSession(
             LogLevel.Information,
             new EventId(326, nameof(LogRendererDisconnected)),
             "Renderer disconnect detected in session {CorrelationId} ({StopReason}); stopping the cast automatically");
+    private static readonly Action<ILogger, Guid, AudioCastProfile, Exception?> LogAudioProfileFallback =
+        LoggerMessage.Define<Guid, AudioCastProfile>(
+            LogLevel.Warning,
+            new EventId(327, nameof(LogAudioProfileFallback)),
+            "Audio profile {AudioProfile} failed in session {CorrelationId}; trying the next finite fallback");
 
     private readonly SemaphoreSlim lifecycle = new(1, 1);
     private readonly object cancellationGate = new();
@@ -111,51 +116,97 @@ public sealed class LiveCastSession(
             {
                 stateMachine.Transition(CastSessionState.Discovering);
                 stateMachine.Transition(CastSessionState.ProbingRenderer);
-                await capabilityProbe.GetSinkProtocolInfoAsync(renderer, startupToken).ConfigureAwait(false);
-                stateMachine.Transition(CastSessionState.StartingMediaPipeline);
-                mediaSession = await mediaSessionFactory.CreateAsync(configuration, startupToken)
-                    .ConfigureAwait(false);
-                await mediaSession.StartAsync(startupToken).ConfigureAwait(false);
-                StreamPublication publication = await streamPublisher.StartAsync(
-                    renderer,
-                    new LiveStreamPublishOptions(configuration.StartAtLiveEdge),
-                    startupToken).ConfigureAwait(false);
-                pumpCancellation = new CancellationTokenSource();
-                pumpTask = PumpMediaAsync(mediaSession, pumpCancellation.Token);
-                stateMachine.Transition(CastSessionState.WaitingForKeyframe);
-                Task startPoint = streamPublisher.WaitForStartPointAsync(
-                    options.StartPointTimeout,
-                    startupToken);
-                Task first = await Task.WhenAny(startPoint, pumpTask).ConfigureAwait(false);
-                if (ReferenceEquals(first, pumpTask))
+                IReadOnlyList<string> sinkProtocolInfo =
+                    await capabilityProbe.GetSinkProtocolInfoAsync(renderer, startupToken).ConfigureAwait(false);
+                IReadOnlyList<AudioCastProfile> profiles = configuration.AudioOnly
+                    ? AudioCastProfileSelector.SelectCandidates(sinkProtocolInfo)
+                    : [AudioCastProfile.None];
+                Exception? finalAttemptFailure = null;
+                for (int attempt = 0; attempt < profiles.Count; ++attempt)
                 {
-                    await pumpTask.ConfigureAwait(false);
-                    throw new InvalidDataException("The media pipeline ended before publishing a start point.");
+                    AudioCastProfile profile = profiles[attempt];
+                    MediaCaptureConfiguration effectiveConfiguration =
+                        configuration with { AudioProfile = profile };
+                    try
+                    {
+                        stateMachine.Transition(CastSessionState.StartingMediaPipeline);
+                        mediaSession = await mediaSessionFactory.CreateAsync(
+                            effectiveConfiguration,
+                            startupToken).ConfigureAwait(false);
+                        await mediaSession.StartAsync(startupToken).ConfigureAwait(false);
+                        StreamPublication publication = await streamPublisher.StartAsync(
+                            renderer,
+                            new LiveStreamPublishOptions(
+                                effectiveConfiguration.StartAtLiveEdge,
+                                effectiveConfiguration.AudioProfile),
+                            startupToken).ConfigureAwait(false);
+                        pumpCancellation = new CancellationTokenSource();
+                        pumpTask = PumpMediaAsync(mediaSession, pumpCancellation.Token);
+                        stateMachine.Transition(CastSessionState.WaitingForKeyframe);
+                        Task startPoint = streamPublisher.WaitForStartPointAsync(
+                            options.StartPointTimeout,
+                            startupToken);
+                        Task first = await Task.WhenAny(startPoint, pumpTask).ConfigureAwait(false);
+                        if (ReferenceEquals(first, pumpTask))
+                        {
+                            await pumpTask.ConfigureAwait(false);
+                            throw new InvalidDataException(
+                                "The media pipeline ended before publishing a start point.");
+                        }
+
+                        await startPoint.ConfigureAwait(false);
+                        EncoderDiagnostics = mediaSession.GetEncoderDiagnostics();
+                        stateMachine.Transition(CastSessionState.Publishing);
+                        stateMachine.Transition(CastSessionState.SendingTransportUri);
+                        string metadata = effectiveConfiguration.AudioOnly
+                            ? metadataFactory.CreateAudioItem("Windows System Audio", publication)
+                            : metadataFactory.CreateVideoItem("Windows Desktop", publication);
+                        await SetTransportUriWithFallbackAsync(
+                            renderer,
+                            publication,
+                            metadata,
+                            startupToken).ConfigureAwait(false);
+                        stateMachine.Transition(CastSessionState.StartingPlayback);
+                        await rendererClient.PlayAsync(renderer, startupToken).ConfigureAwait(false);
+
+                        Task confirmations = Task.WhenAll(
+                            streamPublisher.WaitForClientRequestAsync(
+                                options.PlaybackConfirmationTimeout,
+                                startupToken),
+                            WaitForPlayingAsync(renderer, startupToken));
+                        Task confirmationWinner =
+                            await Task.WhenAny(confirmations, pumpTask).ConfigureAwait(false);
+                        if (ReferenceEquals(confirmationWinner, pumpTask))
+                        {
+                            await pumpTask.ConfigureAwait(false);
+                            throw new InvalidDataException(
+                                "The media pipeline ended during playback startup.");
+                        }
+
+                        await confirmations.ConfigureAwait(false);
+                        finalAttemptFailure = null;
+                        break;
+                    }
+                    catch (OperationCanceledException) when (startupToken.IsCancellationRequested)
+                    {
+                        throw;
+                    }
+                    catch (Exception exception) when (
+                        exception is not OutOfMemoryException &&
+                        configuration.AudioOnly &&
+                        attempt + 1 < profiles.Count)
+                    {
+                        finalAttemptFailure = exception;
+                        LogAudioProfileFallback(logger, correlationId, profile, exception);
+                        await CleanupAttemptAsync(renderer).ConfigureAwait(false);
+                    }
                 }
 
-                await startPoint.ConfigureAwait(false);
-                EncoderDiagnostics = mediaSession.GetEncoderDiagnostics();
-                stateMachine.Transition(CastSessionState.Publishing);
-                stateMachine.Transition(CastSessionState.SendingTransportUri);
-                string metadata = metadataFactory.CreateVideoItem("Windows Desktop", publication);
-                await SetTransportUriWithFallbackAsync(renderer, publication, metadata, startupToken)
-                    .ConfigureAwait(false);
-                stateMachine.Transition(CastSessionState.StartingPlayback);
-                await rendererClient.PlayAsync(renderer, startupToken).ConfigureAwait(false);
-
-                Task confirmations = Task.WhenAll(
-                    streamPublisher.WaitForClientRequestAsync(
-                        options.PlaybackConfirmationTimeout,
-                        startupToken),
-                    WaitForPlayingAsync(renderer, startupToken));
-                Task confirmationWinner = await Task.WhenAny(confirmations, pumpTask).ConfigureAwait(false);
-                if (ReferenceEquals(confirmationWinner, pumpTask))
+                if (finalAttemptFailure is not null)
                 {
-                    await pumpTask.ConfigureAwait(false);
-                    throw new InvalidDataException("The media pipeline ended during playback startup.");
+                    throw finalAttemptFailure;
                 }
 
-                await confirmations.ConfigureAwait(false);
                 stateMachine.Transition(CastSessionState.Playing);
                 monitorCancellation = new CancellationTokenSource();
                 monitorTask = MonitorRendererAsync(renderer, monitorCancellation.Token);
@@ -225,6 +276,10 @@ public sealed class LiveCastSession(
 
     private async Task PumpMediaAsync(IMediaCaptureSession source, CancellationToken cancellationToken)
     {
+        // Some producers (notably audio-only AAC) can supply packets immediately.
+        // Yield once so startup orchestration is never synchronously monopolized
+        // by a continuously-ready native read loop.
+        await Task.Yield();
         await foreach (MediaStreamChunk chunk in source.ReadAllAsync(cancellationToken).ConfigureAwait(false))
         {
             await streamPublisher.PublishAsync(chunk, cancellationToken).ConfigureAwait(false);
@@ -254,6 +309,50 @@ public sealed class LiveCastSession(
                 string.Empty,
                 cancellationToken).ConfigureAwait(false);
         }
+    }
+
+    private async Task CleanupAttemptAsync(RendererDevice renderer)
+    {
+        try
+        {
+            using CancellationTokenSource stopTimeout = new(options.CleanupTimeout);
+            await rendererClient.StopAsync(renderer, stopTimeout.Token).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is not OutOfMemoryException)
+        {
+            LogCleanupWarning(logger, correlationId, "RendererFallbackStop", exception);
+        }
+
+        streamPublisher.Complete();
+        pumpCancellation?.Cancel();
+        if (pumpTask is not null)
+        {
+            try
+            {
+                await pumpTask.ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (pumpCancellation?.IsCancellationRequested == true)
+            {
+            }
+            catch (Exception exception) when (exception is not OutOfMemoryException)
+            {
+                LogCleanupWarning(logger, correlationId, "FallbackMediaPump", exception);
+            }
+        }
+
+        using CancellationTokenSource cleanupTimeout = new(options.CleanupTimeout);
+        await streamPublisher.StopAsync(cleanupTimeout.Token).ConfigureAwait(false);
+        if (mediaSession is not null)
+        {
+            await mediaSession.StopAsync(cleanupTimeout.Token).ConfigureAwait(false);
+            await mediaSession.DisposeAsync().ConfigureAwait(false);
+        }
+
+        pumpCancellation?.Dispose();
+        pumpCancellation = null;
+        pumpTask = null;
+        mediaSession = null;
+        EncoderDiagnostics = null;
     }
 
     private async Task MonitorRendererAsync(RendererDevice renderer, CancellationToken cancellationToken)
@@ -499,7 +598,7 @@ public sealed class LiveCastSession(
 
     private static void ValidateConfiguration(MediaCaptureConfiguration value)
     {
-        if (value.SourceHandle == 0 ||
+        if ((!value.AudioOnly && value.SourceHandle == 0) ||
             value.Width is < 2 or > 7680 ||
             value.Height is < 2 or > 4320 ||
             (value.Width & 1) != 0 ||
@@ -508,7 +607,8 @@ public sealed class LiveCastSession(
             value.VideoBitrate is < 100_000 or > 100_000_000 ||
             value.GopFrames is < 1 or > 300 ||
             value.AudioBitrate is < 32_000 or > 512_000 ||
-            (value.MuteLocalPlayback && !value.IncludeAudio))
+            (value.MuteLocalPlayback && !value.IncludeAudio) ||
+            (value.AudioOnly && !value.IncludeAudio))
         {
             throw new ArgumentException("The media capture configuration is invalid.", nameof(value));
         }

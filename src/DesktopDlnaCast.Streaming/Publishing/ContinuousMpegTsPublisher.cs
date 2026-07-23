@@ -96,11 +96,16 @@ public sealed class ContinuousMpegTsPublisher(
             {
                 await app.StartAsync(cancellationToken).ConfigureAwait(false);
                 int boundPort = GetBoundPort(app);
-                Uri publicUri = new($"http://{localAddress}:{boundPort}/stream/{token.Value}/live.ts");
+                (string extension, string contentType, string protocolInfo) =
+                    GetPublicationDetails(publishOptions.AudioProfile);
+                Uri publicUri = new(
+                    $"http://{localAddress}:{boundPort}/stream/{token.Value}/live.{extension}");
                 publication = new(
                     publicUri,
-                    $"http://{localAddress}:{boundPort}/stream/{token.Redacted}/live.ts",
-                    StreamMode.MpegTsContinuous);
+                    $"http://{localAddress}:{boundPort}/stream/{token.Redacted}/live.{extension}",
+                    StreamMode.MpegTsContinuous,
+                    contentType,
+                    protocolInfo);
                 application = app;
                 LogServerBound(logger, localAddress, boundPort, null);
                 return publication;
@@ -243,7 +248,7 @@ public sealed class ContinuousMpegTsPublisher(
     {
         app.MapGet("/health", () => Results.Text("ok", "text/plain"));
         app.MapMethods(
-            "/stream/{token}/live.ts",
+            "/stream/{token}/live.{extension}",
             [HttpMethods.Get, HttpMethods.Head],
             HandleMediaRequestAsync);
     }
@@ -274,8 +279,20 @@ public sealed class ContinuousMpegTsPublisher(
             LogRendererHeader(logger, name, value, null);
         }
 
-        context.Response.ContentType = "video/mpeg";
+        StreamPublication? activePublication = publication;
+        if (activePublication is null ||
+            !string.Equals(
+                context.Request.RouteValues["extension"]?.ToString(),
+                Path.GetExtension(activePublication.PublicUri.AbsolutePath).TrimStart('.'),
+                StringComparison.OrdinalIgnoreCase))
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            return;
+        }
+
+        context.Response.ContentType = activePublication.ContentType;
         context.Response.Headers.CacheControl = "no-store, no-cache";
+        context.Response.Headers["transferMode.dlna.org"] = "Streaming";
         if (HttpMethods.IsHead(context.Request.Method))
         {
             return;
@@ -313,6 +330,23 @@ public sealed class ContinuousMpegTsPublisher(
 
     private static IPAddress? NormalizeAddress(IPAddress? address) =>
         address?.IsIPv4MappedToIPv6 == true ? address.MapToIPv4() : address;
+
+    private static (string Extension, string ContentType, string ProtocolInfo)
+        GetPublicationDetails(AudioCastProfile profile) =>
+        profile switch
+        {
+            AudioCastProfile.AacAdts =>
+                ("aac", "audio/vnd.dlna.adts",
+                    "http-get:*:audio/vnd.dlna.adts:DLNA.ORG_PN=AAC_ADTS"),
+            AudioCastProfile.Mp3 =>
+                ("mp3", "audio/mpeg", "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3"),
+            AudioCastProfile.Lpcm =>
+                ("l16", "audio/L16;rate=48000;channels=2",
+                    "http-get:*:audio/L16;rate=48000;channels=2:DLNA.ORG_PN=LPCM"),
+            AudioCastProfile.AacMpegTsCompatibility =>
+                ("ts", "video/mpeg", "http-get:*:video/mpeg:*"),
+            _ => ("ts", "video/mpeg", "http-get:*:video/mpeg:*"),
+        };
 
     private static void ValidateOptions(StreamingOptions value)
     {

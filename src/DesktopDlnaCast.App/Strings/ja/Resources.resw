@@ -56,4 +56,5 @@
   <data name="AudioDisabled" xml:space="preserve"><value>映像のみ</value></data>
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>音量</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>音声のみ</value></data>
 </root>

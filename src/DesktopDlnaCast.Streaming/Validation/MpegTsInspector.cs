@@ -66,21 +66,23 @@ public sealed class MpegTsInspector
     public void Complete(
         bool requireAudio,
         bool requireTiming = false,
-        bool allowTrailingPartialPacket = false)
+        bool allowTrailingPartialPacket = false,
+        bool requireVideo = true)
     {
         if (pendingLength != 0 && !allowTrailingPartialPacket)
         {
             throw new InvalidDataException("The MPEG-TS stream ended in the middle of a packet.");
         }
 
-        if (!PatSeen || !PmtSeen || !H264Seen || (requireAudio && !AacSeen))
+        if (!PatSeen || !PmtSeen || (requireVideo && !H264Seen) || (requireAudio && !AacSeen))
         {
             throw new InvalidDataException(
                 $"MPEG-TS program information is incomplete: PAT={PatSeen}, PMT={PmtSeen}, H264={H264Seen}, AAC={AacSeen}.");
         }
 
         if (requireTiming &&
-            (!PtsMonotonic || VideoPtsCount == 0 || IdrCount == 0 || !SpsSeen || !PpsSeen ||
+            (!PtsMonotonic ||
+             (requireVideo && (VideoPtsCount == 0 || IdrCount == 0 || !SpsSeen || !PpsSeen)) ||
              (requireAudio && AudioPtsCount == 0)))
         {
             throw new InvalidDataException(

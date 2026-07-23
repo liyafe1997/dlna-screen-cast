@@ -54,6 +54,7 @@ internal static partial class Program
                 SsdpPort = 0,
                 RequestMethod = MockRendererRequestMethod.Get,
                 RequireAudio = options.IncludeAudio,
+                RequireVideo = !options.AudioOnly,
                 MaximumPullBytes = 512 * 1024 * 1024,
                 RejectMetadata = options.RejectMetadata,
             });
@@ -103,7 +104,8 @@ internal static partial class Program
                 30,
                 options.IncludeAudio,
                 options.AudioBitrate,
-                options.MuteLocalPlayback);
+                options.MuteLocalPlayback,
+                AudioOnly: options.AudioOnly);
             ICastSession session = provider.GetRequiredService<ICastSession>();
             Stopwatch elapsed = Stopwatch.StartNew();
             int completedIterations = 0;
@@ -202,6 +204,7 @@ internal sealed record CastProbeOptions(
     int AudioBitrate,
     bool IncludeCursor,
     bool IncludeAudio,
+    bool AudioOnly,
     bool MuteLocalPlayback,
     bool RejectMetadata,
     bool ShowHelp)
@@ -211,13 +214,14 @@ internal sealed record CastProbeOptions(
         "[--iterations 1] " +
         "[--width 1280] [--height 720] [--video-bitrate 3000000] " +
         "[--audio-bitrate 128000] [--include-cursor true|false] " +
-        "[--include-audio true|false] [--mute-local-playback true|false] [--reject-metadata]";
+        "[--include-audio true|false] [--audio-only true|false] " +
+        "[--mute-local-playback true|false] [--reject-metadata]";
 
     public static CastProbeOptions Parse(IReadOnlyList<string> args)
     {
         if (args.Any(static value => value is "--help" or "-h"))
         {
-            return new(TimeSpan.Zero, 0, 0, 0, 0, 0, false, false, false, false, true);
+            return new(TimeSpan.Zero, 0, 0, 0, 0, 0, false, false, false, false, false, true);
         }
 
         int durationSeconds = 10;
@@ -228,6 +232,7 @@ internal sealed record CastProbeOptions(
         int audioBitrate = 128_000;
         bool includeCursor = true;
         bool includeAudio = true;
+        bool audioOnly = false;
         bool muteLocalPlayback = false;
         bool rejectMetadata = false;
         for (int index = 0; index < args.Count; index++)
@@ -258,6 +263,9 @@ internal sealed record CastProbeOptions(
                     break;
                 case "--include-audio":
                     includeAudio = ParseBoolean(NextValue(args, ref index, argument), argument);
+                    break;
+                case "--audio-only":
+                    audioOnly = ParseBoolean(NextValue(args, ref index, argument), argument);
                     break;
                 case "--mute-local-playback":
                     muteLocalPlayback = ParseBoolean(NextValue(args, ref index, argument), argument);
@@ -302,6 +310,10 @@ internal sealed record CastProbeOptions(
         {
             throw new ArgumentException("--mute-local-playback requires --include-audio true.");
         }
+        if (audioOnly && !includeAudio)
+        {
+            throw new ArgumentException("--audio-only requires --include-audio true.");
+        }
 
         return new(
             TimeSpan.FromSeconds(durationSeconds),
@@ -312,6 +324,7 @@ internal sealed record CastProbeOptions(
             audioBitrate,
             includeCursor,
             includeAudio,
+            audioOnly,
             muteLocalPlayback,
             rejectMetadata,
             false);

@@ -192,6 +192,66 @@ public sealed class LiveCastSessionTests
     }
 
     [Fact]
+    public async Task RejectsAudioOnlyWhenSystemAudioIsDisabled()
+    {
+        List<string> events = [];
+        FakeMediaSession media = new(events);
+        FakeLivePublisher publisher = new(events);
+        FakeRendererClient rendererClient = new(events);
+        await using LiveCastSession session = CreateSession(media, publisher, rendererClient);
+        MediaCaptureConfiguration invalid = CreateConfiguration() with
+        {
+            IncludeAudio = false,
+            AudioOnly = true,
+        };
+
+        await Assert.ThrowsAsync<ArgumentException>(() =>
+            session.StartAsync(CreateRenderer(), invalid, CancellationToken.None));
+
+        Assert.Empty(events);
+    }
+
+    [Fact]
+    public async Task AudioOnlyUsesAudioMetadata()
+    {
+        List<string> events = [];
+        FakeMediaSession media = new(events);
+        FakeLivePublisher publisher = new(events);
+        FakeRendererClient rendererClient = new(events);
+        await using LiveCastSession session = CreateSession(media, publisher, rendererClient);
+
+        await session.StartAsync(
+            CreateRenderer(),
+            CreateConfiguration() with { AudioOnly = true },
+            CancellationToken.None);
+
+        Assert.Equal("audio-metadata", rendererClient.Metadata.Single());
+    }
+
+    [Fact]
+    public async Task AudioOnlyRetriesNextFiniteProfileAfterPlaybackFailure()
+    {
+        List<string> events = [];
+        FakeMediaSession media = new(events);
+        FakeLivePublisher publisher = new(events);
+        FakeRendererClient rendererClient = new(events) { PlayFailuresRemaining = 1 };
+        await using LiveCastSession session = CreateSession(media, publisher, rendererClient);
+
+        await session.StartAsync(
+            CreateRenderer(),
+            CreateConfiguration() with { AudioOnly = true },
+            CancellationToken.None);
+
+        Assert.Equal(CastSessionState.Playing, session.State);
+        Assert.Equal(
+            [AudioCastProfile.Mp3, AudioCastProfile.AacAdts],
+            publisher.PublishedOptions.Select(option => option.AudioProfile));
+        Assert.Equal(1, publisher.StopCount);
+        Assert.Equal(1, media.StopCount);
+        Assert.Contains("RendererStop", events);
+    }
+
+    [Fact]
     public async Task RendererReportingStoppedTriggersAutomaticStopAndCleanup()
     {
         List<string> events = [];
@@ -439,12 +499,15 @@ public sealed class LiveCastSessionTests
 
         public LiveStreamPublishOptions? PublishOptions { get; private set; }
 
+        public List<LiveStreamPublishOptions> PublishedOptions { get; } = [];
+
         public Task<StreamPublication> StartAsync(
             RendererDevice renderer,
             LiveStreamPublishOptions publishOptions,
             CancellationToken cancellationToken)
         {
             PublishOptions = publishOptions;
+            PublishedOptions.Add(publishOptions);
             events.Add("PublisherStart");
             return Task.FromResult(new StreamPublication(
                 new("http://127.0.0.1/stream/redacted/live.ts"),
@@ -496,6 +559,8 @@ public sealed class LiveCastSessionTests
 
         public bool RejectFirstMetadata { get; init; }
 
+        public int PlayFailuresRemaining { get; set; }
+
         public List<string> Metadata { get; } = [];
 
         public Func<string> TransportState
@@ -522,6 +587,12 @@ public sealed class LiveCastSessionTests
         public Task PlayAsync(RendererDevice renderer, CancellationToken cancellationToken)
         {
             events.Add("Play");
+            if (PlayFailuresRemaining > 0)
+            {
+                PlayFailuresRemaining--;
+                throw new RendererCommandException("unsupported profile", 500, 716);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -553,6 +624,8 @@ public sealed class LiveCastSessionTests
     private sealed class FakeMetadataFactory : IStreamMetadataFactory
     {
         public string CreateVideoItem(string title, StreamPublication publication) => "metadata";
+
+        public string CreateAudioItem(string title, StreamPublication publication) => "audio-metadata";
     }
 }
 

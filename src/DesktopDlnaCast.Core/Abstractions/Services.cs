@@ -107,6 +107,8 @@ public interface INetworkInterfaceSelector
 public interface IStreamMetadataFactory
 {
     string CreateVideoItem(string title, StreamPublication publication);
+
+    string CreateAudioItem(string title, StreamPublication publication);
 }
 
 public interface ICompatibilityProfileStore

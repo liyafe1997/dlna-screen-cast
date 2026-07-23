@@ -75,6 +75,26 @@ public sealed class ContinuousMpegTsPublisherTests
         Assert.Equal("video/mpeg", head.Content.Headers.ContentType!.MediaType);
     }
 
+    [Fact]
+    public async Task AudioAdtsPublicationUsesMatchingUrlMimeAndProtocolInfo()
+    {
+        await using ContinuousMpegTsPublisher publisher = CreatePublisher();
+        StreamPublication publication = await publisher.StartAsync(
+            CreateRenderer(),
+            new LiveStreamPublishOptions(AudioProfile: AudioCastProfile.AacAdts),
+            CancellationToken.None);
+        using HttpClient client = new();
+        using HttpRequestMessage headRequest = new(HttpMethod.Head, publication.PublicUri);
+        using HttpResponseMessage head = await client.SendAsync(headRequest);
+
+        Assert.EndsWith("/live.aac", publication.PublicUri.AbsolutePath, StringComparison.Ordinal);
+        Assert.Equal("audio/vnd.dlna.adts", head.Content.Headers.ContentType!.MediaType);
+        Assert.Equal(
+            "http-get:*:audio/vnd.dlna.adts:DLNA.ORG_PN=AAC_ADTS",
+            publication.ProtocolInfo);
+        Assert.Equal("Streaming", head.Headers.GetValues("transferMode.dlna.org").Single());
+    }
+
     private static ContinuousMpegTsPublisher CreatePublisher() =>
         new(
             new LoopbackNetworkSelector(),

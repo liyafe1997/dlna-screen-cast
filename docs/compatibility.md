@@ -13,6 +13,7 @@ Compatibility behavior belongs in data-driven renderer profiles. Brand/model con
 | Repository MockRenderer | Current source / .NET 10 / Windows 11 ARM64 host, translated x64 target | 720p30 WGC continuous MPEG-TS, no GPU video interfaces | Pass | `libswscale` pixel conversion, Microsoft software H.264 MFT, 120-second pull, 85,616 validated TS packets, zero media-validation failures, clean Stop |
 | Repository MockRenderer | Current source / .NET 10 / Windows 11 ARM64 host, translated x64 target | Repeated software-fallback lifecycle | Pass | 20/20 `Start -> Play -> HTTP GET -> Stop` iterations in one process, 20 first-media-byte events, final session `Idle`, renderer `STOPPED` |
 | Repository MockRenderer | Current source / .NET 10 / Windows 11 ARM64 host, native arm64 target | 720p30 WGC continuous MPEG-TS with AAC, no GPU video interfaces | Pass | Fully native ARM64 binaries (app, `DesktopDlnaCast.Media.Native.dll`, FFmpeg, CRT); `libswscale` pixel conversion, Microsoft software H.264 MFT, MF AAC-LC; 10-second pull, 2,247,540 bytes / 11,955 validated TS packets, zero media-validation failures, session `Idle`, renderer `STOPPED` |
+| Repository MockRenderer | Current source / .NET 10 / Windows x64 target | Audio-only continuous MPEG-TS | Pass | WASAPI + Microsoft AAC-LC only; no WGC/H.264 requirement; 2-second pull, 49,256 bytes / 262 validated TS packets, AAC present, one renderer GET, clean `Idle`/`STOPPED` cleanup |
 
 The checked-in `test-pattern.ts` is 289,332 bytes and 2.026667 seconds long. Development-time `ffprobe` inspection reported MPEG-TS containing H.264 Main, 640x360 at 30 fps, plus AAC-LC stereo at 48 kHz. Repository tests independently require TS packet sync, PAT, PMT, H.264 stream type, and AAC stream type, so CI does not require FFmpeg.
 
@@ -22,7 +23,9 @@ MockRenderer defaults to loopback, dynamic HTTP/SSDP ports, a fixed test UDN, an
 
 ## External smoke tests
 
-No Kodi or physical renderer test has been performed. These are optional release-candidate interoperability checks and do not replace the authoritative MockRenderer path.
+Kodi on Windows was discovered on 2026-07-23 as a MediaRenderer (`UPnP/1.0 DLNADOC/1.50 Kodi`). The earlier AAC-only MPEG-TS attempt failed before Kodi requested HTTP because an audio DIDL item exposed a `video/mpeg` resource. The implementation now uses a matching native audio resource and `object.item.audioItem.musicTrack`; a post-change interactive Kodi playback run remains to be completed, so no successful Kodi compatibility claim is made yet. Kodi remains an optional third-party check and does not replace MockRenderer.
+
+The repository MockRenderer and NativeCastProbe completed a five-second production pure-audio run on 2026-07-23 using the Microsoft Media Foundation MP3 encoder: one HTTP request, first media byte observed, 81,408 bytes validated, no validation failure, and deterministic Stop/cleanup.
 
 The x64 target now has a successful real desktop capture result on the ARM64 development host through Windows x64 translation. That host exposes ordinary WGC/D3D11 capture textures but neither hardware nor WARP D3D11 video-processor interfaces, and its hardware H.264 request returns `Function not implemented`. The production selector therefore chose `libswscale` for BGRA-to-NV12 and the inbox Microsoft software H.264 MFT. A 10-second `NativeCaptureProbe` produced 289 video PTS observations and 10 IDRs; StreamProbe confirmed PAT/PMT, H.264, SPS/PPS, monotonic PTS, and a maximum IDR interval of about one second. The sensitive capture file was deleted after validation.
 

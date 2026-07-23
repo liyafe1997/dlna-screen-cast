@@ -18,8 +18,19 @@ public sealed class CastProbeOptionsTests
         Assert.Equal(128_000, options.AudioBitrate);
         Assert.True(options.IncludeCursor);
         Assert.True(options.IncludeAudio);
+        Assert.False(options.AudioOnly);
         Assert.False(options.MuteLocalPlayback);
         Assert.False(options.RejectMetadata);
+    }
+
+    [Fact]
+    public void AudioOnlyRequiresAudioAndCanBeEnabled()
+    {
+        CastProbeOptions options = CastProbeOptions.Parse(["--audio-only", "true"]);
+
+        Assert.True(options.AudioOnly);
+        Assert.Throws<ArgumentException>(() => CastProbeOptions.Parse(
+            ["--include-audio", "false", "--audio-only", "true"]));
     }
 
     [Fact]

@@ -10,6 +10,12 @@ public static class DidlLiteWriter
     private const string UpnpNamespace = "urn:schemas-upnp-org:metadata-1-0/upnp/";
 
     public static string CreateVideoItem(string title, DidlLiteResource resource)
+        => CreateItem(title, resource, "object.item.videoItem");
+
+    public static string CreateAudioItem(string title, DidlLiteResource resource)
+        => CreateItem(title, resource, "object.item.audioItem.musicTrack");
+
+    private static string CreateItem(string title, DidlLiteResource resource, string itemClass)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(title);
         ArgumentNullException.ThrowIfNull(resource);
@@ -41,7 +47,7 @@ public static class DidlLiteWriter
             writer.WriteAttributeString("parentID", "0");
             writer.WriteAttributeString("restricted", "1");
             writer.WriteElementString("dc", "title", DublinCoreNamespace, title);
-            writer.WriteElementString("upnp", "class", UpnpNamespace, "object.item.videoItem");
+            writer.WriteElementString("upnp", "class", UpnpNamespace, itemClass);
             writer.WriteStartElement("res", DidlNamespace);
             writer.WriteAttributeString("protocolInfo", resource.ProtocolInfo);
             writer.WriteString(resource.Uri.AbsoluteUri);
@@ -53,4 +59,3 @@ public static class DidlLiteWriter
         return output.ToString();
     }
 }
-

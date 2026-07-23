@@ -23,6 +23,7 @@ public sealed class JsonUserSettingsStoreTests : IDisposable
         Assert.Equal(720, settings.OutputHeight);
         Assert.True(settings.IncludeCursor);
         Assert.True(settings.IncludeAudio);
+        Assert.False(settings.AudioOnly);
         Assert.False(settings.MuteLocalPlayback);
         Assert.Null(settings.Display);
     }
@@ -37,6 +38,7 @@ public sealed class JsonUserSettingsStoreTests : IDisposable
             OutputHeight = 1080,
             IncludeCursor = false,
             IncludeAudio = true,
+            AudioOnly = true,
             MuteLocalPlayback = true,
             RendererUdn = "uuid:test-renderer",
             Display = new(2, 1920, 0, 2560, 1440, false),

@@ -9,7 +9,7 @@ public sealed class NativeAbiLayoutTests
     [Fact]
     public void AbiVersionAndResultCodesMatchNativeHeaderContract()
     {
-        Assert.Equal(4, NativeAbi.Version);
+        Assert.Equal(6, NativeAbi.Version);
         Assert.Equal(0, (int)NativeResult.Success);
         Assert.Equal(1, (int)NativeResult.Timeout);
         Assert.Equal(2, (int)NativeResult.EndOfStream);
@@ -21,12 +21,14 @@ public sealed class NativeAbiLayoutTests
     public void StreamConfigurationHasStableSequentialLayout()
     {
         Assert.Equal(LayoutKind.Sequential, typeof(NativeStreamConfiguration).StructLayoutAttribute!.Value);
-        Assert.Equal(64, Marshal.SizeOf<NativeStreamConfiguration>());
+        Assert.Equal(72, Marshal.SizeOf<NativeStreamConfiguration>());
         Assert.Equal(0, Marshal.OffsetOf<NativeStreamConfiguration>(nameof(NativeStreamConfiguration.StructSize)).ToInt32());
         Assert.Equal(16, Marshal.OffsetOf<NativeStreamConfiguration>(nameof(NativeStreamConfiguration.SourceHandle)).ToInt32());
         Assert.Equal(24, Marshal.OffsetOf<NativeStreamConfiguration>(nameof(NativeStreamConfiguration.IncludeCursor)).ToInt32());
         Assert.Equal(56, Marshal.OffsetOf<NativeStreamConfiguration>(nameof(NativeStreamConfiguration.StreamMode)).ToInt32());
         Assert.Equal(60, Marshal.OffsetOf<NativeStreamConfiguration>(nameof(NativeStreamConfiguration.MuteLocalPlayback)).ToInt32());
+        Assert.Equal(64, Marshal.OffsetOf<NativeStreamConfiguration>(nameof(NativeStreamConfiguration.AudioOnly)).ToInt32());
+        Assert.Equal(68, Marshal.OffsetOf<NativeStreamConfiguration>(nameof(NativeStreamConfiguration.AudioProfile)).ToInt32());
     }
 
     [Fact]

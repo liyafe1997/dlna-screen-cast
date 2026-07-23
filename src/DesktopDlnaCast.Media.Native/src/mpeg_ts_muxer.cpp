@@ -49,6 +49,7 @@ namespace
 namespace ddc
 {
     mpeg_ts_muxer::mpeg_ts_muxer(
+        const bool include_video,
         const std::int32_t width,
         const std::int32_t height,
         const std::int32_t bitrate,
@@ -58,8 +59,10 @@ namespace ddc
         muxed_packet_callback callback)
         : callback_(std::move(callback))
     {
-        if (width < 2 || height < 2 || (width & 1) != 0 || (height & 1) != 0 ||
-            bitrate <= 0 || audio_bitrate < 0 || !callback_)
+        if ((include_video &&
+             (width < 2 || height < 2 || (width & 1) != 0 || (height & 1) != 0 ||
+              bitrate <= 0)) ||
+            audio_bitrate < 0 || (!include_video && audio_bitrate == 0) || !callback_)
         {
             throw std::invalid_argument("The MPEG-TS muxer configuration is invalid.");
         }
@@ -74,42 +77,48 @@ namespace ddc
                 throw std::runtime_error("FFmpeg did not allocate an MPEG-TS output context.");
             }
 
-            video_stream_ = avformat_new_stream(format_context_, nullptr);
-            if (video_stream_ == nullptr)
+            has_video_ = include_video;
+            if (include_video)
             {
-                throw std::bad_alloc();
-            }
-
-            video_stream_->time_base = { 1, 90'000 };
-            AVCodecParameters* parameters = video_stream_->codecpar;
-            parameters->codec_type = AVMEDIA_TYPE_VIDEO;
-            parameters->codec_id = AV_CODEC_ID_H264;
-            parameters->codec_tag = 0;
-            parameters->format = AV_PIX_FMT_YUV420P;
-            parameters->width = width;
-            parameters->height = height;
-            parameters->bit_rate = bitrate;
-            if (codec_configuration.size() >
-                static_cast<std::size_t>(
-                    std::numeric_limits<int>::max() - AV_INPUT_BUFFER_PADDING_SIZE))
-            {
-                throw std::length_error("The H.264 codec configuration is too large.");
-            }
-
-            if (!codec_configuration.empty())
-            {
-                const auto allocation_size = codec_configuration.size() + AV_INPUT_BUFFER_PADDING_SIZE;
-                parameters->extradata = static_cast<std::uint8_t*>(av_mallocz(allocation_size));
-                if (parameters->extradata == nullptr)
+                video_stream_ = avformat_new_stream(format_context_, nullptr);
+                if (video_stream_ == nullptr)
                 {
                     throw std::bad_alloc();
                 }
 
-                std::memcpy(
-                    parameters->extradata,
-                    codec_configuration.data(),
-                    codec_configuration.size());
-                parameters->extradata_size = static_cast<int>(codec_configuration.size());
+                video_stream_->time_base = { 1, 90'000 };
+                AVCodecParameters* parameters = video_stream_->codecpar;
+                parameters->codec_type = AVMEDIA_TYPE_VIDEO;
+                parameters->codec_id = AV_CODEC_ID_H264;
+                parameters->codec_tag = 0;
+                parameters->format = AV_PIX_FMT_YUV420P;
+                parameters->width = width;
+                parameters->height = height;
+                parameters->bit_rate = bitrate;
+                if (codec_configuration.size() >
+                    static_cast<std::size_t>(
+                        std::numeric_limits<int>::max() - AV_INPUT_BUFFER_PADDING_SIZE))
+                {
+                    throw std::length_error("The H.264 codec configuration is too large.");
+                }
+
+                if (!codec_configuration.empty())
+                {
+                    const auto allocation_size =
+                        codec_configuration.size() + AV_INPUT_BUFFER_PADDING_SIZE;
+                    parameters->extradata =
+                        static_cast<std::uint8_t*>(av_mallocz(allocation_size));
+                    if (parameters->extradata == nullptr)
+                    {
+                        throw std::bad_alloc();
+                    }
+
+                    std::memcpy(
+                        parameters->extradata,
+                        codec_configuration.data(),
+                        codec_configuration.size());
+                    parameters->extradata_size = static_cast<int>(codec_configuration.size());
+                }
             }
 
             if (audio_bitrate > 0)
@@ -128,6 +137,7 @@ namespace ddc
                 audio_parameters->format = AV_SAMPLE_FMT_S16;
                 audio_parameters->sample_rate = 48'000;
                 audio_parameters->bit_rate = audio_bitrate;
+                audio_parameters->frame_size = 1024;
                 av_channel_layout_default(&audio_parameters->ch_layout, 2);
                 if (audio_codec_configuration.size() >
                     static_cast<std::size_t>(
@@ -256,8 +266,10 @@ namespace ddc
 
             current_bytes_.clear();
             check_ffmpeg(
-                av_interleaved_write_frame(format_context_, packet),
-                "av_interleaved_write_frame");
+                has_video_
+                    ? av_interleaved_write_frame(format_context_, packet)
+                    : av_write_frame(format_context_, packet),
+                has_video_ ? "av_interleaved_write_frame" : "av_write_frame");
             avio_flush(io_context_);
             throw_if_callback_failed();
             if (sample.key_frame && !header_bytes_.empty())
@@ -323,11 +335,26 @@ namespace ddc
                 audio_stream_->time_base);
             current_bytes_.clear();
             check_ffmpeg(
-                av_interleaved_write_frame(format_context_, packet),
-                "av_interleaved_write_frame");
+                has_video_
+                    ? av_interleaved_write_frame(format_context_, packet)
+                    : av_write_frame(format_context_, packet),
+                has_video_ ? "av_interleaved_write_frame" : "av_write_frame");
             avio_flush(io_context_);
             throw_if_callback_failed();
-            emit_current(false, sample.timestamp_100ns);
+            if (!has_video_ && !header_bytes_.empty())
+            {
+                if (current_bytes_.size() + header_bytes_.size() > maximum_mux_chunk_bytes)
+                {
+                    throw std::length_error("The MPEG-TS audio startup chunk is too large.");
+                }
+
+                current_bytes_.insert(
+                    current_bytes_.begin(),
+                    header_bytes_.begin(),
+                    header_bytes_.end());
+            }
+
+            emit_current(!has_video_, sample.timestamp_100ns);
         }
         catch (...)
         {

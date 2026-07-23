@@ -40,6 +40,14 @@ public sealed class MockRendererOptions
 
     public bool RequireAudio { get; set; } = true;
 
+    public bool RequireVideo { get; set; } = true;
+
+    public string SinkProtocolInfo { get; set; } =
+        "http-get:*:video/mpeg:DLNA.ORG_PN=MPEG_TS_SD_NA_ISO," +
+        "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3," +
+        "http-get:*:audio/vnd.dlna.adts:DLNA.ORG_PN=AAC_ADTS," +
+        "http-get:*:audio/L16:DLNA.ORG_PN=LPCM";
+
     public IReadOnlyDictionary<string, string> RequestHeaders { get; set; } =
         new Dictionary<string, string>();
 }

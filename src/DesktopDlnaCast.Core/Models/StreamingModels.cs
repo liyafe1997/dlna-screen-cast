@@ -16,9 +16,25 @@ public enum QualityProfile
     Standard,
 }
 
-public sealed record StreamPublication(Uri PublicUri, string RedactedUri, StreamMode Mode);
+public enum AudioCastProfile
+{
+    None = 0,
+    AacAdts = 1,
+    Mp3 = 2,
+    Lpcm = 3,
+    AacMpegTsCompatibility = 4,
+}
 
-public sealed record LiveStreamPublishOptions(bool StartAtLiveEdge = false);
+public sealed record StreamPublication(
+    Uri PublicUri,
+    string RedactedUri,
+    StreamMode Mode,
+    string ContentType = "video/mpeg",
+    string ProtocolInfo = "http-get:*:video/mpeg:*");
+
+public sealed record LiveStreamPublishOptions(
+    bool StartAtLiveEdge = false,
+    AudioCastProfile AudioProfile = AudioCastProfile.None);
 
 public sealed record StreamClientRequest(
     string Method,

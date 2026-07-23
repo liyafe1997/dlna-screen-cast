@@ -39,6 +39,7 @@ namespace ddc
     {
     public:
         mpeg_ts_muxer(
+            bool include_video,
             std::int32_t width,
             std::int32_t height,
             std::int32_t bitrate,
@@ -71,5 +72,6 @@ namespace ddc
         std::vector<std::uint8_t> current_bytes_;
         std::exception_ptr callback_failure_;
         bool finished_{};
+        bool has_video_{};
     };
 }

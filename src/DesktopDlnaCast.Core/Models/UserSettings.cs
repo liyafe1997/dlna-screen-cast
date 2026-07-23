@@ -10,6 +10,8 @@ public sealed record UserSettings
 
     public bool IncludeAudio { get; init; } = true;
 
+    public bool AudioOnly { get; init; }
+
     public bool MuteLocalPlayback { get; init; }
 
     public int GopFrames { get; init; } = 30;

@@ -56,4 +56,5 @@
   <data name="AudioDisabled" xml:space="preserve"><value>только видео</value></data>
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Громкость</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Только звук</value></data>
 </root>

@@ -56,6 +56,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     private string encoderText = string.Empty;
     private bool includeCursor = true;
     private bool includeAudio = true;
+    private bool audioOnly;
     private bool muteLocalPlayback;
     private bool startAtLiveEdge;
     private bool isBusy;
@@ -242,10 +243,33 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
 
             includeAudio = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(IsAudioOnlyEnabled));
             if (!value)
             {
+                AudioOnly = false;
                 MuteLocalPlayback = false;
             }
+        }
+    }
+
+    public bool IsAudioOnlyEnabled => IncludeAudio;
+
+    public bool IsVideoOptionsEnabled => !AudioOnly;
+
+    public bool AudioOnly
+    {
+        get => audioOnly;
+        set
+        {
+            bool effectiveValue = IncludeAudio && value;
+            if (audioOnly == effectiveValue)
+            {
+                return;
+            }
+
+            audioOnly = effectiveValue;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsVideoOptionsEnabled));
         }
     }
 
@@ -397,6 +421,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             OutputHeight = profile?.Height ?? restoredSettings.OutputHeight,
             IncludeCursor = IncludeCursor,
             IncludeAudio = IncludeAudio,
+            AudioOnly = AudioOnly,
             MuteLocalPlayback = MuteLocalPlayback,
             GopFrames = SelectedGopOption?.Frames ?? restoredSettings.GopFrames,
             VideoBitratePercent = SelectedQualityOption?.BitratePercent ?? restoredSettings.VideoBitratePercent,
@@ -526,7 +551,8 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             IncludeAudio: IncludeAudio,
             AudioBitrate: profile.AudioBitrate,
             MuteLocalPlayback: MuteLocalPlayback,
-            StartAtLiveEdge: StartAtLiveEdge);
+            StartAtLiveEdge: StartAtLiveEdge,
+            AudioOnly: AudioOnly);
 
         using CancellationTokenSource operation = BeginOperation();
         try
@@ -721,6 +747,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     {
         IncludeCursor = settings.IncludeCursor;
         IncludeAudio = settings.IncludeAudio;
+        AudioOnly = settings.AudioOnly;
         MuteLocalPlayback = settings.MuteLocalPlayback;
         StartAtLiveEdge = settings.StartAtLiveEdge;
         SelectedOutputProfile = OutputProfiles.FirstOrDefault(profile =>

@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define DDC_ABI_VERSION 4
+#define DDC_ABI_VERSION 6
 #define DDC_PACKET_FLAG_RANDOM_ACCESS_POINT 0x1
 
 typedef void* ddc_session_handle;
@@ -43,6 +43,14 @@ typedef enum ddc_video_processor_backend {
     DDC_VIDEO_PROCESSOR_LIBSWSCALE = 2
 } ddc_video_processor_backend;
 
+typedef enum ddc_audio_cast_profile {
+    DDC_AUDIO_PROFILE_NONE = 0,
+    DDC_AUDIO_PROFILE_AAC_ADTS = 1,
+    DDC_AUDIO_PROFILE_MP3 = 2,
+    DDC_AUDIO_PROFILE_LPCM = 3,
+    DDC_AUDIO_PROFILE_AAC_MPEG_TS = 4
+} ddc_audio_cast_profile;
+
 typedef struct ddc_stream_config {
     int32_t struct_size;
     int32_t abi_version;
@@ -58,6 +66,8 @@ typedef struct ddc_stream_config {
     int32_t include_audio;
     int32_t stream_mode;
     int32_t mute_local_playback;
+    int32_t audio_only;
+    int32_t audio_profile;
 } ddc_stream_config;
 
 typedef struct ddc_session_statistics {

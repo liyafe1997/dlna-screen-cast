@@ -152,6 +152,8 @@ public sealed class StaticMediaTestSessionTests
     private sealed class FakeMetadataFactory : IStreamMetadataFactory
     {
         public string CreateVideoItem(string title, StreamPublication publication) => "metadata";
+
+        public string CreateAudioItem(string title, StreamPublication publication) => "audio-metadata";
     }
 
     private sealed class FakeStreamPublisher : IStreamPublisher

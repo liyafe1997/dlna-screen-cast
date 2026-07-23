@@ -27,7 +27,9 @@ public sealed record MediaCaptureConfiguration(
     bool IncludeAudio,
     int AudioBitrate,
     bool MuteLocalPlayback = false,
-    bool StartAtLiveEdge = false);
+    bool StartAtLiveEdge = false,
+    bool AudioOnly = false,
+    AudioCastProfile AudioProfile = AudioCastProfile.None);
 
 public sealed record MediaSessionStatistics(
     long CapturedVideoFrames,
