@@ -20,6 +20,8 @@ public sealed record UserSettings
 
     public bool StartAtLiveEdge { get; init; }
 
+    public AspectRatioMode AspectRatioMode { get; init; } = AspectRatioMode.Letterbox;
+
     public string? RendererUdn { get; init; }
 
     public DisplayUserSettings? Display { get; init; }

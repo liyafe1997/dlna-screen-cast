@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Volume</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Audio only</value></data>
+  <data name="AspectRatioModeLabel.Text" xml:space="preserve"><value>Aspect ratio handling</value></data>
+  <data name="AspectRatioStretch" xml:space="preserve"><value>Stretch to output (distorts image)</value></data>
+  <data name="AspectRatioCenterCrop" xml:space="preserve"><value>Center crop to output ratio</value></data>
+  <data name="AspectRatioLetterbox" xml:space="preserve"><value>Keep aspect ratio (black bars)</value></data>
+  <data name="CustomResolution" xml:space="preserve"><value>Custom...</value></data>
+  <data name="CustomResolutionTitle" xml:space="preserve"><value>Custom streaming resolution</value></data>
+  <data name="CustomResolutionInputLabel" xml:space="preserve"><value>Width × height</value></data>
+  <data name="CustomResolutionWidthLabel" xml:space="preserve"><value>Width</value></data>
+  <data name="CustomResolutionHeightLabel" xml:space="preserve"><value>Height</value></data>
+  <data name="CustomResolutionInvalid" xml:space="preserve"><value>Enter an even resolution from 2 × 2 through 7680 × 4320, for example 1920 × 1080.</value></data>
+  <data name="ConfirmButton" xml:space="preserve"><value>Use resolution</value></data>
+  <data name="CancelButton" xml:space="preserve"><value>Cancel</value></data>
 </root>

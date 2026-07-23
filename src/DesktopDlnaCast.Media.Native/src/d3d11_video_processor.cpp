@@ -6,15 +6,42 @@
 
 namespace ddc
 {
-    RECT calculate_letterbox_rect(
+    video_layout calculate_video_layout(
         const std::int32_t source_width,
         const std::int32_t source_height,
         const std::int32_t output_width,
-        const std::int32_t output_height)
+        const std::int32_t output_height,
+        const std::int32_t aspect_ratio_mode)
     {
         if (source_width <= 0 || source_height <= 0 || output_width <= 0 || output_height <= 0)
         {
-            throw std::invalid_argument("Letterbox dimensions must be positive.");
+            throw std::invalid_argument("Video layout dimensions must be positive.");
+        }
+
+        const RECT full_source{ 0, 0, source_width, source_height };
+        const RECT full_destination{ 0, 0, output_width, output_height };
+        if (aspect_ratio_mode == DDC_ASPECT_RATIO_STRETCH)
+        {
+            return { full_source, full_destination };
+        }
+
+        if (aspect_ratio_mode == DDC_ASPECT_RATIO_CENTER_CROP)
+        {
+            std::int32_t crop_width = source_width;
+            std::int32_t crop_height = static_cast<std::int32_t>(
+                static_cast<std::int64_t>(source_width) * output_height / output_width);
+            if (crop_height > source_height)
+            {
+                crop_height = source_height;
+                crop_width = static_cast<std::int32_t>(
+                    static_cast<std::int64_t>(source_height) * output_width / output_height);
+            }
+
+            crop_width = std::max(2, crop_width & ~1);
+            crop_height = std::max(2, crop_height & ~1);
+            const std::int32_t left = ((source_width - crop_width) / 2) & ~1;
+            const std::int32_t top = ((source_height - crop_height) / 2) & ~1;
+            return { { left, top, left + crop_width, top + crop_height }, full_destination };
         }
 
         const std::int64_t width_limited_height =
@@ -37,16 +64,18 @@ namespace ddc
         scaled_height = std::max(2, scaled_height & ~1);
         const std::int32_t left = ((output_width - scaled_width) / 2) & ~1;
         const std::int32_t top = ((output_height - scaled_height) / 2) & ~1;
-        return { left, top, left + scaled_width, top + scaled_height };
+        return { full_source, { left, top, left + scaled_width, top + scaled_height } };
     }
 
     d3d11_video_processor::d3d11_video_processor(
         const std::int32_t output_width,
         const std::int32_t output_height,
-        const std::int32_t frame_rate)
+        const std::int32_t frame_rate,
+        const std::int32_t aspect_ratio_mode)
         : output_width_(output_width),
           output_height_(output_height),
-          frame_rate_(frame_rate)
+          frame_rate_(frame_rate),
+          aspect_ratio_mode_(aspect_ratio_mode)
     {
         if (output_width < 2 || output_height < 2 ||
             (output_width & 1) != 0 || (output_height & 1) != 0 ||
@@ -84,18 +113,18 @@ namespace ddc
             &input_description,
             input_view.put()));
 
-        const RECT source_rect{ 0, 0, source_width, source_height };
-        const RECT destination_rect = calculate_letterbox_rect(
+        const video_layout layout = calculate_video_layout(
             source_width,
             source_height,
             output_width_,
-            output_height_);
+            output_height_,
+            aspect_ratio_mode_);
         video_context_->VideoProcessorSetStreamFrameFormat(
             processor_.get(),
             0,
             D3D11_VIDEO_FRAME_FORMAT_PROGRESSIVE);
-        video_context_->VideoProcessorSetStreamSourceRect(processor_.get(), 0, TRUE, &source_rect);
-        video_context_->VideoProcessorSetStreamDestRect(processor_.get(), 0, TRUE, &destination_rect);
+        video_context_->VideoProcessorSetStreamSourceRect(processor_.get(), 0, TRUE, &layout.source);
+        video_context_->VideoProcessorSetStreamDestRect(processor_.get(), 0, TRUE, &layout.destination);
         const RECT output_rect{ 0, 0, output_width_, output_height_ };
         video_context_->VideoProcessorSetOutputTargetRect(processor_.get(), TRUE, &output_rect);
 

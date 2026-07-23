@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ddc_media.h"
+
 #include <d3d11.h>
 #include <winrt/base.h>
 
@@ -14,7 +16,10 @@ namespace ddc
     class software_video_processor final
     {
     public:
-        software_video_processor(std::int32_t output_width, std::int32_t output_height);
+        software_video_processor(
+            std::int32_t output_width,
+            std::int32_t output_height,
+            std::int32_t aspect_ratio_mode);
         software_video_processor(const software_video_processor&) = delete;
         software_video_processor& operator=(const software_video_processor&) = delete;
         ~software_video_processor();
@@ -35,6 +40,7 @@ namespace ddc
 
         const std::int32_t output_width_;
         const std::int32_t output_height_;
+        const std::int32_t aspect_ratio_mode_;
         std::mutex mutex_;
         std::int32_t source_width_{};
         std::int32_t source_height_{};

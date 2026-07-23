@@ -5,4 +5,5 @@ public sealed record VideoOutputProfileViewModel(
     int Width,
     int Height,
     int VideoBitrate,
-    int AudioBitrate);
+    int AudioBitrate,
+    bool IsCustomCommand = false);

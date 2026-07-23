@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define DDC_ABI_VERSION 6
+#define DDC_ABI_VERSION 7
 #define DDC_PACKET_FLAG_RANDOM_ACCESS_POINT 0x1
 
 typedef void* ddc_session_handle;
@@ -43,6 +43,12 @@ typedef enum ddc_video_processor_backend {
     DDC_VIDEO_PROCESSOR_LIBSWSCALE = 2
 } ddc_video_processor_backend;
 
+typedef enum ddc_aspect_ratio_mode {
+    DDC_ASPECT_RATIO_STRETCH = 0,
+    DDC_ASPECT_RATIO_CENTER_CROP = 1,
+    DDC_ASPECT_RATIO_LETTERBOX = 2
+} ddc_aspect_ratio_mode;
+
 typedef enum ddc_audio_cast_profile {
     DDC_AUDIO_PROFILE_NONE = 0,
     DDC_AUDIO_PROFILE_AAC_ADTS = 1,
@@ -68,6 +74,7 @@ typedef struct ddc_stream_config {
     int32_t mute_local_playback;
     int32_t audio_only;
     int32_t audio_profile;
+    int32_t aspect_ratio_mode;
 } ddc_stream_config;
 
 typedef struct ddc_session_statistics {

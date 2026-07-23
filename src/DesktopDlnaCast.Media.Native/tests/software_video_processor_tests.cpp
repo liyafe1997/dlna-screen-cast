@@ -64,7 +64,8 @@ void run_software_video_processor_tests()
     constexpr std::int32_t output_width = 8;
     constexpr std::int32_t output_height = 8;
     const auto device = create_warp_device();
-    ddc::software_video_processor processor(output_width, output_height);
+    ddc::software_video_processor processor(
+        output_width, output_height, DDC_ASPECT_RATIO_LETTERBOX);
 
     const auto wide_texture = create_white_bgra_texture(device, 4, 2);
     const auto letterboxed = processor.process(wide_texture, 4, 2);

@@ -49,7 +49,7 @@ The embedded clip is immutable and memory-backed. The live token is never persis
 
 ## Configuration and diagnostics
 
-Non-secret defaults live in `appsettings.json` and bind to validated options. User choices are loaded before the initial device discovery and are saved atomically to `%LOCALAPPDATA%\\DLNAScreenCast\\user-settings.json` when the application closes. The persisted choices include the renderer UDN, output resolution, cursor/audio switches, and a display topology signature; transient monitor handles and stream tokens are never persisted. A missing or malformed settings file falls back to safe defaults.
+Non-secret defaults live in `appsettings.json` and bind to validated options. User choices are loaded before the initial device discovery and are saved atomically to `%LOCALAPPDATA%\\DLNAScreenCast\\user-settings.json` when the application closes. The persisted choices include the renderer UDN, preset or custom output resolution, aspect-ratio handling, cursor/audio switches, and a display topology signature; transient monitor handles and stream tokens are never persisted. A missing or malformed settings file falls back to safe defaults.
 
 After the main window is activated, `MainViewModel.InitializeAsync` restores those choices and automatically runs the same bounded, cancellable discovery operation used by the manual refresh command. The refresh button remains available for devices that join the LAN later.
 
@@ -63,7 +63,7 @@ SSDP datagrams, XML, SOAP, URIs, and renderer HTTP requests are untrusted. All n
 
 ## Native boundary
 
-The native boundary uses ABI v6 in `src/DesktopDlnaCast.Media.Native/include/ddc_media.h`. It defines explicit capture source/configuration fields, optional audio, an explicit audio-cast profile, audio-only output and local-playback mute, bounded packet reads, random-access-point flags, video/audio/mute statistics, finite read timeouts, detailed UTF-8 errors, encoder diagnostics, and idempotent stop/destroy semantics. Diagnostics report the selected video and audio encoders, software/hardware flag, D3D11-versus-libswscale pixel backend, and accepted media parameters. The managed side uses `SafeHandle`; no native pointer or exception escapes into Core.
+The native boundary uses ABI v7 in `src/DesktopDlnaCast.Media.Native/include/ddc_media.h`. It defines explicit capture source/configuration fields, selectable aspect-ratio handling (stretch, center crop, or aspect-preserving black bars), optional audio, an explicit audio-cast profile, audio-only output and local-playback mute, bounded packet reads, random-access-point flags, video/audio/mute statistics, finite read timeouts, detailed UTF-8 errors, encoder diagnostics, and idempotent stop/destroy semantics. Diagnostics report the selected video and audio encoders, software/hardware flag, D3D11-versus-libswscale pixel backend, and accepted media parameters. The managed side uses `SafeHandle`; no native pointer or exception escapes into Core.
 
 `LiveCastSession` owns the media session, media pump, continuous publisher, renderer control, and cleanup. It starts media before publishing, waits until a chunk marked as a complete PAT/PMT/codec-configuration/IDR start point is buffered, then sends the URI. A completed or failed media pump aborts playback startup.
 

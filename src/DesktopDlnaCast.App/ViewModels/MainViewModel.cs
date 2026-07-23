@@ -62,6 +62,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     private VideoOutputProfileViewModel? selectedOutputProfile;
     private GopOptionViewModel? selectedGopOption;
     private QualityOptionViewModel? selectedQualityOption;
+    private AspectRatioOptionViewModel? selectedAspectRatioOption;
     private string statusText;
     private string encoderText = string.Empty;
     private bool includeCursor = true;
@@ -109,7 +110,8 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         startCastCommand = new(
             StartCastAsync,
             () => !IsBusy && SelectedDevice is not null && SelectedDisplay is not null &&
-                SelectedOutputProfile is not null && stateMachine.State == CastSessionState.Idle,
+                SelectedOutputProfile is { IsCustomCommand: false } &&
+                stateMachine.State == CastSessionState.Idle,
             HandleOperationException);
         stopCommand = new(
             StopAsync,
@@ -120,13 +122,21 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         volumeSendTimer.IsRepeating = false;
         volumeSendTimer.Tick += (_, _) => SendVolume();
         stateMachine.StateChanged += OnStateChanged;
-        OutputProfiles.Add(new(resources.GetString("Resolution720p"), 1280, 720, 3_000_000, 128_000));
-        OutputProfiles.Add(new(resources.GetString("Resolution1080p"), 1920, 1080, 6_000_000, 160_000));
+        OutputProfiles.Add(CreateOutputProfile(1280, 720));
+        OutputProfiles.Add(CreateOutputProfile(1920, 1080));
+        OutputProfiles.Add(CreateOutputProfile(1280, 800));
+        OutputProfiles.Add(CreateOutputProfile(1920, 1200));
+        OutputProfiles.Add(CreateOutputProfile(1024, 768));
+        OutputProfiles.Add(new(resources.GetString("CustomResolution"), 0, 0, 0, 0, true));
         SelectedOutputProfile = OutputProfiles[0];
         GopOptions.Add(new(resources.GetString("GopHalfSecond"), 15));
         GopOptions.Add(new(resources.GetString("GopOneSecond"), 30));
         GopOptions.Add(new(resources.GetString("GopTwoSeconds"), 60));
         SelectedGopOption = GopOptions[1];
+        AspectRatioOptions.Add(new(resources.GetString("AspectRatioStretch"), AspectRatioMode.Stretch));
+        AspectRatioOptions.Add(new(resources.GetString("AspectRatioCenterCrop"), AspectRatioMode.CenterCrop));
+        AspectRatioOptions.Add(new(resources.GetString("AspectRatioLetterbox"), AspectRatioMode.Letterbox));
+        SelectedAspectRatioOption = AspectRatioOptions[2];
         RefreshDisplays();
     }
 
@@ -142,6 +152,8 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
 
     public ObservableCollection<QualityOptionViewModel> QualityOptions { get; } = [];
 
+    public ObservableCollection<AspectRatioOptionViewModel> AspectRatioOptions { get; } = [];
+
     public ICommand RefreshCommand => refreshCommand;
 
     public ICommand TestRendererCommand => testRendererCommand;
@@ -149,6 +161,31 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     public ICommand StartCastCommand => startCastCommand;
 
     public ICommand StopCommand => stopCommand;
+
+    public VideoOutputProfileViewModel AddCustomOutputProfile(int width, int height)
+    {
+        if (width is < 2 or > 7680 || height is < 2 or > 4320 ||
+            (width & 1) != 0 || (height & 1) != 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(width),
+                "Custom output dimensions must be even and within the supported range.");
+        }
+
+        VideoOutputProfileViewModel? existing = OutputProfiles.FirstOrDefault(
+            profile => !profile.IsCustomCommand && profile.Width == width && profile.Height == height);
+        if (existing is not null)
+        {
+            SelectedOutputProfile = existing;
+            return existing;
+        }
+
+        VideoOutputProfileViewModel profile = CreateOutputProfile(width, height);
+        int commandIndex = OutputProfiles.Count - 1;
+        OutputProfiles.Insert(commandIndex, profile);
+        SelectedOutputProfile = profile;
+        return profile;
+    }
 
     public CaptureDisplayViewModel? SelectedDisplay
     {
@@ -209,6 +246,21 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             }
 
             selectedQualityOption = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public AspectRatioOptionViewModel? SelectedAspectRatioOption
+    {
+        get => selectedAspectRatioOption;
+        set
+        {
+            if (ReferenceEquals(selectedAspectRatioOption, value))
+            {
+                return;
+            }
+
+            selectedAspectRatioOption = value;
             OnPropertyChanged();
         }
     }
@@ -469,6 +521,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             GopFrames = SelectedGopOption?.Frames ?? restoredSettings.GopFrames,
             VideoBitratePercent = SelectedQualityOption?.BitratePercent ?? restoredSettings.VideoBitratePercent,
             StartAtLiveEdge = StartAtLiveEdge,
+            AspectRatioMode = SelectedAspectRatioOption?.Mode ?? restoredSettings.AspectRatioMode,
             RendererUdn = SelectedDevice?.Device.Udn ?? restoredSettings.RendererUdn,
             Display = display is null
                 ? restoredSettings.Display
@@ -597,7 +650,8 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             AudioBitrate: profile.AudioBitrate,
             MuteLocalPlayback: MuteLocalPlayback,
             StartAtLiveEdge: StartAtLiveEdge,
-            AudioOnly: AudioOnly);
+            AudioOnly: AudioOnly,
+            AspectRatioMode: SelectedAspectRatioOption?.Mode ?? AspectRatioMode.Letterbox);
 
         using CancellationTokenSource operation = BeginOperation();
         try
@@ -795,9 +849,21 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         AudioOnly = settings.AudioOnly;
         MuteLocalPlayback = settings.MuteLocalPlayback;
         StartAtLiveEdge = settings.StartAtLiveEdge;
-        SelectedOutputProfile = OutputProfiles.FirstOrDefault(profile =>
-            profile.Width == settings.OutputWidth && profile.Height == settings.OutputHeight) ??
-            OutputProfiles[0];
+        SelectedAspectRatioOption = AspectRatioOptions.FirstOrDefault(option =>
+            option.Mode == settings.AspectRatioMode) ?? AspectRatioOptions[2];
+        VideoOutputProfileViewModel? restoredProfile = OutputProfiles.FirstOrDefault(profile =>
+            !profile.IsCustomCommand &&
+            profile.Width == settings.OutputWidth &&
+            profile.Height == settings.OutputHeight);
+        bool validCustomDimensions =
+            settings.OutputWidth is >= 2 and <= 7680 &&
+            settings.OutputHeight is >= 2 and <= 4320 &&
+            (settings.OutputWidth & 1) == 0 &&
+            (settings.OutputHeight & 1) == 0;
+        SelectedOutputProfile = restoredProfile ??
+            (validCustomDimensions
+                ? AddCustomOutputProfile(settings.OutputWidth, settings.OutputHeight)
+                : OutputProfiles[0]);
         SelectedGopOption = GopOptions.FirstOrDefault(option => option.Frames == settings.GopFrames) ??
             GopOptions[1];
         SelectedQualityOption = QualityOptions.FirstOrDefault(option =>
@@ -834,6 +900,38 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         }
 
         dispatcherQueue.TryEnqueue(() => ApplyState(args.CurrentState));
+    }
+
+    private static VideoOutputProfileViewModel CreateOutputProfile(int width, int height)
+    {
+        int divisor = GreatestCommonDivisor(width, height);
+        int ratioWidth = width / divisor;
+        int ratioHeight = height / divisor;
+        string ratio = ratioWidth == 8 && ratioHeight == 5
+            ? "16:10"
+            : string.Create(
+                CultureInfo.InvariantCulture,
+                $"{ratioWidth}:{ratioHeight}");
+        string displayName = string.Create(
+            CultureInfo.InvariantCulture,
+            $"{width} × {height} ({ratio})");
+        long pixels = (long)width * height;
+        int videoBitrate = checked((int)Math.Clamp(
+            pixels * 3_000_000L / (1280L * 720L),
+            1_500_000L,
+            12_000_000L));
+        int audioBitrate = pixels > 1280L * 720L ? 160_000 : 128_000;
+        return new(displayName, width, height, videoBitrate, audioBitrate);
+    }
+
+    private static int GreatestCommonDivisor(int left, int right)
+    {
+        while (right != 0)
+        {
+            (left, right) = (right, left % right);
+        }
+
+        return left;
     }
 
     private void ApplyState(CastSessionState state)

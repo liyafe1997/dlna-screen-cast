@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>音量</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>純音訊</value></data>
+  <data name="AspectRatioModeLabel.Text" xml:space="preserve"><value>畫面比例處理</value></data>
+  <data name="AspectRatioStretch" xml:space="preserve"><value>拉伸至輸出尺寸（畫面會變形）</value></data>
+  <data name="AspectRatioCenterCrop" xml:space="preserve"><value>置中裁剪至輸出比例</value></data>
+  <data name="AspectRatioLetterbox" xml:space="preserve"><value>保持比例（保留黑邊）</value></data>
+  <data name="CustomResolution" xml:space="preserve"><value>自訂...</value></data>
+  <data name="CustomResolutionTitle" xml:space="preserve"><value>自訂投放解析度</value></data>
+  <data name="CustomResolutionInputLabel" xml:space="preserve"><value>寬度 × 高度</value></data>
+  <data name="CustomResolutionWidthLabel" xml:space="preserve"><value>寬度</value></data>
+  <data name="CustomResolutionHeightLabel" xml:space="preserve"><value>高度</value></data>
+  <data name="CustomResolutionInvalid" xml:space="preserve"><value>請輸入 2 × 2 至 7680 × 4320 範圍內的偶數尺寸，例如 1920 × 1080。</value></data>
+  <data name="ConfirmButton" xml:space="preserve"><value>使用此解析度</value></data>
+  <data name="CancelButton" xml:space="preserve"><value>取消</value></data>
 </root>

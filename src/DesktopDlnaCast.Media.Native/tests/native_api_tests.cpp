@@ -28,6 +28,7 @@ namespace
         config.include_audio = 0;
         config.stream_mode = 1;
         config.mute_local_playback = 0;
+        config.aspect_ratio_mode = DDC_ASPECT_RATIO_LETTERBOX;
         return config;
     }
 }
@@ -43,8 +44,8 @@ int main()
 {
     winrt::init_apartment(winrt::apartment_type::multi_threaded);
 
-    static_assert(DDC_ABI_VERSION == 6);
-    static_assert(sizeof(ddc_stream_config) == 72);
+    static_assert(DDC_ABI_VERSION == 7);
+    static_assert(sizeof(ddc_stream_config) == 80);
     static_assert(sizeof(ddc_session_statistics) == 96);
     static_assert(sizeof(ddc_encoder_diagnostics) == 64);
 

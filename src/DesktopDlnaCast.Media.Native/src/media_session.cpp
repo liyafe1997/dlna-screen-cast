@@ -112,7 +112,8 @@ namespace ddc
             video_processor_ = std::make_unique<d3d11_video_processor>(
                 config_.width,
                 config_.height,
-                config_.frame_rate);
+                config_.frame_rate,
+                config_.aspect_ratio_mode);
             capture_ = std::make_unique<graphics_capture_source>();
             capture_->start(
                 config_,
@@ -231,7 +232,8 @@ namespace ddc
                 {
                     software_video_processor_ = std::make_unique<software_video_processor>(
                         config_.width,
-                        config_.height);
+                        config_.height,
+                        config_.aspect_ratio_mode);
                     processed_frame = software_video_processor_->process(texture, width, height);
                     video_processor_backend_ = video_processor_backend::software;
                 }
@@ -895,6 +897,8 @@ namespace ddc
             config->audio_only < 0 || config->audio_only > 1 ||
             config->audio_profile < DDC_AUDIO_PROFILE_NONE ||
             config->audio_profile > DDC_AUDIO_PROFILE_AAC_MPEG_TS ||
+            config->aspect_ratio_mode < DDC_ASPECT_RATIO_STRETCH ||
+            config->aspect_ratio_mode > DDC_ASPECT_RATIO_LETTERBOX ||
             (config->audio_only != 0 && config->include_audio == 0) ||
             (config->audio_only != 0 &&
              config->audio_profile != DDC_AUDIO_PROFILE_AAC_ADTS &&

@@ -105,6 +105,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
           </Grid.RowDefinitions>
           <TextBlock x:Uid="CaptureDisplayLabel" FontWeight="SemiBold" />
           <TextBlock Grid.Column="1" x:Uid="OutputResolutionLabel" FontWeight="SemiBold" />
@@ -119,6 +120,7 @@
               ItemTemplateSelector="{StaticResource DisplayPickerTemplateSelector}"
               DropDownOpened="DisplayPicker_DropDownOpened" />
           <ComboBox
+              x:Name="OutputProfilePicker"
               Grid.Row="1"
               Grid.Column="1"
               HorizontalAlignment="Stretch"
@@ -126,7 +128,8 @@
               IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
               ItemsSource="{x:Bind ViewModel.OutputProfiles}"
               SelectedItem="{x:Bind ViewModel.SelectedOutputProfile, Mode=TwoWay}"
-              DisplayMemberPath="DisplayName" />
+              DisplayMemberPath="DisplayName"
+              SelectionChanged="OutputProfilePicker_SelectionChanged" />
           <TextBlock
               Grid.Row="2"
               Margin="0,4,0,0"
@@ -196,6 +199,20 @@
               x:Uid="StartAtLiveEdgeToggle"
               IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
               IsChecked="{x:Bind ViewModel.StartAtLiveEdge, Mode=TwoWay}" />
+          <TextBlock
+              Grid.Row="6"
+              Margin="0,4,0,0"
+              x:Uid="AspectRatioModeLabel"
+              FontWeight="SemiBold" />
+          <ComboBox
+              Grid.Row="6"
+              Grid.Column="1"
+              HorizontalAlignment="Stretch"
+              MinHeight="28"
+              IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
+              ItemsSource="{x:Bind ViewModel.AspectRatioOptions}"
+              SelectedItem="{x:Bind ViewModel.SelectedAspectRatioOption, Mode=TwoWay}"
+              DisplayMemberPath="DisplayName" />
         </Grid>
       </Border>
 

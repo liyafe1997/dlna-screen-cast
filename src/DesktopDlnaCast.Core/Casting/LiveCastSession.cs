@@ -598,6 +598,14 @@ public sealed class LiveCastSession(
 
     private static void ValidateConfiguration(MediaCaptureConfiguration value)
     {
+        if (!Enum.IsDefined(value.AspectRatioMode))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(value),
+                value.AspectRatioMode,
+                "The aspect-ratio mode is not supported.");
+        }
+
         if ((!value.AudioOnly && value.SourceHandle == 0) ||
             value.Width is < 2 or > 7680 ||
             value.Height is < 2 or > 4320 ||

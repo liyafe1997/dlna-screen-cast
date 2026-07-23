@@ -21,6 +21,7 @@ internal struct NativeStreamConfiguration
     public int MuteLocalPlayback;
     public int AudioOnly;
     public int AudioProfile;
+    public int AspectRatioMode;
 }
 
 [StructLayout(LayoutKind.Sequential)]

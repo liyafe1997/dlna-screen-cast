@@ -15,8 +15,11 @@ namespace ddc
 {
     software_video_processor::software_video_processor(
         const std::int32_t output_width,
-        const std::int32_t output_height)
-        : output_width_(output_width), output_height_(output_height)
+        const std::int32_t output_height,
+        const std::int32_t aspect_ratio_mode)
+        : output_width_(output_width),
+          output_height_(output_height),
+          aspect_ratio_mode_(aspect_ratio_mode)
     {
         if (output_width < 2 || output_height < 2 ||
             (output_width & 1) != 0 || (output_height & 1) != 0)
@@ -42,17 +45,22 @@ namespace ddc
         }
 
         std::scoped_lock lock(mutex_);
-        const RECT destination = calculate_letterbox_rect(
+        const video_layout layout = calculate_video_layout(
             source_width,
             source_height,
             output_width_,
-            output_height_);
+            output_height_,
+            aspect_ratio_mode_);
+        const RECT& source = layout.source;
+        const RECT& destination = layout.destination;
+        const std::int32_t cropped_width = source.right - source.left;
+        const std::int32_t cropped_height = source.bottom - source.top;
         const std::int32_t scaled_width = destination.right - destination.left;
         const std::int32_t scaled_height = destination.bottom - destination.top;
         ensure_resources(
             bgra_texture,
-            source_width,
-            source_height,
+            cropped_width,
+            cropped_height,
             scaled_width,
             scaled_height);
 
@@ -81,7 +89,9 @@ namespace ddc
         try
         {
             const std::uint8_t* source_planes[4]{
-                static_cast<const std::uint8_t*>(mapped.pData),
+                static_cast<const std::uint8_t*>(mapped.pData) +
+                    static_cast<std::size_t>(source.top) * mapped.RowPitch +
+                    static_cast<std::size_t>(source.left) * 4U,
                 nullptr,
                 nullptr,
                 nullptr,
@@ -109,7 +119,7 @@ namespace ddc
                 source_planes,
                 source_strides,
                 0,
-                source_height,
+                cropped_height,
                 destination_planes,
                 destination_strides);
             if (rows != scaled_height)

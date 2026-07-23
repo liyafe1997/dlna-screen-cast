@@ -31,6 +31,7 @@ public sealed class NativeMediaCaptureSessionFactory : IMediaCaptureSessionFacto
             MuteLocalPlayback = configuration.MuteLocalPlayback ? 1 : 0,
             AudioOnly = configuration.AudioOnly ? 1 : 0,
             AudioProfile = (int)configuration.AudioProfile,
+            AspectRatioMode = (int)configuration.AspectRatioMode,
         };
         NativeResult result = NativeMethods.ddc_session_create(in native, out NativeMediaSessionHandle handle);
         if (result != NativeResult.Success)

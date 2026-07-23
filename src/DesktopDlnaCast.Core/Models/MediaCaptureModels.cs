@@ -6,6 +6,13 @@ public enum CaptureSourceKind
     Window,
 }
 
+public enum AspectRatioMode
+{
+    Stretch,
+    CenterCrop,
+    Letterbox,
+}
+
 public sealed record DisplayCaptureSource(
     long Handle,
     int Index,
@@ -34,7 +41,8 @@ public sealed record MediaCaptureConfiguration(
     bool MuteLocalPlayback = false,
     bool StartAtLiveEdge = false,
     bool AudioOnly = false,
-    AudioCastProfile AudioProfile = AudioCastProfile.None);
+    AudioCastProfile AudioProfile = AudioCastProfile.None,
+    AspectRatioMode AspectRatioMode = AspectRatioMode.Letterbox);
 
 public sealed record MediaSessionStatistics(
     long CapturedVideoFrames,
