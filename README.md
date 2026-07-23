@@ -4,6 +4,8 @@
 
 Cast your entire Windows desktop over DLNA. This is especially useful when your TV or computer (Wi-Fi adapter) has poor Miracast support.
 
+Audio-only casting is also supported, allowing you to cast currently playing audio to DLNA-compatible speakers or use your TV as a speaker.
+
 This project was brought to life with Claude Code and Codex.
 
 <img width="1135" height="728" alt="图片" src="https://github.com/user-attachments/assets/6d373b77-6ae2-4fdb-8aa6-bb37a0e08ad8" />
@@ -123,6 +125,8 @@ Run `build-release-nsis-x64.bat` or `build-release-nsis-arm64.bat` (both are thi
 # DLNA 投屏
 
 通过 DLNA 协议来投放你的整个Windows桌面。对于电视或电脑（Wi-Fi网卡）对Miracast支持不佳的情况非常有用。
+
+支持仅投放音频，可以把正在播放的音频投放到支持 DLNA 的音箱，或把电视当音响使用。
 
 该项目使用 Claude Code 和 Codex 落地。
 
