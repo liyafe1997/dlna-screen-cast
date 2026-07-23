@@ -17,16 +17,16 @@ docs/native-build.md); dotnet SDK per global.json; NSIS 3.x (makensis) —
 install with: winget install NSIS.NSIS
 
 .EXAMPLE
-pwsh packaging/scripts/build-nsis.ps1 -Version 1.0.0.0
+pwsh packaging/scripts/build-nsis.ps1 -Version 1.1.0.0
 
 .EXAMPLE
 # arm64 installer (requires the arm64 native runtime, see docs/native-build.md):
-pwsh packaging/scripts/build-nsis.ps1 -Version 1.0.0.0 -Architecture arm64
+pwsh packaging/scripts/build-nsis.ps1 -Version 1.1.0.0 -Architecture arm64
 #>
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')]
-    [string]$Version = '1.0.0.0',
+    [string]$Version = '1.1.0.0',
     [ValidateSet('x64', 'arm64')]
     [string]$Architecture = 'x64',
     [string]$Configuration = 'Release',

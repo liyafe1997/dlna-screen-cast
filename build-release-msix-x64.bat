@@ -2,11 +2,11 @@
 setlocal
 rem One-click x64 release build: compiles the app (self-contained publish) and
 rem produces .msix / .msixbundle under out\msix\artifacts.
-rem Usage: build-release-msix-x64.bat [version]   (default 1.0.0.0)
+rem Usage: build-release-msix-x64.bat [version]   (default 1.1.0.0)
 rem More options (publisher, certificate, ...): packaging\scripts\build-msix.ps1
 
 set "VERSION=%~1"
-if "%VERSION%"=="" set "VERSION=1.0.0.0"
+if "%VERSION%"=="" set "VERSION=1.1.0.0"
 
 pushd "%~dp0"
 powershell -NoProfile -ExecutionPolicy Bypass -File "packaging\scripts\build-msix-x64.ps1" -Version %VERSION%

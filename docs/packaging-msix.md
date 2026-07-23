@@ -3,8 +3,8 @@
 `packaging/scripts/build-msix.ps1` 一条命令产出 `.msix` 与 `.msixbundle`（默认不签名），`-Architecture x64|arm64` 选择目标架构（默认 x64）；`build-msix-x64.ps1` / `build-msix-arm64.ps1` 是对应的薄封装，根目录的 `build-release-msix-x64.bat` / `build-release-msix-arm64.bat` 是双击入口：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File packaging/scripts/build-msix-x64.ps1 -Version 1.0.0.0
-powershell -ExecutionPolicy Bypass -File packaging/scripts/build-msix-arm64.ps1 -Version 1.0.0.0
+powershell -ExecutionPolicy Bypass -File packaging/scripts/build-msix-x64.ps1 -Version 1.1.0.0
+powershell -ExecutionPolicy Bypass -File packaging/scripts/build-msix-arm64.ps1 -Version 1.1.0.0
 ```
 
 产物位于 `out/msix/artifacts/`。前置条件：
@@ -79,7 +79,7 @@ powershell -ExecutionPolicy Bypass -File packaging/scripts/build-msix-arm64.ps1 
 所有用户安装，因此普通权限会报 0x80073D2B）：
 
 ```powershell
-Add-AppxPackage -Path DLNAScreenCast_1.0.0.0.msixbundle -AllowUnsigned
+Add-AppxPackage -Path DLNAScreenCast_1.1.0.0.msixbundle -AllowUnsigned
 ```
 
 卸载：`Get-AppxPackage DLNAScreenCast | Remove-AppxPackage`。

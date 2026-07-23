@@ -21,12 +21,12 @@ automatically by the solution).
 
 .EXAMPLE
 # Unsigned x64 package (default):
-pwsh packaging/scripts/build-msix.ps1 -Version 1.0.0.0
+pwsh packaging/scripts/build-msix.ps1 -Version 1.1.0.0
 
 .EXAMPLE
 # Unsigned arm64 package (requires the arm64 native runtime, see
 # docs/native-build.md):
-pwsh packaging/scripts/build-msix.ps1 -Version 1.0.0.0 -Architecture arm64
+pwsh packaging/scripts/build-msix.ps1 -Version 1.1.0.0 -Architecture arm64
 
 .EXAMPLE
 # Signed package:
@@ -37,7 +37,7 @@ packaging/scripts/build-msix.ps1 -Version 1.2.0.0 `
 [CmdletBinding()]
 param(
     [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')]
-    [string]$Version = '1.0.0.0',
+    [string]$Version = '1.1.0.0',
     [ValidateSet('x64', 'arm64')]
     [string]$Architecture = 'x64',
     [string]$Publisher = 'CN=DLNAScreenCast Dev',
