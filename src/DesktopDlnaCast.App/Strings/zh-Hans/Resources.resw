@@ -26,7 +26,7 @@
   <data name="CastState_Playing" xml:space="preserve"><value>正在播放</value></data>
   <data name="CastState_Stopping" xml:space="preserve"><value>正在停止</value></data>
   <data name="CastState_Faulted" xml:space="preserve"><value>失败</value></data>
-  <data name="StartCastButton.Content" xml:space="preserve"><value>开始投屏</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>开始投放</value></data>
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>播放设备</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>正在搜索 DLNA 播放设备...</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>无可用播放设备</value></data>
