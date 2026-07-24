@@ -46,6 +46,15 @@
     <Resource Language="sv" />
     <Resource Language="tr" />
     <Resource Language="vi" />
+    <Resource Language="da" />
+    <Resource Language="el" />
+    <Resource Language="fi" />
+    <Resource Language="hu" />
+    <Resource Language="my-MM" />
+    <Resource Language="nb-NO" />
+    <Resource Language="pl" />
+    <Resource Language="th" />
+    <Resource Language="uk" />
   </Resources>
 
   <Applications>

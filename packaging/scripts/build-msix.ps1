@@ -76,6 +76,38 @@ $artifactDir = Join-Path $msixRoot 'artifacts'
 $templatePath = Join-Path $repoRoot 'packaging\msix\AppxManifest.template.xml'
 $assetsDir = Join-Path $repoRoot 'packaging\msix\Assets'
 
+# Keep the package language declarations synchronized with the WinUI resource
+# folders. Partner Center reads supported languages from AppxManifest.xml, so a
+# localized .resw that is omitted here would work in unpackaged builds but not
+# be advertised by the Store package.
+$stringsDir = Join-Path $repoRoot 'src\DesktopDlnaCast.App\Strings'
+$resourceLanguages = @(
+    Get-ChildItem $stringsDir -Directory |
+        Where-Object { Test-Path (Join-Path $_.FullName 'Resources.resw') } |
+        ForEach-Object Name |
+        Sort-Object
+)
+$templateXml = [xml](Get-Content $templatePath -Raw -Encoding utf8)
+$manifestLanguages = @(
+    $templateXml.Package.Resources.Resource |
+        ForEach-Object { $_.Language } |
+        Sort-Object
+)
+$missingManifestLanguages = @(
+    $resourceLanguages | Where-Object { $_ -notin $manifestLanguages }
+)
+$unknownManifestLanguages = @(
+    $manifestLanguages | Where-Object { $_ -notin $resourceLanguages }
+)
+if ($missingManifestLanguages -or $unknownManifestLanguages) {
+    throw (
+        'MSIX manifest languages do not match the app resources. ' +
+        "Missing from manifest: [$($missingManifestLanguages -join ', ')]. " +
+        "Missing resource folders: [$($unknownManifestLanguages -join ', ')]."
+    )
+}
+Write-Host "MSIX languages validated: $($manifestLanguages.Count)"
+
 function Find-SdkTool([string]$name) {
     $candidates = @()
     $kitsRoot = "${env:ProgramFiles(x86)}\Windows Kits\10\bin"
