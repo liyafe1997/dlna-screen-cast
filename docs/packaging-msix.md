@@ -105,6 +105,19 @@ powershell -ExecutionPolicy Bypass -File packaging/scripts/build-msix.ps1 -Versi
   -Publisher 'CN=xxxxxxxx-xxxx-...' -NoUnsignedMarker
 ```
 
+也可以先编辑仓库根目录 `build-release-msstore-packages.bat` 顶部的 `VERSION`、
+`PUBLISHER` 和 `PUBLISHER_DISPLAY_NAME` 变量，然后双击或直接运行脚本，一次生成
+x64 和 arm64 两套 Store 提交包：
+
+```bat
+build-release-msstore-packages.bat
+```
+
+脚本要求显式传入 Partner Center 的 Publisher，强制关闭未签名包标记，并检查
+Store 版本号为末段是 `0` 的四段数字。产物仍位于 `out/msix/artifacts/`；上传两份
+未签名的 `*_x64.msixbundle` 和 `*_arm64.msixbundle`，由 Store 在认证过程中签名。
+构建 arm64 包之前必须已经生成 arm64 原生媒体运行时。
+
 ## 其他
 
 - **开始菜单名称已本地化**：清单 `DisplayName` 引用 `ms-resource:WindowTitle`，
