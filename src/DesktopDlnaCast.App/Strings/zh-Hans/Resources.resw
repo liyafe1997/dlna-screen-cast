@@ -69,4 +69,16 @@
   <data name="CustomResolutionInvalid" xml:space="preserve"><value>请输入 2 × 2 至 7680 × 4320 范围内的偶数尺寸，例如 1920 × 1080。</value></data>
   <data name="ConfirmButton" xml:space="preserve"><value>使用此分辨率</value></data>
   <data name="CancelButton" xml:space="preserve"><value>取消</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>关于</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>关于 DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>关于</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>通过 DLNA 投放 Windows 桌面</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>版本号</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>编译日期（UTC）</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>相关链接</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>源代码：</value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ Buy me a coffee · 赞助项目</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>如果这个小工具对你有所帮助，欢迎请我喝杯咖啡，支持项目继续改进。</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>关闭</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>未知</value></data>
 </root>

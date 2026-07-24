@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Volume</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Solo audio</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>Informazioni</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>Informazioni su DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>Informazioni</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>Trasmetti il desktop Windows tramite DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>Versione</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>Data di compilazione (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>Collegamenti</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>Codice sorgente: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ Offrimi un caffè · Sostieni</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>Se questo piccolo strumento ti è utile, puoi offrirmi un caffè e sostenerne lo sviluppo.</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>Chiudi</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>Sconosciuto</value></data>
 </root>

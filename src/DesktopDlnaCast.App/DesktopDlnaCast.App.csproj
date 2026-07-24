@@ -25,6 +25,7 @@
     <ValidateDesktopDlnaCastNativeRuntime>true</ValidateDesktopDlnaCastNativeRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::UtcNow.ToString('yyyy-MM-dd'))" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="Microsoft.WindowsAppSDK" />

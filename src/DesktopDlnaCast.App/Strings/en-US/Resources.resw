@@ -69,4 +69,16 @@
   <data name="CustomResolutionInvalid" xml:space="preserve"><value>Enter an even resolution from 2 × 2 through 7680 × 4320, for example 1920 × 1080.</value></data>
   <data name="ConfirmButton" xml:space="preserve"><value>Use resolution</value></data>
   <data name="CancelButton" xml:space="preserve"><value>Cancel</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>About</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>About DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>About</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>Cast your Windows desktop over DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>Version</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>Build date (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>Links</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>Source: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ Buy me a coffee · Donate</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>If this little tool has helped you, consider buying me a coffee to support its continued improvement.</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>Close</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>Unknown</value></data>
 </root>

@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Volym</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Endast ljud</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>Om</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>Om DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>Om</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>Strömma Windows-skrivbordet via DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>Version</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>Byggdatum (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>Länkar</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>Källkod: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ Bjud mig på en kaffe · Stöd projektet</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>Om du har nytta av det här lilla verktyget får du gärna bjuda mig på en kaffe och stödja fortsatt utveckling.</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>Stäng</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>Okänt</value></data>
 </root>

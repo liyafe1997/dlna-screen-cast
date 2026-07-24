@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>RTL</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>مستوى الصوت</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Audio only</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>حول</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>حول DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>حول التطبيق</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>بث سطح مكتب Windows عبر DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>الإصدار</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>تاريخ البناء (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>الروابط</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>المصدر: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ اشترِ لي قهوة · ادعم المشروع</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>إذا أفادتك هذه الأداة الصغيرة، يمكنك دعوتي إلى فنجان قهوة ودعم استمرار تطويرها.</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>إغلاق</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>غير معروف</value></data>
 </root>

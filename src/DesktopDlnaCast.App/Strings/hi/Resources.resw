@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>वॉल्यूम</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>केवल ऑडियो</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>परिचय</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>DLNA Screen Cast के बारे में</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>ऐप के बारे में</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>DLNA के ज़रिए अपना Windows डेस्कटॉप कास्ट करें</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>संस्करण</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>बिल्ड की तारीख (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>लिंक</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>स्रोत कोड: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ मुझे एक कॉफ़ी पिलाएँ · सहयोग करें</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>अगर यह छोटा-सा टूल आपके काम आया हो, तो एक कॉफ़ी के साथ इसके आगे के विकास में सहयोग कर सकते हैं।</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>बंद करें</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>अज्ञात</value></data>
 </root>

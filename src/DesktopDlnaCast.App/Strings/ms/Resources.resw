@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Kelantangan</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Audio sahaja</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>Perihal</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>Perihal DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>Perihal</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>Siarkan desktop Windows melalui DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>Versi</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>Tarikh binaan (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>Pautan</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>Kod sumber: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ Belanja saya secawan kopi · Sokong</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>Jika alat kecil ini membantu anda, bolehlah belanja saya secawan kopi untuk menyokong penambahbaikannya.</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>Tutup</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>Tidak diketahui</value></data>
 </root>

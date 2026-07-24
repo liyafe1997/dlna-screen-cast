@@ -53,6 +53,11 @@ Non-secret defaults live in `appsettings.json` and bind to validated options. Us
 
 After the main window is activated, `MainViewModel.InitializeAsync` restores those choices and automatically runs the same bounded, cancellable discovery operation used by the manual refresh command. The refresh button remains available for devices that join the LAN later.
 
+The main action bar keeps casting controls grouped on the left and an About entry isolated on
+the right. Its native dialog reads the product version and UTC build date from assembly metadata
+and exposes the project and donation pages as explicit external links; it has no dependency on
+the casting session or network services.
+
 Every test/cast attempt has a correlation ID and a structured `CastFailure` containing stage, user message, original exception, protocol status, fallback advice, and safe diagnostic context.
 
 The display picker refreshes one bounded, downscaled snapshot per active monitor when its

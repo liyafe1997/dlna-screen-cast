@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Громкость</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Только звук</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>О программе</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>О программе DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>О программе</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>Трансляция рабочего стола Windows по DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>Версия</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>Дата сборки (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>Ссылки</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>Исходный код: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ Угостить меня кофе · Поддержать</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>Если эта небольшая программа вам пригодилась, вы можете угостить меня кофе и поддержать её развитие.</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>Закрыть</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>Неизвестно</value></data>
 </root>

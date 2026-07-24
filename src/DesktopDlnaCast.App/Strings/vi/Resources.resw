@@ -57,4 +57,16 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Âm lượng</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Chỉ âm thanh</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>Giới thiệu</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>Giới thiệu về DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>Giới thiệu</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>Truyền màn hình Windows qua DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>Phiên bản</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>Ngày biên dịch (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>Liên kết</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>Mã nguồn: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ Mời tôi một ly cà phê · Ủng hộ</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>Nếu công cụ nhỏ này hữu ích với bạn, hãy mời tôi một ly cà phê để ủng hộ việc tiếp tục cải thiện ứng dụng.</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>Đóng</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>Không rõ</value></data>
 </root>

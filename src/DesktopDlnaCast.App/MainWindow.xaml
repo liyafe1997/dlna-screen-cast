@@ -100,6 +100,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
 
       <StackPanel MaxWidth="720" Spacing="4">
@@ -246,16 +247,31 @@
         </Grid>
       </Border>
 
-      <StackPanel
+      <Grid
           Grid.Row="2"
           MaxWidth="720"
-          Orientation="Horizontal"
-          Spacing="8">
-        <Button x:Uid="StartCastButton" Padding="12,4,12,5" Style="{StaticResource AccentButtonStyle}" Command="{x:Bind ViewModel.StartCastCommand}" />
-        <Button x:Uid="StopButton" Padding="12,4,12,5" Command="{x:Bind ViewModel.StopCommand}" />
-        <Button x:Uid="RefreshDevicesButton" Padding="12,4,12,5" Command="{x:Bind ViewModel.RefreshCommand}" />
-        <Button x:Uid="TestRendererButton" Padding="12,4,12,5" Command="{x:Bind ViewModel.TestRendererCommand}" />
-      </StackPanel>
+          ColumnSpacing="8">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button x:Uid="StartCastButton" Padding="12,4,12,5" Style="{StaticResource AccentButtonStyle}" Command="{x:Bind ViewModel.StartCastCommand}" />
+          <Button x:Uid="StopButton" Padding="12,4,12,5" Command="{x:Bind ViewModel.StopCommand}" />
+          <Button x:Uid="RefreshDevicesButton" Padding="12,4,12,5" Command="{x:Bind ViewModel.RefreshCommand}" />
+          <Button x:Uid="TestRendererButton" Padding="12,4,12,5" Command="{x:Bind ViewModel.TestRendererCommand}" />
+        </StackPanel>
+        <Button
+            x:Uid="AboutButton"
+            Grid.Column="1"
+            Padding="10,4,12,5"
+            Click="AboutButton_Click">
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <FontIcon FontSize="13" Glyph="&#xE946;" />
+            <TextBlock x:Uid="AboutButtonLabel" />
+          </StackPanel>
+        </Button>
+      </Grid>
 
       <StackPanel
           Grid.Row="3"
@@ -296,6 +312,30 @@
               TextWrapping="Wrap" />
         </StackPanel>
       </Border>
+
+      <HyperlinkButton
+          Grid.Row="5"
+          MaxWidth="720"
+          HorizontalAlignment="Center"
+          HorizontalContentAlignment="Center"
+          NavigateUri="https://ko-fi.com/strawing"
+          Padding="12,6">
+        <StackPanel Spacing="2">
+          <TextBlock
+              x:Name="MainDonateLinkText"
+              HorizontalAlignment="Center"
+              FontWeight="SemiBold"
+              TextAlignment="Center" />
+          <TextBlock
+              x:Name="MainDonateDescriptionText"
+              MaxWidth="520"
+              HorizontalAlignment="Center"
+              FontSize="11"
+              Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+              TextAlignment="Center"
+              TextWrapping="Wrap" />
+        </StackPanel>
+      </HyperlinkButton>
       </Grid>
     </ScrollViewer>
   </Grid>
