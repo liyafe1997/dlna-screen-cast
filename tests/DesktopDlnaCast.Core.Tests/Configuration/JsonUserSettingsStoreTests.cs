@@ -25,6 +25,7 @@ public sealed class JsonUserSettingsStoreTests : IDisposable
         Assert.True(settings.IncludeAudio);
         Assert.False(settings.AudioOnly);
         Assert.False(settings.MuteLocalPlayback);
+        Assert.Equal(AspectRatioMode.Letterbox, settings.AspectRatioMode);
         Assert.Null(settings.Display);
     }
 

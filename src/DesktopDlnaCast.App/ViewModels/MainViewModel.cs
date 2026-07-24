@@ -134,6 +134,10 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         GopOptions.Add(new(resources.GetString("GopTwoSeconds"), 60));
         SelectedGopOption = GopOptions[1];
         AspectRatioOptions.Add(new(
+            resources.GetString("AspectRatioLetterbox"),
+            AspectRatioMode.Letterbox,
+            "ms-appx:///Assets/aspect-letterbox.svg"));
+        AspectRatioOptions.Add(new(
             resources.GetString("AspectRatioStretch"),
             AspectRatioMode.Stretch,
             "ms-appx:///Assets/aspect-stretch.svg"));
@@ -141,11 +145,8 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             resources.GetString("AspectRatioCenterCrop"),
             AspectRatioMode.CenterCrop,
             "ms-appx:///Assets/aspect-center-crop.svg"));
-        AspectRatioOptions.Add(new(
-            resources.GetString("AspectRatioLetterbox"),
-            AspectRatioMode.Letterbox,
-            "ms-appx:///Assets/aspect-letterbox.svg"));
-        SelectedAspectRatioOption = AspectRatioOptions[2];
+        SelectedAspectRatioOption = AspectRatioOptions.First(option =>
+            option.Mode == AspectRatioMode.Letterbox);
         RefreshDisplays();
     }
 
@@ -859,7 +860,8 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         MuteLocalPlayback = settings.MuteLocalPlayback;
         StartAtLiveEdge = settings.StartAtLiveEdge;
         SelectedAspectRatioOption = AspectRatioOptions.FirstOrDefault(option =>
-            option.Mode == settings.AspectRatioMode) ?? AspectRatioOptions[2];
+            option.Mode == settings.AspectRatioMode) ??
+            AspectRatioOptions.First(option => option.Mode == AspectRatioMode.Letterbox);
         VideoOutputProfileViewModel? restoredProfile = OutputProfiles.FirstOrDefault(profile =>
             !profile.IsCustomCommand &&
             profile.Width == settings.OutputWidth &&
