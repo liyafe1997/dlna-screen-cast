@@ -18,7 +18,7 @@ Download the latest release from the [Releases](https://github.com/liyafe1997/dl
 
 Both MSIX and traditional `.exe` installers are available. Most users should download the `.exe` installer. Choose the x64 or ARM64 version according to your processor architecture.
 
-Because the MSIX package is unsigned, it must be installed from an administrator PowerShell session by running `Add-AppxPackage -AllowUnsigned DLNAScreenCast_1.1.0.0_x64.msix`.
+Because the MSIX package is unsigned, it must be installed from an administrator PowerShell session by running `Add-AppxPackage -AllowUnsigned DLNAScreenCast_1.2.0.0_x64.msix`.
 
 # How to Build (Not Required for Regular Users)
 
@@ -139,7 +139,7 @@ Run `build-release-nsis-x64.bat` or `build-release-nsis-arm64.bat` (both are thi
 
 目前提供MSIX和传统exe安装包两种格式，一般用户下载.exe的安装即可。根据自己的处理器架构下载x64或ARM64版本。
 
-MSIX由于没有签名，必须以管理员权限执行 `Add-AppxPackage -AllowUnsigned DLNAScreenCast_1.1.0.0_x64.msix` 的方式来安装。
+MSIX由于没有签名，必须以管理员权限执行 `Add-AppxPackage -AllowUnsigned DLNAScreenCast_1.2.0.0_x64.msix` 的方式来安装。
 
 # 如何编译（普通用户不必看）
 

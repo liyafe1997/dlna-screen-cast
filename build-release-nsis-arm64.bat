@@ -5,11 +5,11 @@ rem and produces a classic NSIS setup .exe under out\nsis\artifacts.
 rem The setup registers all-profile inbound firewall rules for the app and
 rem silently uninstalls a previous version when upgrading.
 rem Requires the arm64 native runtime (see docs\native-build.md).
-rem Usage: build-release-nsis-arm64.bat [version]   (default 1.1.0.0)
+rem Usage: build-release-nsis-arm64.bat [version]   (default 1.2.0.0)
 rem More options: packaging\scripts\build-nsis.ps1
 
 set "VERSION=%~1"
-if "%VERSION%"=="" set "VERSION=1.1.0.0"
+if "%VERSION%"=="" set "VERSION=1.2.0.0"
 
 pushd "%~dp0"
 powershell -NoProfile -ExecutionPolicy Bypass -File "packaging\scripts\build-nsis-arm64.ps1" -Version %VERSION%
