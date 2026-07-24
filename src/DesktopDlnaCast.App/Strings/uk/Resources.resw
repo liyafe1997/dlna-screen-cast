@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>Трансляція екрана DLNA</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>Оновити пристрої</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>Перевірити пристрій</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>Зупинити</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>Стан сеансу</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>Пошук пристроїв відтворення DLNA в локальній мережі…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>Пошук завершено. Знайдено пристроїв: {0}.</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>Операцію скасовано.</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>Пристрій запросив тестовий потік і повідомив стан PLAYING.</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>Не вдалося виконати операцію. Перегляньте структурований журнал.</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>Відсутній нативний медіакомпонент або залежність FFmpeg. Зберіть native-x64-release за інструкцією в docs/native-build.md, а потім перебудуйте й запустіть програму.</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>Бездіяльність</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>Пошук пристроїв</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>Перевірка можливостей пристрою</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>Запуск медіаконвеєра</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>Очікування ключового кадру</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>Публікація потоку</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>Надсилання адреси потоку</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>Запуск відтворення</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>Відтворення</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>Зупинення</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>Помилка</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>Почати трансляцію</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>Пристрій відтворення</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>Пошук пристроїв відтворення DLNA…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>Немає доступних пристроїв відтворення</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Екран для трансляції</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Роздільна здатність трансляції</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Показувати вказівник</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Передавати системний звук</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>Вимкнути звук на цьому ПК під час трансляції (увесь звук поточного пристрою виведення)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>Інтервал ключових кадрів (впливає на затримку)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0,5 с (менша затримка)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 с (типово)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 с (краща якість)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>Починати з найновішого кадру (менша затримка, трохи довший запуск)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>Якість (бітрейт)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>Висока якість ({0} Мбіт/с)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>Середня якість ({0} Мбіт/с, типово)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>Низька якість ({0} Мбіт/с, плавніше)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>Дисплей {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>Дисплей {0} — основний ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (сумісний)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (стандартний)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>Пристрій отримує наживо потік робочого столу Windows.</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>Пристрій зупинив відтворення. Трансляцію зупинено автоматично.</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>Пристрій більше не доступний. Трансляцію зупинено автоматично.</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>Системний звук AAC увімкнено</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>лише відео</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>Гучність</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Лише аудіо</value></data>
+  <data name="AspectRatioModeLabel.Text" xml:space="preserve"><value>Обробка співвідношення сторін</value></data>
+  <data name="AspectRatioStretch" xml:space="preserve"><value>Розтягнути до розміру виходу (спотворює зображення)</value></data>
+  <data name="AspectRatioCenterCrop" xml:space="preserve"><value>Обрізати по центру до співвідношення виходу</value></data>
+  <data name="AspectRatioLetterbox" xml:space="preserve"><value>Зберегти співвідношення сторін (чорні смуги)</value></data>
+  <data name="CustomResolution" xml:space="preserve"><value>Власна...</value></data>
+  <data name="CustomResolutionTitle" xml:space="preserve"><value>Власна роздільна здатність трансляції</value></data>
+  <data name="CustomResolutionInputLabel" xml:space="preserve"><value>Ширина × висота</value></data>
+  <data name="CustomResolutionWidthLabel" xml:space="preserve"><value>Ширина</value></data>
+  <data name="CustomResolutionHeightLabel" xml:space="preserve"><value>Висота</value></data>
+  <data name="CustomResolutionInvalid" xml:space="preserve"><value>Введіть парну роздільну здатність від 2 × 2 до 7680 × 4320, наприклад 1920 × 1080.</value></data>
+  <data name="ConfirmButton" xml:space="preserve"><value>Застосувати</value></data>
+  <data name="CancelButton" xml:space="preserve"><value>Скасувати</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>Про програму</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>Про DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>Про програму</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>Транслюйте робочий стіл Windows через DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>Версія</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>Дата збірки (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>Посилання</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>Код: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ Пригостити кавою · Підтримати</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>Якщо цей невеликий інструмент став вам у пригоді, пригостіть мене кавою, щоб підтримати його подальший розвиток.</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>Закрити</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>Невідомо</value></data>
+</root>

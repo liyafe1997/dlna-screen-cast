@@ -73,8 +73,9 @@ VIAddVersionKey "LegalCopyright" "${PRODUCT_PUBLISHER}"
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
-; Match the app's localization set (src/DesktopDlnaCast.App/Strings); the first
-; language is the fallback when the OS language is not in the list.
+; Match the app's localization set where NSIS provides a language file; the first
+; language is the fallback when the OS language is not in the list. NSIS does not
+; currently provide Burmese, although the installed app supports my-MM.
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "SimpChinese"
 !insertmacro MUI_LANGUAGE "TradChinese"
@@ -94,6 +95,14 @@ VIAddVersionKey "LegalCopyright" "${PRODUCT_PUBLISHER}"
 !insertmacro MUI_LANGUAGE "Swedish"
 !insertmacro MUI_LANGUAGE "Turkish"
 !insertmacro MUI_LANGUAGE "Vietnamese"
+!insertmacro MUI_LANGUAGE "Thai"
+!insertmacro MUI_LANGUAGE "Ukrainian"
+!insertmacro MUI_LANGUAGE "Finnish"
+!insertmacro MUI_LANGUAGE "Danish"
+!insertmacro MUI_LANGUAGE "Norwegian"
+!insertmacro MUI_LANGUAGE "Greek"
+!insertmacro MUI_LANGUAGE "Hungarian"
+!insertmacro MUI_LANGUAGE "Polish"
 
 ; Localized app name; keep in sync with WindowTitle in
 ; src/DesktopDlnaCast.App/Strings/<locale>/Resources.resw.
@@ -116,6 +125,14 @@ LangString AppName ${LANG_MALAY} "Pencerminan Skrin DLNA"
 LangString AppName ${LANG_SWEDISH} "DLNA-skärmspegling"
 LangString AppName ${LANG_TURKISH} "DLNA Ekran Yansıtma"
 LangString AppName ${LANG_VIETNAMESE} "Truyền màn hình DLNA"
+LangString AppName ${LANG_THAI} "ส่งหน้าจอผ่าน DLNA"
+LangString AppName ${LANG_UKRAINIAN} "Трансляція екрана DLNA"
+LangString AppName ${LANG_FINNISH} "DLNA-näytön suoratoisto"
+LangString AppName ${LANG_DANISH} "DLNA-skærmcasting"
+LangString AppName ${LANG_NORWEGIAN} "DLNA-skjermcasting"
+LangString AppName ${LANG_GREEK} "Μετάδοση οθόνης DLNA"
+LangString AppName ${LANG_HUNGARIAN} "DLNA képernyőközvetítés"
+LangString AppName ${LANG_POLISH} "Przesyłanie ekranu DLNA"
 
 ; Uninstall-time prompt: also delete user settings (%LOCALAPPDATA%\DLNAScreenCast)?
 LangString UnDeleteSettings ${LANG_ENGLISH} "Do you also want to delete your settings and configuration data?"
@@ -137,6 +154,14 @@ LangString UnDeleteSettings ${LANG_MALAY} "Adakah anda juga mahu memadam tetapan
 LangString UnDeleteSettings ${LANG_SWEDISH} "Vill du även ta bort dina inställningar och konfigurationsdata?"
 LangString UnDeleteSettings ${LANG_TURKISH} "Ayarlarınızı ve yapılandırma verilerinizi de silmek istiyor musunuz?"
 LangString UnDeleteSettings ${LANG_VIETNAMESE} "Bạn có muốn xóa cả cài đặt và dữ liệu cấu hình của mình không?"
+LangString UnDeleteSettings ${LANG_THAI} "คุณต้องการลบการตั้งค่าและข้อมูลการกำหนดค่าด้วยหรือไม่?"
+LangString UnDeleteSettings ${LANG_UKRAINIAN} "Видалити також ваші налаштування та дані конфігурації?"
+LangString UnDeleteSettings ${LANG_FINNISH} "Haluatko poistaa myös asetuksesi ja määritystietosi?"
+LangString UnDeleteSettings ${LANG_DANISH} "Vil du også slette dine indstillinger og konfigurationsdata?"
+LangString UnDeleteSettings ${LANG_NORWEGIAN} "Vil du også slette innstillingene og konfigurasjonsdataene dine?"
+LangString UnDeleteSettings ${LANG_GREEK} "Θέλετε επίσης να διαγράψετε τις ρυθμίσεις και τα δεδομένα διαμόρφωσης;"
+LangString UnDeleteSettings ${LANG_HUNGARIAN} "Törli a beállításokat és a konfigurációs adatokat is?"
+LangString UnDeleteSettings ${LANG_POLISH} "Czy chcesz również usunąć ustawienia i dane konfiguracyjne?"
 
 ; Installer/uninstaller window title follows the OS language.
 Name "$(AppName)"

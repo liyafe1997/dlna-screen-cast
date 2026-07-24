@@ -57,6 +57,18 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Volume</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Solo audio</value></data>
+  <data name="AspectRatioModeLabel.Text" xml:space="preserve"><value>Gestione delle proporzioni</value></data>
+  <data name="AspectRatioStretch" xml:space="preserve"><value>Adatta all'uscita (deforma l'immagine)</value></data>
+  <data name="AspectRatioCenterCrop" xml:space="preserve"><value>Ritaglia al centro secondo le proporzioni di uscita</value></data>
+  <data name="AspectRatioLetterbox" xml:space="preserve"><value>Mantieni le proporzioni (bande nere)</value></data>
+  <data name="CustomResolution" xml:space="preserve"><value>Personalizzata...</value></data>
+  <data name="CustomResolutionTitle" xml:space="preserve"><value>Risoluzione di trasmissione personalizzata</value></data>
+  <data name="CustomResolutionInputLabel" xml:space="preserve"><value>Larghezza × altezza</value></data>
+  <data name="CustomResolutionWidthLabel" xml:space="preserve"><value>Larghezza</value></data>
+  <data name="CustomResolutionHeightLabel" xml:space="preserve"><value>Altezza</value></data>
+  <data name="CustomResolutionInvalid" xml:space="preserve"><value>Inserisci una risoluzione con valori pari da 2 × 2 a 7680 × 4320, ad esempio 1920 × 1080.</value></data>
+  <data name="ConfirmButton" xml:space="preserve"><value>Usa risoluzione</value></data>
+  <data name="CancelButton" xml:space="preserve"><value>Annulla</value></data>
   <data name="AboutButtonLabel.Text" xml:space="preserve"><value>Informazioni</value></data>
   <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>Informazioni su DLNA Screen Cast</value></data>
   <data name="AboutDialogTitle" xml:space="preserve"><value>Informazioni</value></data>

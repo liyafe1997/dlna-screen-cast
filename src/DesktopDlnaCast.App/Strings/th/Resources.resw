@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>ส่งหน้าจอผ่าน DLNA</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>รีเฟรชอุปกรณ์</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>ทดสอบอุปกรณ์เล่น</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>หยุด</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>สถานะเซสชัน</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>กำลังค้นหาอุปกรณ์เล่น DLNA ในเครือข่ายภายใน…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>ค้นหาเสร็จแล้ว พบอุปกรณ์เล่น {0} เครื่อง</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>ยกเลิกการดำเนินการแล้ว</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>อุปกรณ์เล่นร้องขอสตรีมทดสอบและรายงานสถานะ PLAYING แล้ว</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>การดำเนินการล้มเหลว โปรดตรวจสอบบันทึกแบบมีโครงสร้างเพื่อดูรายละเอียด</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>ไม่พบคอมโพเนนต์สื่อแบบเนทีฟหรือส่วนประกอบ FFmpeg โปรดสร้าง native-x64-release ตาม docs/native-build.md แล้วสร้างและเปิดแอปอีกครั้ง</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>ว่าง</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>กำลังค้นหาอุปกรณ์</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>กำลังตรวจสอบความสามารถของอุปกรณ์เล่น</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>กำลังเริ่มไปป์ไลน์สื่อ</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>กำลังรอคีย์เฟรม</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>กำลังเผยแพร่สตรีม</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>กำลังส่งที่อยู่สตรีม</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>กำลังเริ่มเล่น</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>กำลังเล่น</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>กำลังหยุด</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>ล้มเหลว</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>เริ่มส่งหน้าจอ</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>อุปกรณ์เล่น</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>กำลังค้นหาอุปกรณ์เล่น DLNA…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>ไม่มีอุปกรณ์เล่นที่พร้อมใช้งาน</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>จอภาพที่จะส่ง</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>ความละเอียดการสตรีม</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>รวมตัวชี้เมาส์</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>รวมเสียงระบบ</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>ปิดเสียงพีซีเครื่องนี้ขณะส่งหน้าจอ (เสียงทั้งหมดในอุปกรณ์เอาต์พุตปัจจุบัน)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>ช่วงคีย์เฟรม (มีผลต่อเวลาแฝง)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5 วินาที (เวลาแฝงต่ำกว่า)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 วินาที (ค่าเริ่มต้น)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 วินาที (คุณภาพดีกว่า)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>เริ่มที่ภาพล่าสุด (เวลาแฝงต่ำกว่า แต่เริ่มช้าลงเล็กน้อย)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>คุณภาพ (บิตเรต)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>คุณภาพสูง ({0} Mbps)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>คุณภาพปานกลาง ({0} Mbps, ค่าเริ่มต้น)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>คุณภาพต่ำ ({0} Mbps, ลื่นไหลกว่า)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>จอภาพ {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>จอภาพ {0} — จอหลัก ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (เข้ากันได้ดี)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (มาตรฐาน)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>อุปกรณ์เล่นกำลังดึงสตรีมเดสก์ท็อป Windows แบบสด</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>อุปกรณ์เล่นหยุดเล่นแล้ว จึงหยุดการส่งหน้าจอโดยอัตโนมัติ</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>ไม่สามารถเข้าถึงอุปกรณ์เล่นได้อีกต่อไป จึงหยุดการส่งหน้าจอโดยอัตโนมัติ</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>เปิดใช้เสียงระบบ AAC</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>วิดีโอเท่านั้น</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>ระดับเสียง</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>เสียงเท่านั้น</value></data>
+  <data name="AspectRatioModeLabel.Text" xml:space="preserve"><value>การจัดการอัตราส่วนภาพ</value></data>
+  <data name="AspectRatioStretch" xml:space="preserve"><value>ยืดให้เต็มเอาต์พุต (ภาพจะผิดสัดส่วน)</value></data>
+  <data name="AspectRatioCenterCrop" xml:space="preserve"><value>ครอปกึ่งกลางให้ตรงกับอัตราส่วนเอาต์พุต</value></data>
+  <data name="AspectRatioLetterbox" xml:space="preserve"><value>คงอัตราส่วนภาพ (มีแถบดำ)</value></data>
+  <data name="CustomResolution" xml:space="preserve"><value>กำหนดเอง...</value></data>
+  <data name="CustomResolutionTitle" xml:space="preserve"><value>ความละเอียดการสตรีมแบบกำหนดเอง</value></data>
+  <data name="CustomResolutionInputLabel" xml:space="preserve"><value>ความกว้าง × ความสูง</value></data>
+  <data name="CustomResolutionWidthLabel" xml:space="preserve"><value>ความกว้าง</value></data>
+  <data name="CustomResolutionHeightLabel" xml:space="preserve"><value>ความสูง</value></data>
+  <data name="CustomResolutionInvalid" xml:space="preserve"><value>ป้อนความละเอียดเป็นเลขคู่ตั้งแต่ 2 × 2 ถึง 7680 × 4320 เช่น 1920 × 1080</value></data>
+  <data name="ConfirmButton" xml:space="preserve"><value>ใช้ความละเอียดนี้</value></data>
+  <data name="CancelButton" xml:space="preserve"><value>ยกเลิก</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>เกี่ยวกับ</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>เกี่ยวกับ DLNA Screen Cast</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>เกี่ยวกับ</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>ส่งเดสก์ท็อป Windows ของคุณผ่าน DLNA</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>เวอร์ชัน</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>วันที่สร้าง (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>ลิงก์</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>ซอร์สโค้ด: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ เลี้ยงกาแฟฉัน · บริจาค</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>หากเครื่องมือเล็ก ๆ นี้มีประโยชน์ โปรดพิจารณาเลี้ยงกาแฟฉันเพื่อสนับสนุนการพัฒนาต่อไป</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>ปิด</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>ไม่ทราบ</value></data>
+</root>

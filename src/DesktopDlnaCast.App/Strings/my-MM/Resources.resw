@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>DLNA မျက်နှာပြင်ထုတ်လွှင့်မှု</value></data>
+  <data name="RefreshDevicesButton.Content" xml:space="preserve"><value>စက်များကို ပြန်ရှာရန်</value></data>
+  <data name="TestRendererButton.Content" xml:space="preserve"><value>ဖွင့်စက်ကို စမ်းသပ်ရန်</value></data>
+  <data name="StopButton.Content" xml:space="preserve"><value>ရပ်ရန်</value></data>
+  <data name="SessionStatusLabel.Text" xml:space="preserve"><value>ဆက်ရှင်အခြေအနေ</value></data>
+  <data name="DiscoveryStarted" xml:space="preserve"><value>ဒေသတွင်းကွန်ရက်တွင် DLNA ဖွင့်စက်များကို ရှာဖွေနေသည်…</value></data>
+  <data name="DiscoveryCompleted" xml:space="preserve"><value>ရှာဖွေမှုပြီးပါပြီ။ ဖွင့်စက် {0} ခု တွေ့ရှိသည်။</value></data>
+  <data name="OperationCanceled" xml:space="preserve"><value>လုပ်ဆောင်ချက်ကို ပယ်ဖျက်လိုက်သည်။</value></data>
+  <data name="RendererTestSucceeded" xml:space="preserve"><value>ဖွင့်စက်သည် စမ်းသပ်စီးကြောင်းကို တောင်းဆိုပြီး PLAYING အခြေအနေကို ပြန်ကြားခဲ့သည်။</value></data>
+  <data name="OperationFailed" xml:space="preserve"><value>လုပ်ဆောင်ချက် မအောင်မြင်ပါ။ အသေးစိတ်အတွက် ဖွဲ့စည်းပုံပါ မှတ်တမ်းကို စစ်ဆေးပါ။</value></data>
+  <data name="NativeRuntimeMissing" xml:space="preserve"><value>မူရင်းမီဒီယာအစိတ်အပိုင်း သို့မဟုတ် FFmpeg မှီခိုမှု မရှိပါ။ docs/native-build.md အတိုင်း native-x64-release ကို တည်ဆောက်ပြီး အက်ပ်ကို ပြန်လည်တည်ဆောက်ဖွင့်ပါ။</value></data>
+  <data name="CastState_Idle" xml:space="preserve"><value>အသင့်</value></data>
+  <data name="CastState_Discovering" xml:space="preserve"><value>စက်များကို ရှာဖွေနေသည်</value></data>
+  <data name="CastState_ProbingRenderer" xml:space="preserve"><value>ဖွင့်စက်၏ စွမ်းဆောင်ရည်ကို စစ်ဆေးနေသည်</value></data>
+  <data name="CastState_StartingMediaPipeline" xml:space="preserve"><value>မီဒီယာလုပ်ငန်းစဉ်ကို စတင်နေသည်</value></data>
+  <data name="CastState_WaitingForKeyframe" xml:space="preserve"><value>ကီးဖရိမ်ကို စောင့်နေသည်</value></data>
+  <data name="CastState_Publishing" xml:space="preserve"><value>စီးကြောင်းကို ထုတ်လွှင့်နေသည်</value></data>
+  <data name="CastState_SendingTransportUri" xml:space="preserve"><value>စီးကြောင်းလိပ်စာကို ပို့နေသည်</value></data>
+  <data name="CastState_StartingPlayback" xml:space="preserve"><value>ဖွင့်ခြင်းကို စတင်နေသည်</value></data>
+  <data name="CastState_Playing" xml:space="preserve"><value>ဖွင့်နေသည်</value></data>
+  <data name="CastState_Stopping" xml:space="preserve"><value>ရပ်နေသည်</value></data>
+  <data name="CastState_Faulted" xml:space="preserve"><value>မအောင်မြင်ပါ</value></data>
+  <data name="StartCastButton.Content" xml:space="preserve"><value>ထုတ်လွှင့်မှု စတင်ရန်</value></data>
+  <data name="DeviceListLabel.Text" xml:space="preserve"><value>ဖွင့်စက်</value></data>
+  <data name="DeviceListSearching" xml:space="preserve"><value>DLNA ဖွင့်စက်များကို ရှာဖွေနေသည်…</value></data>
+  <data name="DeviceListEmpty" xml:space="preserve"><value>အသုံးပြုနိုင်သော ဖွင့်စက် မရှိပါ</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>မျှဝေမည့် မျက်နှာပြင်</value></data>
+  <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>ထုတ်လွှင့်မှု ရုပ်ထွက်</value></data>
+  <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>ညွှန်တံ ထည့်ရန်</value></data>
+  <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>စနစ်အသံ ထည့်ရန်</value></data>
+  <data name="MuteLocalPlaybackToggle.Content" xml:space="preserve"><value>ထုတ်လွှင့်နေစဉ် ဤ PC ကို အသံပိတ်ရန် (လက်ရှိအထွက်စက်ရှိ အသံအားလုံး)</value></data>
+  <data name="GopIntervalLabel.Text" xml:space="preserve"><value>ကီးဖရိမ်ကြားကာလ (ကြန့်ကြာချိန်အပေါ် သက်ရောက်သည်)</value></data>
+  <data name="GopHalfSecond" xml:space="preserve"><value>0.5 စက္ကန့် (ကြန့်ကြာမှု ပိုနည်း)</value></data>
+  <data name="GopOneSecond" xml:space="preserve"><value>1 စက္ကန့် (မူလ)</value></data>
+  <data name="GopTwoSeconds" xml:space="preserve"><value>2 စက္ကန့် (အရည်အသွေး ပိုကောင်း)</value></data>
+  <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>နောက်ဆုံးပုံမှ စတင်ရန် (ကြန့်ကြာမှု ပိုနည်း၊ စတင်ချိန် အနည်းငယ်ပိုကြာ)</value></data>
+  <data name="QualityLabel.Text" xml:space="preserve"><value>အရည်အသွေး (ဘစ်နှုန်း)</value></data>
+  <data name="QualityHigh" xml:space="preserve"><value>အရည်အသွေးမြင့် ({0} Mbps)</value></data>
+  <data name="QualityMedium" xml:space="preserve"><value>အလယ်အလတ် ({0} Mbps၊ မူလ)</value></data>
+  <data name="QualityLow" xml:space="preserve"><value>အရည်အသွေးနိမ့် ({0} Mbps၊ ပိုချောမွေ့)</value></data>
+  <data name="DisplayName" xml:space="preserve"><value>မျက်နှာပြင် {0} ({1} × {2})</value></data>
+  <data name="PrimaryDisplayName" xml:space="preserve"><value>မျက်နှာပြင် {0} — ပင်မ ({1} × {2})</value></data>
+  <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (လိုက်ဖက်မှုကောင်း)</value></data>
+  <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (စံ)</value></data>
+  <data name="LiveCastStarted" xml:space="preserve"><value>ဖွင့်စက်သည် Windows ဒက်စ်တော့ တိုက်ရိုက်စီးကြောင်းကို ရယူနေသည်။</value></data>
+  <data name="RendererStoppedPlayback" xml:space="preserve"><value>ဖွင့်စက်က ဖွင့်ခြင်းကို ရပ်လိုက်သဖြင့် ထုတ်လွှင့်မှုကို အလိုအလျောက် ရပ်လိုက်သည်။</value></data>
+  <data name="RendererUnreachable" xml:space="preserve"><value>ဖွင့်စက်ကို ဆက်သွယ်၍မရတော့သဖြင့် ထုတ်လွှင့်မှုကို အလိုအလျောက် ရပ်လိုက်သည်။</value></data>
+  <data name="EncoderSummary" xml:space="preserve"><value>{0}; {1} × {2}; {3}</value></data>
+  <data name="AudioEnabled" xml:space="preserve"><value>AAC စနစ်အသံ ဖွင့်ထားသည်</value></data>
+  <data name="AudioDisabled" xml:space="preserve"><value>ဗီဒီယိုသာ</value></data>
+  <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
+  <data name="VolumeLabel.Text" xml:space="preserve"><value>အသံအတိုးအကျယ်</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>အသံသာ</value></data>
+  <data name="AspectRatioModeLabel.Text" xml:space="preserve"><value>ပုံအချိုး ကိုင်တွယ်မှု</value></data>
+  <data name="AspectRatioStretch" xml:space="preserve"><value>အထွက်အရွယ်အစားအထိ ဆန့်ရန် (ပုံပျက်နိုင်သည်)</value></data>
+  <data name="AspectRatioCenterCrop" xml:space="preserve"><value>အထွက်အချိုးနှင့် ကိုက်ညီအောင် အလယ်မှ ဖြတ်ရန်</value></data>
+  <data name="AspectRatioLetterbox" xml:space="preserve"><value>ပုံအချိုး ထိန်းရန် (အနက်ရောင်ဘောင်များ)</value></data>
+  <data name="CustomResolution" xml:space="preserve"><value>စိတ်ကြိုက်...</value></data>
+  <data name="CustomResolutionTitle" xml:space="preserve"><value>စိတ်ကြိုက် ထုတ်လွှင့်မှုရုပ်ထွက်</value></data>
+  <data name="CustomResolutionInputLabel" xml:space="preserve"><value>အကျယ် × အမြင့်</value></data>
+  <data name="CustomResolutionWidthLabel" xml:space="preserve"><value>အကျယ်</value></data>
+  <data name="CustomResolutionHeightLabel" xml:space="preserve"><value>အမြင့်</value></data>
+  <data name="CustomResolutionInvalid" xml:space="preserve"><value>2 × 2 မှ 7680 × 4320 အတွင်း စုံကိန်းရုပ်ထွက်ကို ထည့်ပါ၊ ဥပမာ 1920 × 1080။</value></data>
+  <data name="ConfirmButton" xml:space="preserve"><value>ဤရုပ်ထွက်ကို သုံးရန်</value></data>
+  <data name="CancelButton" xml:space="preserve"><value>ပယ်ဖျက်ရန်</value></data>
+  <data name="AboutButtonLabel.Text" xml:space="preserve"><value>အကြောင်း</value></data>
+  <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>DLNA Screen Cast အကြောင်း</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>အကြောင်း</value></data>
+  <data name="AboutTagline" xml:space="preserve"><value>Windows ဒက်စ်တော့ကို DLNA မှတစ်ဆင့် ထုတ်လွှင့်ပါ</value></data>
+  <data name="AboutVersionLabel" xml:space="preserve"><value>ဗားရှင်း</value></data>
+  <data name="AboutBuildDateLabel" xml:space="preserve"><value>တည်ဆောက်သည့်ရက် (UTC)</value></data>
+  <data name="AboutLinksLabel" xml:space="preserve"><value>လင့်ခ်များ</value></data>
+  <data name="AboutSourceLabel" xml:space="preserve"><value>ရင်းမြစ်: </value></data>
+  <data name="AboutDonateLink" xml:space="preserve"><value>☕ ကော်ဖီတိုက်ပါ · လှူဒါန်းရန်</value></data>
+  <data name="AboutDonateDescription" xml:space="preserve"><value>ဤကိရိယာငယ်က အကူအညီဖြစ်ပါက ဆက်လက်တိုးတက်စေရန် ကော်ဖီတစ်ခွက် တိုက်ရန် စဉ်းစားပေးပါ။</value></data>
+  <data name="AboutCloseButton" xml:space="preserve"><value>ပိတ်ရန်</value></data>
+  <data name="AboutUnknownValue" xml:space="preserve"><value>မသိပါ</value></data>
+</root>

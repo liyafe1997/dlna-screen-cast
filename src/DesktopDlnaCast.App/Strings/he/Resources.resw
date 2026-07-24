@@ -56,7 +56,8 @@
   <data name="AudioDisabled" xml:space="preserve"><value>וידאו בלבד</value></data>
   <data name="LayoutDirection" xml:space="preserve"><value>RTL</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>עוצמת קול</value></data>
-  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Audio only</value></data>
+  <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>שמע בלבד</value></data>
+  <data name="AspectRatioModeLabel.Text" xml:space="preserve"><value>טיפול ביחס גובה-רוחב</value></data><data name="AspectRatioStretch" xml:space="preserve"><value>מתיחה לגודל הפלט (מעוותת את התמונה)</value></data><data name="AspectRatioCenterCrop" xml:space="preserve"><value>חיתוך מהמרכז ליחס הפלט</value></data><data name="AspectRatioLetterbox" xml:space="preserve"><value>שמירת יחס התמונה (פסים שחורים)</value></data><data name="CustomResolution" xml:space="preserve"><value>מותאמת אישית...</value></data><data name="CustomResolutionTitle" xml:space="preserve"><value>רזולוציית שידור מותאמת אישית</value></data><data name="CustomResolutionInputLabel" xml:space="preserve"><value>רוחב × גובה</value></data><data name="CustomResolutionWidthLabel" xml:space="preserve"><value>רוחב</value></data><data name="CustomResolutionHeightLabel" xml:space="preserve"><value>גובה</value></data><data name="CustomResolutionInvalid" xml:space="preserve"><value>יש להזין רזולוציה זוגית בין 2 × 2 ל־7680 × 4320, לדוגמה 1920 × 1080.</value></data><data name="ConfirmButton" xml:space="preserve"><value>שימוש ברזולוציה</value></data><data name="CancelButton" xml:space="preserve"><value>ביטול</value></data>
   <data name="AboutButtonLabel.Text" xml:space="preserve"><value>אודות</value></data>
   <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>אודות DLNA Screen Cast</value></data>
   <data name="AboutDialogTitle" xml:space="preserve"><value>אודות</value></data>

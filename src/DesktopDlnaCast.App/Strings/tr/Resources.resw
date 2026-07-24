@@ -57,6 +57,18 @@
   <data name="LayoutDirection" xml:space="preserve"><value>LTR</value></data>
   <data name="VolumeLabel.Text" xml:space="preserve"><value>Ses düzeyi</value></data>
   <data name="AudioOnlyToggle.Content" xml:space="preserve"><value>Yalnızca ses</value></data>
+  <data name="AspectRatioModeLabel.Text" xml:space="preserve"><value>En-boy oranı işleme</value></data>
+  <data name="AspectRatioStretch" xml:space="preserve"><value>Çıkışa sığacak şekilde uzat (görüntüyü bozar)</value></data>
+  <data name="AspectRatioCenterCrop" xml:space="preserve"><value>Çıkış oranına göre ortadan kırp</value></data>
+  <data name="AspectRatioLetterbox" xml:space="preserve"><value>En-boy oranını koru (siyah çubuklar)</value></data>
+  <data name="CustomResolution" xml:space="preserve"><value>Özel...</value></data>
+  <data name="CustomResolutionTitle" xml:space="preserve"><value>Özel yayın çözünürlüğü</value></data>
+  <data name="CustomResolutionInputLabel" xml:space="preserve"><value>Genişlik × yükseklik</value></data>
+  <data name="CustomResolutionWidthLabel" xml:space="preserve"><value>Genişlik</value></data>
+  <data name="CustomResolutionHeightLabel" xml:space="preserve"><value>Yükseklik</value></data>
+  <data name="CustomResolutionInvalid" xml:space="preserve"><value>2 × 2 ile 7680 × 4320 arasında çift sayılı bir çözünürlük girin; örneğin 1920 × 1080.</value></data>
+  <data name="ConfirmButton" xml:space="preserve"><value>Çözünürlüğü kullan</value></data>
+  <data name="CancelButton" xml:space="preserve"><value>İptal</value></data>
   <data name="AboutButtonLabel.Text" xml:space="preserve"><value>Hakkında</value></data>
   <data name="AboutButton.AutomationProperties.Name" xml:space="preserve"><value>DLNA Screen Cast hakkında</value></data>
   <data name="AboutDialogTitle" xml:space="preserve"><value>Hakkında</value></data>
