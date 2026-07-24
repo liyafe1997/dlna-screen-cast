@@ -11,7 +11,7 @@
        （DLNAScreenCast，即应用工程的 AssemblyName/TargetName），否则系统
        无法解析下方 ms-resource: 引用，开始菜单将退回英文名。 -->
   <Identity
-    Name="DLNAScreenCast"
+    Name="$PACKAGE_IDENTITY_NAME$"
     Publisher="$PUBLISHER$"
     Version="$VERSION$"
     ProcessorArchitecture="$ARCHITECTURE$" />

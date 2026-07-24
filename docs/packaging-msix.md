@@ -106,8 +106,9 @@ powershell -ExecutionPolicy Bypass -File packaging/scripts/build-msix.ps1 -Versi
 ```
 
 也可以先编辑仓库根目录 `build-release-msstore-packages.bat` 顶部的 `VERSION`、
-`PUBLISHER` 和 `PUBLISHER_DISPLAY_NAME` 变量，然后双击或直接运行脚本，一次生成
-x64 和 arm64 两套 Store 提交包：
+`PACKAGE_IDENTITY_NAME`、`PUBLISHER` 和 `PUBLISHER_DISPLAY_NAME` 变量，然后双击
+或直接运行脚本，一次生成 x64 和 arm64 两套 Store 提交包。后三项必须逐字匹配
+Partner Center 的 Product identity 页面：
 
 ```bat
 build-release-msstore-packages.bat

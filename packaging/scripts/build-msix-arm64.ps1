@@ -8,6 +8,7 @@ Requires the arm64 native runtime (see docs/native-build.md).
 param(
     [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')]
     [string]$Version,
+    [string]$PackageIdentityName,
     [string]$Publisher,
     [string]$PublisherDisplayName,
     [string]$Configuration,

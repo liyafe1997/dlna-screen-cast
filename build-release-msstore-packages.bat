@@ -6,11 +6,12 @@ rem The Publisher must exactly match Product identity management in Partner Cent
 rem ---------------------------------------------------------------------------
 rem Microsoft Store build settings -- edit these values before building.
 rem VERSION must contain four numeric parts and end in .0.
-rem PUBLISHER must exactly match Partner Center > Product identity management.
+rem Identity values must exactly match Partner Center > Product identity.
 rem ---------------------------------------------------------------------------
 set "VERSION=1.2.0.0"
-set "PUBLISHER=CN=00000000-0000-0000-0000-000000000000"
-set "PUBLISHER_DISPLAY_NAME=DLNA Screen Cast"
+set "PACKAGE_IDENTITY_NAME=Strawing.DLNAScreenCasting"
+set "PUBLISHER=CN=949626B5-BA32-4EDA-B869-88BA07841C59"
+set "PUBLISHER_DISPLAY_NAME=Strawing"
 
 if "%PUBLISHER%"=="CN=00000000-0000-0000-0000-000000000000" (
   echo ERROR: Edit PUBLISHER at the top of %~nx0 before building.
@@ -34,6 +35,7 @@ echo.
 echo === Building Microsoft Store x64 package ===
 powershell -NoProfile -ExecutionPolicy Bypass -File "packaging\scripts\build-msix-x64.ps1" ^
   -Version "%VERSION%" ^
+  -PackageIdentityName "%PACKAGE_IDENTITY_NAME%" ^
   -Publisher "%PUBLISHER%" ^
   -PublisherDisplayName "%PUBLISHER_DISPLAY_NAME%" ^
   -NoUnsignedMarker
@@ -46,6 +48,7 @@ echo.
 echo === Building Microsoft Store arm64 package ===
 powershell -NoProfile -ExecutionPolicy Bypass -File "packaging\scripts\build-msix-arm64.ps1" ^
   -Version "%VERSION%" ^
+  -PackageIdentityName "%PACKAGE_IDENTITY_NAME%" ^
   -Publisher "%PUBLISHER%" ^
   -PublisherDisplayName "%PUBLISHER_DISPLAY_NAME%" ^
   -NoUnsignedMarker

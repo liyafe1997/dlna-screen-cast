@@ -7,6 +7,7 @@ forwarded by name (defaults live in build-msix.ps1).
 param(
     [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')]
     [string]$Version,
+    [string]$PackageIdentityName,
     [string]$Publisher,
     [string]$PublisherDisplayName,
     [string]$Configuration,

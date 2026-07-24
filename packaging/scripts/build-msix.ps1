@@ -40,6 +40,8 @@ param(
     [string]$Version = '1.2.0.0',
     [ValidateSet('x64', 'arm64')]
     [string]$Architecture = 'x64',
+    [ValidateNotNullOrEmpty()]
+    [string]$PackageIdentityName = 'DLNAScreenCast',
     [string]$Publisher = 'CN=DLNAScreenCast Dev',
     [string]$PublisherDisplayName = 'DLNA Screen Cast Project',
     [string]$Configuration = 'Release',
@@ -216,6 +218,7 @@ foreach ($name in $crtNames) {
 New-Item -ItemType Directory -Force (Join-Path $layoutDir 'Assets') | Out-Null
 Copy-Item (Join-Path $assetsDir '*.png') (Join-Path $layoutDir 'Assets') -Force
 $manifest = Get-Content $templatePath -Raw -Encoding utf8
+$manifest = $manifest.Replace('$PACKAGE_IDENTITY_NAME$', $PackageIdentityName)
 $manifest = $manifest.Replace('$VERSION$', $Version)
 $manifest = $manifest.Replace('$PUBLISHER$', $Publisher)
 $manifest = $manifest.Replace('$PUBLISHER_DISPLAY_NAME$', $PublisherDisplayName)
