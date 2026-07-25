@@ -2,9 +2,9 @@ namespace DesktopDlnaCast.Core.Models;
 
 public sealed record UserSettings
 {
-    public int OutputWidth { get; init; } = 1280;
+    public int OutputWidth { get; init; } = 1920;
 
-    public int OutputHeight { get; init; } = 720;
+    public int OutputHeight { get; init; } = 1080;
 
     public bool IncludeCursor { get; init; } = true;
 

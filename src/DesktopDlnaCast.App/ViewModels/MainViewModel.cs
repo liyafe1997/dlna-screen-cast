@@ -126,11 +126,15 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         stateMachine.StateChanged += OnStateChanged;
         OutputProfiles.Add(CreateOutputProfile(1280, 720));
         OutputProfiles.Add(CreateOutputProfile(1920, 1080));
+        OutputProfiles.Add(CreateOutputProfile(2560, 1440));
+        OutputProfiles.Add(CreateOutputProfile(3840, 2160));
         OutputProfiles.Add(CreateOutputProfile(1280, 800));
         OutputProfiles.Add(CreateOutputProfile(1920, 1200));
+        OutputProfiles.Add(CreateOutputProfile(2560, 1600));
         OutputProfiles.Add(CreateOutputProfile(1024, 768));
         OutputProfiles.Add(new(resources.GetString("CustomResolution"), 0, 0, 0, 0, true));
-        SelectedOutputProfile = OutputProfiles[0];
+        SelectedOutputProfile = OutputProfiles.First(profile =>
+            profile.Width == 1920 && profile.Height == 1080);
         FrameRateOptions.Add(new("15 FPS", 15));
         FrameRateOptions.Add(new("30 FPS", 30));
         FrameRateOptions.Add(new("60 FPS", 60));
@@ -971,9 +975,17 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             : string.Create(
                 CultureInfo.InvariantCulture,
                 $"{ratioWidth}:{ratioHeight}");
+        string qualityLabel = (width, height) switch
+        {
+            (1280, 720) => " (720p)",
+            (1920, 1080) => " (1080p)",
+            (2560, 1440) or (2560, 1600) => " (2K)",
+            (3840, 2160) => " (4K)",
+            _ => string.Empty,
+        };
         string displayName = string.Create(
             CultureInfo.InvariantCulture,
-            $"{width} × {height} ({ratio})");
+            $"{width} × {height}{qualityLabel} ({ratio})");
         long pixels = (long)width * height;
         int videoBitrate = checked((int)Math.Clamp(
             pixels * 3_000_000L / (1280L * 720L),

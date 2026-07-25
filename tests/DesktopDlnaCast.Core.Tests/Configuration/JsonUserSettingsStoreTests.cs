@@ -19,8 +19,8 @@ public sealed class JsonUserSettingsStoreTests : IDisposable
 
         UserSettings settings = await store.LoadAsync(CancellationToken.None);
 
-        Assert.Equal(1280, settings.OutputWidth);
-        Assert.Equal(720, settings.OutputHeight);
+        Assert.Equal(1920, settings.OutputWidth);
+        Assert.Equal(1080, settings.OutputHeight);
         Assert.True(settings.IncludeCursor);
         Assert.True(settings.IncludeAudio);
         Assert.False(settings.AudioOnly);

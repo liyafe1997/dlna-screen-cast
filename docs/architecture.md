@@ -51,6 +51,11 @@ The embedded clip is immutable and memory-backed. The live token is never persis
 
 Non-secret defaults live in `appsettings.json` and bind to validated options. User choices are loaded before the initial device discovery and are saved atomically to `%LOCALAPPDATA%\\DLNAScreenCast\\user-settings.json` when the application closes. The persisted choices include the renderer UDN, preset or custom output resolution, aspect-ratio handling, cursor/audio switches, and a display topology signature; transient monitor handles and stream tokens are never persisted. A missing or malformed settings file falls back to safe defaults.
 
+The default output resolution is 1920 × 1080. The built-in picker also exposes 2560 × 1440,
+2560 × 1600, and 3840 × 2160 presets; their display labels identify 720p, 1080p, 2K, or 4K
+before the aspect ratio. Previously persisted dimensions continue to take precedence over the
+default.
+
 After the main window is activated, `MainViewModel.InitializeAsync` restores those choices and automatically runs the same bounded, cancellable discovery operation used by the manual refresh command. The refresh button remains available for devices that join the LAN later.
 
 The main action bar keeps casting controls grouped on the left and an About entry isolated on
