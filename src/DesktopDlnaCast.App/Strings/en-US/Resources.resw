@@ -9,6 +9,10 @@
   <data name="TestRendererButton.Content" xml:space="preserve"><value>Test renderer</value></data>
   <data name="StopButton.Content" xml:space="preserve"><value>Stop</value></data>
   <data name="SessionStatusLabel.Text" xml:space="preserve"><value>Session status</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Log</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Application log</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>No log entries yet.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Copy</value></data>
   <data name="DiscoveryStarted" xml:space="preserve"><value>Searching the local network for DLNA renderers…</value></data>
   <data name="DiscoveryCompleted" xml:space="preserve"><value>Discovery completed. Found {0} renderer(s).</value></data>
   <data name="OperationCanceled" xml:space="preserve"><value>The operation was canceled.</value></data>
@@ -41,6 +45,7 @@
   <data name="GopTwoSeconds" xml:space="preserve"><value>2 s (better quality)</value></data>
   <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>Start at the live edge (lower latency, slightly slower start)</value></data>
   <data name="QualityLabel.Text" xml:space="preserve"><value>Quality (bitrate)</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Frame rate</value></data>
   <data name="QualityHigh" xml:space="preserve"><value>High quality ({0} Mbps)</value></data>
   <data name="QualityMedium" xml:space="preserve"><value>Medium quality ({0} Mbps, default)</value></data>
   <data name="QualityLow" xml:space="preserve"><value>Low quality ({0} Mbps, smoother)</value></data>

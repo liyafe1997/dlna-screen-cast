@@ -135,6 +135,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
           </Grid.RowDefinitions>
           <TextBlock x:Uid="CaptureDisplayLabel" FontWeight="SemiBold" />
           <TextBlock Grid.Column="1" x:Uid="OutputResolutionLabel" FontWeight="SemiBold" />
@@ -187,8 +189,21 @@
               ItemsSource="{x:Bind ViewModel.QualityOptions}"
               SelectedItem="{x:Bind ViewModel.SelectedQualityOption, Mode=TwoWay}"
               DisplayMemberPath="DisplayName" />
-          <CheckBox
+          <TextBlock
               Grid.Row="4"
+              Margin="0,4,0,0"
+              x:Uid="FrameRateLabel"
+              FontWeight="SemiBold" />
+          <ComboBox
+              Grid.Row="5"
+              HorizontalAlignment="Stretch"
+              MinHeight="28"
+              IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
+              ItemsSource="{x:Bind ViewModel.FrameRateOptions}"
+              SelectedItem="{x:Bind ViewModel.SelectedFrameRateOption, Mode=TwoWay}"
+              DisplayMemberPath="DisplayName" />
+          <CheckBox
+              Grid.Row="6"
               Margin="0,4,0,0"
               MinWidth="0"
               MinHeight="0"
@@ -196,7 +211,7 @@
               IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
               IsChecked="{x:Bind ViewModel.IncludeCursor, Mode=TwoWay}" />
           <StackPanel
-              Grid.Row="4"
+              Grid.Row="6"
               Grid.Column="1"
               Margin="0,4,0,0"
               Orientation="Horizontal"
@@ -214,14 +229,14 @@
                 IsChecked="{x:Bind ViewModel.AudioOnly, Mode=TwoWay}" />
           </StackPanel>
           <CheckBox
-              Grid.Row="5"
+              Grid.Row="7"
               MinWidth="0"
               MinHeight="0"
               x:Uid="MuteLocalPlaybackToggle"
               IsEnabled="{x:Bind ViewModel.IncludeAudio, Mode=OneWay}"
               IsChecked="{x:Bind ViewModel.MuteLocalPlayback, Mode=TwoWay}" />
           <CheckBox
-              Grid.Row="5"
+              Grid.Row="7"
               Grid.Column="1"
               MinWidth="0"
               MinHeight="0"
@@ -301,7 +316,21 @@
           CornerRadius="{StaticResource OverlayCornerRadius}"
           Padding="10">
         <StackPanel Spacing="2">
-          <TextBlock x:Uid="SessionStatusLabel" FontWeight="SemiBold" />
+          <Grid ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                x:Uid="SessionStatusLabel"
+                VerticalAlignment="Center"
+                FontWeight="SemiBold" />
+            <Button
+                x:Uid="LogButton"
+                Grid.Column="1"
+                Padding="8,2,8,3"
+                Click="LogButton_Click" />
+          </Grid>
           <TextBlock
               Text="{x:Bind ViewModel.StatusText, Mode=OneWay}"
               TextWrapping="Wrap" />

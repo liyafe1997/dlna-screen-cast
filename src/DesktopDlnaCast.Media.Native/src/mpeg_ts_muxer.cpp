@@ -228,7 +228,11 @@ namespace ddc
             sample.bytes.size() > static_cast<std::size_t>(std::numeric_limits<int>::max()) ||
             sample.duration_100ns <= 0 || sample.timestamp_100ns < 0)
         {
-            throw std::invalid_argument("An encoded H.264 sample is invalid.");
+            throw std::invalid_argument(
+                "An encoded H.264 sample is invalid (bytes=" +
+                std::to_string(sample.bytes.size()) + ", timestamp_100ns=" +
+                std::to_string(sample.timestamp_100ns) + ", duration_100ns=" +
+                std::to_string(sample.duration_100ns) + ").");
         }
 
         std::scoped_lock lock(mutex_);
@@ -265,11 +269,12 @@ namespace ddc
             }
 
             current_bytes_.clear();
-            check_ffmpeg(
-                has_video_
-                    ? av_interleaved_write_frame(format_context_, packet)
-                    : av_write_frame(format_context_, packet),
-                has_video_ ? "av_interleaved_write_frame" : "av_write_frame");
+            // The session clock already submits monotonic audio/video samples in
+            // live order. av_interleaved_write_frame may retain the first IDR
+            // until a later AAC call, causing its bytes to be emitted from that
+            // call and lose the random-access-point marker. Write immediately so
+            // every output chunk remains attributable to its input access unit.
+            check_ffmpeg(av_write_frame(format_context_, packet), "av_write_frame");
             avio_flush(io_context_);
             throw_if_callback_failed();
             if (sample.key_frame && !header_bytes_.empty())
@@ -334,11 +339,7 @@ namespace ddc
                 media_foundation_time_base,
                 audio_stream_->time_base);
             current_bytes_.clear();
-            check_ffmpeg(
-                has_video_
-                    ? av_interleaved_write_frame(format_context_, packet)
-                    : av_write_frame(format_context_, packet),
-                has_video_ ? "av_interleaved_write_frame" : "av_write_frame");
+            check_ffmpeg(av_write_frame(format_context_, packet), "av_write_frame");
             avio_flush(io_context_);
             throw_if_callback_failed();
             if (!has_video_ && !header_bytes_.empty())

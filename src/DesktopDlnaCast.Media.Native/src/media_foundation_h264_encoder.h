@@ -7,6 +7,7 @@ extern "C"
 }
 
 #include <cstdint>
+#include <deque>
 #include <functional>
 #include <span>
 #include <string>
@@ -84,11 +85,11 @@ namespace ddc
         AVCodecContext* codec_context_{};
         AVFrame* frame_{};
         AVPacket* packet_{};
+        std::deque<std::int64_t> submitted_timestamps_100ns_;
         std::vector<std::uint8_t> codec_configuration_;
         h264_encoder_diagnostics diagnostics_{};
         std::string encoder_name_;
         std::string hardware_fallback_reason_;
-        std::int64_t last_requested_keyframe_timestamp_100ns_{ -1 };
         bool draining_{};
         bool closed_{};
     };

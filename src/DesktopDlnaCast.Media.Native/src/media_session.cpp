@@ -86,6 +86,7 @@ namespace ddc
         {
             session_start_timestamp_100ns_ = wasapi_loopback_capture::monotonic_time_100ns();
             next_output_timestamp_100ns_ = 0;
+            video_start_point_written_.store(false, std::memory_order_relaxed);
             video_processor_backend_ = video_processor_backend::undecided;
             video_processor_fallback_reason_.clear();
             if (config_.audio_only != 0)
@@ -293,12 +294,27 @@ namespace ddc
                         throw std::logic_error("The MPEG-TS muxer is not initialized.");
                     }
 
+                    const bool starts_stream =
+                        !video_start_point_written_.load(std::memory_order_acquire);
+                    if (starts_stream && !sample.key_frame)
+                    {
+                        // Do not advance MPEG-TS continuity counters, PCR, or PTS
+                        // before a decoder-safe video start point exists. Some
+                        // hardware MFTs do not make their first output an IDR.
+                        return;
+                    }
+
                     muxer_->write_video({
                         std::span<const std::uint8_t>(sample.bytes),
                         sample.timestamp_100ns,
                         sample.duration_100ns,
                         sample.key_frame,
                     });
+                    if (starts_stream)
+                    {
+                        video_start_point_written_.store(true, std::memory_order_release);
+                    }
+
                     std::scoped_lock lock(mutex_);
                     ++statistics_.encoded_video_frames;
                 });
@@ -353,6 +369,16 @@ namespace ddc
                     config_.audio_bitrate,
                     [this](aac_encoded_sample sample)
                     {
+                        if (config_.audio_only == 0 &&
+                            !video_start_point_written_.load(std::memory_order_acquire))
+                        {
+                            // A live A/V transport stream must begin at its video
+                            // IDR. Audio captured before that point is intentionally
+                            // discarded so a new renderer never receives a TS
+                            // fragment whose mux clock started in the past.
+                            return;
+                        }
+
                         if (config_.audio_only != 0 &&
                             config_.audio_profile == DDC_AUDIO_PROFILE_AAC_ADTS)
                         {
@@ -888,7 +914,9 @@ namespace ddc
             (config->audio_only == 0 && config->source_handle == 0) ||
             config->width < 2 || config->width > 7680 || (config->width & 1) != 0 ||
             config->height < 2 || config->height > 4320 || (config->height & 1) != 0 ||
-            config->frame_rate < 1 || config->frame_rate > 30 ||
+            (config->frame_rate != 15 &&
+             config->frame_rate != 30 &&
+             config->frame_rate != 60) ||
             config->video_bitrate < 100'000 || config->video_bitrate > 100'000'000 ||
             config->gop_frames < 1 || config->gop_frames > 300 ||
             config->include_cursor < 0 || config->include_cursor > 1 ||

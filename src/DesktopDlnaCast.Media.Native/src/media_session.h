@@ -12,6 +12,7 @@
 #include "software_video_processor.h"
 #include "wasapi_loopback_capture.h"
 
+#include <atomic>
 #include <memory>
 #include <cstdint>
 #include <mutex>
@@ -103,6 +104,7 @@ namespace ddc
         std::unique_ptr<mpeg_ts_muxer> muxer_;
         std::int64_t session_start_timestamp_100ns_{};
         std::int64_t next_output_timestamp_100ns_{};
+        std::atomic_bool video_start_point_written_{};
         video_processor_backend video_processor_backend_{ video_processor_backend::undecided };
     };
 

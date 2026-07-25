@@ -282,6 +282,9 @@ namespace ddc
             last_size_);
         capture_session_ = frame_pool_.CreateCaptureSession(item_);
         capture_session_.IsCursorCaptureEnabled(config.include_cursor != 0);
+        capture_interval_ = std::chrono::nanoseconds(
+            1'000'000'000LL / config.frame_rate);
+        next_capture_time_ = {};
         frame_arrived_token_ = frame_pool_.FrameArrived(
             { this, &graphics_capture_source::on_frame_arrived });
         capture_session_.StartCapture();
@@ -358,6 +361,24 @@ namespace ddc
                     2,
                     last_size_);
                 return;
+            }
+
+            const auto now = std::chrono::steady_clock::now();
+            const auto early_tolerance = capture_interval_ / 10;
+            if (next_capture_time_ != std::chrono::steady_clock::time_point{} &&
+                now + early_tolerance < next_capture_time_)
+            {
+                return;
+            }
+
+            if (next_capture_time_ == std::chrono::steady_clock::time_point{} ||
+                now > next_capture_time_ + capture_interval_)
+            {
+                next_capture_time_ = now + capture_interval_;
+            }
+            else
+            {
+                next_capture_time_ += capture_interval_;
             }
 
             const auto source_texture = unwrap_texture(frame.Surface());

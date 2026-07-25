@@ -21,7 +21,14 @@ The application output must contain all five files: `DesktopDlnaCast.Media.Nativ
 
 ## Capture starts on a VM but GPU processing is unavailable
 
-The pipeline first tries the capture device's D3D11 Video Processor. If `ID3D11VideoDevice`/`ID3D11VideoContext` or BGRA-to-NV12 support is unavailable, it selects `Libswscale` once for the remainder of the session. H.264 selection is independent: `h264_mf` first forces a hardware MFT and, if that open fails, opens the inbox Microsoft software MFT. Encoder diagnostics report both `IsHardware` and `VideoProcessorBackend`; the diagnostic name includes bounded fallback context. This mode uses more CPU, so start with 1280x720 at 30 fps and the compatibility bitrate.
+The pipeline first tries the capture device's D3D11 Video Processor. If `ID3D11VideoDevice`/`ID3D11VideoContext` or BGRA-to-NV12 support is unavailable, it selects `Libswscale` once for the remainder of the session. H.264 selection is hardware-first and falls back to the inbox Microsoft software MFT when hardware initialization fails. Encoder diagnostics report both `IsHardware` and `VideoProcessorBackend`; the diagnostic name includes bounded fallback context. Use the Log button beside the session status to capture the selected encoder, state transitions, first media chunk, HTTP request, transport monitoring, and any native exception. Complete session tokens are redacted.
+
+Hardware H.264 sessions configure a fixed GOP on the MFT and do not send dynamic
+`AVEncVideoForceKeyFrame` commands at each GOP boundary. Some display drivers accept
+the initial hardware configuration but stop returning output after that runtime command.
+If a media encoder or muxer still fails after playback starts, the session now observes
+the media pump directly, preserves the native error, and stops without waiting for the
+renderer transport timeout.
 
 ## Application does not start
 

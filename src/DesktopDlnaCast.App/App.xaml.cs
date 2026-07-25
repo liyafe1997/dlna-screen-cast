@@ -1,3 +1,4 @@
+using DesktopDlnaCast.App.Diagnostics;
 using DesktopDlnaCast.App.ViewModels;
 using DesktopDlnaCast.Core.Abstractions;
 using DesktopDlnaCast.Core.Configuration;
@@ -38,7 +39,10 @@ public partial class App : Application
         {
             ContentRootPath = AppContext.BaseDirectory,
         });
+        AppLogStore appLogStore = new();
         builder.Logging.AddDebug();
+        builder.Logging.AddProvider(appLogStore);
+        builder.Services.AddSingleton<IAppLogStore>(appLogStore);
         builder.Services.AddDesktopDlnaCastCore(builder.Configuration);
         builder.Services.AddDesktopDlnaCastMediaInterop();
         builder.Services.AddDesktopDlnaCastUpnp(builder.Configuration);

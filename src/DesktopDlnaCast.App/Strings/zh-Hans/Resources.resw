@@ -9,6 +9,10 @@
   <data name="TestRendererButton.Content" xml:space="preserve"><value>测试电视</value></data>
   <data name="StopButton.Content" xml:space="preserve"><value>停止</value></data>
   <data name="SessionStatusLabel.Text" xml:space="preserve"><value>会话状态</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>日志</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>应用日志</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>暂无日志。</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>复制</value></data>
   <data name="DiscoveryStarted" xml:space="preserve"><value>正在局域网中搜索 DLNA 播放设备…</value></data>
   <data name="DiscoveryCompleted" xml:space="preserve"><value>搜索完成，共发现 {0} 个播放设备。</value></data>
   <data name="OperationCanceled" xml:space="preserve"><value>操作已取消。</value></data>
@@ -41,6 +45,7 @@
   <data name="GopTwoSeconds" xml:space="preserve"><value>2 秒（更高画质）</value></data>
   <data name="StartAtLiveEdgeToggle.Content" xml:space="preserve"><value>从最新画面起播（更低延迟，起播稍慢）</value></data>
   <data name="QualityLabel.Text" xml:space="preserve"><value>画质（码率）</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>帧率</value></data>
   <data name="QualityHigh" xml:space="preserve"><value>高画质（{0} Mbps）</value></data>
   <data name="QualityMedium" xml:space="preserve"><value>中画质（{0} Mbps，默认）</value></data>
   <data name="QualityLow" xml:space="preserve"><value>低画质（{0} Mbps，更流畅）</value></data>

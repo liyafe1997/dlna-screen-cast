@@ -11,14 +11,15 @@ void run_mpeg_ts_muxer_tests()
 {
     {
         std::vector<ddc::media_packet> output;
+        constexpr std::array<std::uint8_t, 2> audio_specific_config{ 0x11, 0x90 };
         ddc::mpeg_ts_muxer muxer(
             true,
             1280,
             720,
             3'000'000,
             {},
-            0,
-            {},
+            128'000,
+            audio_specific_config,
             [&output](ddc::media_packet packet) { output.push_back(std::move(packet)); });
         // Annex-B-shaped SPS/PPS/IDR bytes are sufficient for exercising libavformat's
         // MPEG-TS packetization here. Decode validity is covered by StreamProbe fixtures.
@@ -29,11 +30,20 @@ void run_mpeg_ts_muxer_tests()
             0x00, 0x00, 0x00, 0x01, 0x65, 0x88, 0x84, 0x00, 0x10,
         };
         muxer.write_video({ encoded_sample, 0, 333'333, true });
+        // The first IDR must be emitted by its own write even when an audio
+        // stream exists. Deferring it until a later AAC write loses the
+        // random-access marker used by the HTTP startup buffer.
+        DDC_TEST_CHECK(!output.empty());
+        DDC_TEST_CHECK((output.front().flags & DDC_PACKET_FLAG_RANDOM_ACCESS_POINT) != 0);
+
+        constexpr std::array<std::uint8_t, 8> encoded_aac_sample{
+            0x21, 0x10, 0x04, 0x60, 0x8C, 0x1C, 0x00, 0x00,
+        };
+        muxer.write_audio({ encoded_aac_sample, 0, 213'333 });
         muxer.finish();
         muxer.finish();
 
         DDC_TEST_CHECK(!output.empty());
-        DDC_TEST_CHECK((output.front().flags & DDC_PACKET_FLAG_RANDOM_ACCESS_POINT) != 0);
         for (const auto& packet : output)
         {
             DDC_TEST_CHECK(!packet.bytes.empty());

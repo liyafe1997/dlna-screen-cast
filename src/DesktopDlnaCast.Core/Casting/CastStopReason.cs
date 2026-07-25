@@ -6,4 +6,5 @@ public enum CastStopReason
     UserRequested,
     RendererReportedStopped,
     RendererUnreachable,
+    MediaPipelineFailed,
 }

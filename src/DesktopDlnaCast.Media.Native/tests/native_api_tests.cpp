@@ -57,9 +57,25 @@ int main()
     DDC_TEST_CHECK(handle == nullptr);
 
     invalid = valid_config();
+    invalid.frame_rate = 45;
+    DDC_TEST_CHECK(ddc_session_create(&invalid, &handle) == DDC_E_INVALID_ARGUMENT);
+    DDC_TEST_CHECK(handle == nullptr);
+
+    invalid = valid_config();
     invalid.mute_local_playback = 1;
     DDC_TEST_CHECK(ddc_session_create(&invalid, &handle) == DDC_E_INVALID_ARGUMENT);
     DDC_TEST_CHECK(handle == nullptr);
+
+    for (const std::int32_t supported_frame_rate : std::array{ 15, 60 })
+    {
+        auto supported = valid_config();
+        supported.frame_rate = supported_frame_rate;
+        supported.gop_frames = supported_frame_rate;
+        DDC_TEST_CHECK(ddc_session_create(&supported, &handle) == DDC_OK);
+        DDC_TEST_CHECK(handle != nullptr);
+        ddc_session_destroy(handle);
+        handle = nullptr;
+    }
 
     auto config = valid_config();
     DDC_TEST_CHECK(ddc_session_create(&config, &handle) == DDC_OK);

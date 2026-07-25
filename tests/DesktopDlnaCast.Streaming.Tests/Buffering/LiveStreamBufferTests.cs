@@ -63,15 +63,21 @@ public sealed class LiveStreamBufferTests
     }
 
     [Fact]
-    public void RejectsNonMonotonicTimestampsAndSubscriptionBeforeFirstKeyframe()
+    public async Task NormalizesInterleavedTimestampsAndSubscriptionStillRequiresKeyframe()
     {
         using LiveStreamBuffer buffer = new(1880, TimeSpan.FromSeconds(5), 2);
         buffer.Append(new(Packet(1), TimeSpan.FromSeconds(1), StartsAtRandomAccessPoint: false));
         Assert.Throws<InvalidOperationException>(() => buffer.Subscribe());
-        Assert.Throws<InvalidDataException>(() => buffer.Append(new(
+        buffer.Append(new(
             Packet(2),
             TimeSpan.Zero,
-            StartsAtRandomAccessPoint: true)));
+            StartsAtRandomAccessPoint: true));
+
+        await using LiveStreamSubscription subscription = buffer.Subscribe();
+        await using IAsyncEnumerator<MediaStreamChunk> reader =
+            subscription.ReadAllAsync().GetAsyncEnumerator();
+        Assert.True(await reader.MoveNextAsync());
+        Assert.Equal(TimeSpan.FromSeconds(1), reader.Current.Timestamp);
     }
 
     [Fact]

@@ -61,6 +61,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     private CaptureDisplayViewModel? selectedDisplay;
     private VideoOutputProfileViewModel? selectedOutputProfile;
     private GopOptionViewModel? selectedGopOption;
+    private FrameRateOptionViewModel? selectedFrameRateOption;
     private QualityOptionViewModel? selectedQualityOption;
     private AspectRatioOptionViewModel? selectedAspectRatioOption;
     private string statusText;
@@ -129,6 +130,10 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         OutputProfiles.Add(CreateOutputProfile(1024, 768));
         OutputProfiles.Add(new(resources.GetString("CustomResolution"), 0, 0, 0, 0, true));
         SelectedOutputProfile = OutputProfiles[0];
+        FrameRateOptions.Add(new("15 FPS", 15));
+        FrameRateOptions.Add(new("30 FPS", 30));
+        FrameRateOptions.Add(new("60 FPS", 60));
+        SelectedFrameRateOption = FrameRateOptions[1];
         GopOptions.Add(new(resources.GetString("GopHalfSecond"), 15));
         GopOptions.Add(new(resources.GetString("GopOneSecond"), 30));
         GopOptions.Add(new(resources.GetString("GopTwoSeconds"), 60));
@@ -159,6 +164,8 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     public ObservableCollection<VideoOutputProfileViewModel> OutputProfiles { get; } = [];
 
     public ObservableCollection<GopOptionViewModel> GopOptions { get; } = [];
+
+    public ObservableCollection<FrameRateOptionViewModel> FrameRateOptions { get; } = [];
 
     public ObservableCollection<QualityOptionViewModel> QualityOptions { get; } = [];
 
@@ -241,6 +248,21 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             }
 
             selectedGopOption = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public FrameRateOptionViewModel? SelectedFrameRateOption
+    {
+        get => selectedFrameRateOption;
+        set
+        {
+            if (ReferenceEquals(selectedFrameRateOption, value))
+            {
+                return;
+            }
+
+            selectedFrameRateOption = value;
             OnPropertyChanged();
         }
     }
@@ -529,6 +551,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             AudioOnly = AudioOnly,
             MuteLocalPlayback = MuteLocalPlayback,
             GopFrames = SelectedGopOption?.Frames ?? restoredSettings.GopFrames,
+            FrameRate = SelectedFrameRateOption?.FramesPerSecond ?? restoredSettings.FrameRate,
             VideoBitratePercent = SelectedQualityOption?.BitratePercent ?? restoredSettings.VideoBitratePercent,
             StartAtLiveEdge = StartAtLiveEdge,
             AspectRatioMode = SelectedAspectRatioOption?.Mode ?? restoredSettings.AspectRatioMode,
@@ -647,15 +670,17 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         VideoOutputProfileViewModel profile = SelectedOutputProfile ??
             throw new InvalidOperationException("No output resolution is selected.");
         int bitratePercent = SelectedQualityOption?.BitratePercent ?? 100;
+        int frameRate = SelectedFrameRateOption?.FramesPerSecond ?? 30;
+        int gopFramesAt30Fps = SelectedGopOption?.Frames ?? 30;
         MediaCaptureConfiguration configuration = new(
             CaptureSourceKind.Display,
             display.Handle,
             IncludeCursor,
             profile.Width,
             profile.Height,
-            FrameRate: 30,
+            FrameRate: frameRate,
             VideoBitrate: (int)((long)profile.VideoBitrate * bitratePercent / 100),
-            GopFrames: SelectedGopOption?.Frames ?? 30,
+            GopFrames: gopFramesAt30Fps * frameRate / 30,
             IncludeAudio: IncludeAudio,
             AudioBitrate: profile.AudioBitrate,
             MuteLocalPlayback: MuteLocalPlayback,
@@ -795,16 +820,29 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     private void HandleOperationException(Exception exception)
     {
         LogUiOperationFailed(logger, exception);
+        CastFailure? failure =
+            activeSession == ActiveSession.Live ? liveSession.Failure : testSession.Failure;
         StatusText = exception is DllNotFoundException
             ? resources.GetString("NativeRuntimeMissing")
-            : (activeSession == ActiveSession.Live ? liveSession.Failure : testSession.Failure)?.UserMessage ??
-                resources.GetString("OperationFailed");
+            : FormatFailure(failure);
         if (stateMachine.State == CastSessionState.Idle)
         {
             activeSession = ActiveSession.None;
         }
 
         IsBusy = false;
+    }
+
+    private string FormatFailure(CastFailure? failure)
+    {
+        if (failure is null)
+        {
+            return resources.GetString("OperationFailed");
+        }
+
+        return string.IsNullOrWhiteSpace(failure.TechnicalDetail)
+            ? failure.UserMessage
+            : $"{failure.UserMessage} {failure.TechnicalDetail}";
     }
 
     private void RebuildQualityOptions()
@@ -877,6 +915,9 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
                 : OutputProfiles[0]);
         SelectedGopOption = GopOptions.FirstOrDefault(option => option.Frames == settings.GopFrames) ??
             GopOptions[1];
+        SelectedFrameRateOption = FrameRateOptions.FirstOrDefault(option =>
+            option.FramesPerSecond == settings.FrameRate) ??
+            FrameRateOptions[1];
         SelectedQualityOption = QualityOptions.FirstOrDefault(option =>
             option.BitratePercent == settings.VideoBitratePercent) ??
             QualityOptions[1];
@@ -949,14 +990,18 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     {
         if (state == CastSessionState.Idle &&
             activeSession == ActiveSession.Live &&
-            liveSession.StopReason is CastStopReason.RendererReportedStopped or CastStopReason.RendererUnreachable)
+            liveSession.StopReason is CastStopReason.RendererReportedStopped or
+                CastStopReason.RendererUnreachable or
+                CastStopReason.MediaPipelineFailed)
         {
             activeSession = ActiveSession.None;
             EncoderText = string.Empty;
-            StatusText = resources.GetString(
-                liveSession.StopReason == CastStopReason.RendererReportedStopped
-                    ? "RendererStoppedPlayback"
-                    : "RendererUnreachable");
+            StatusText = liveSession.StopReason == CastStopReason.MediaPipelineFailed
+                ? FormatFailure(liveSession.Failure)
+                : resources.GetString(
+                    liveSession.StopReason == CastStopReason.RendererReportedStopped
+                        ? "RendererStoppedPlayback"
+                        : "RendererUnreachable");
             RaiseCommandStates();
             return;
         }

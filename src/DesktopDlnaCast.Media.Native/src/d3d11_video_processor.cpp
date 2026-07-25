@@ -79,7 +79,7 @@ namespace ddc
     {
         if (output_width < 2 || output_height < 2 ||
             (output_width & 1) != 0 || (output_height & 1) != 0 ||
-            frame_rate < 1 || frame_rate > 30)
+            frame_rate < 1 || frame_rate > 60)
         {
             throw std::invalid_argument("NV12 output dimensions must be positive and even.");
         }

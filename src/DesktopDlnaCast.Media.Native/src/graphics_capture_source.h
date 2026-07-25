@@ -8,6 +8,7 @@
 #include <winrt/Windows.Graphics.DirectX.Direct3D11.h>
 #include <winrt/base.h>
 
+#include <chrono>
 #include <condition_variable>
 #include <cstdint>
 #include <exception>
@@ -81,5 +82,7 @@ namespace ddc
         std::int32_t latest_width_{};
         std::int32_t latest_height_{};
         std::uint64_t latest_generation_{};
+        std::chrono::steady_clock::duration capture_interval_{};
+        std::chrono::steady_clock::time_point next_capture_time_{};
     };
 }

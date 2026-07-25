@@ -16,6 +16,8 @@ public sealed record UserSettings
 
     public int GopFrames { get; init; } = 30;
 
+    public int FrameRate { get; init; } = 30;
+
     public int VideoBitratePercent { get; init; } = 100;
 
     public bool StartAtLiveEdge { get; init; }

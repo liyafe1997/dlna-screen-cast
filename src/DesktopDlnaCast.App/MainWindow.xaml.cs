@@ -1,9 +1,11 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DesktopDlnaCast.App.Diagnostics;
 using DesktopDlnaCast.App.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace DesktopDlnaCast.App;
 
@@ -13,11 +15,13 @@ public sealed partial class MainWindow : Window
     private const int DefaultHeight = 500;
     private const string ProjectHomepage = "https://github.com/liyafe1997/dlna-screen-cast";
     private const string DonationPage = "https://ko-fi.com/strawing";
+    private readonly IAppLogStore logStore;
     private bool suppressOutputProfileSelection;
 
-    public MainWindow(MainViewModel viewModel)
+    public MainWindow(MainViewModel viewModel, IAppLogStore logStore)
     {
         ViewModel = viewModel;
+        this.logStore = logStore;
         InitializeComponent();
         ResourceLoader resources = new();
         Title = resources.GetString("WindowTitle");
@@ -40,6 +44,47 @@ public sealed partial class MainWindow : Window
     private async void DisplayPicker_DropDownOpened(object sender, object e)
     {
         await ViewModel.RefreshDisplayPreviewsAsync();
+    }
+
+    private async void LogButton_Click(object sender, RoutedEventArgs e)
+    {
+        ResourceLoader resources = new();
+        string logText = logStore.GetSnapshot();
+        if (string.IsNullOrWhiteSpace(logText))
+        {
+            logText = resources.GetString("LogEmpty");
+        }
+
+        TextBox logView = new()
+        {
+            Text = logText,
+            IsReadOnly = true,
+            AcceptsReturn = true,
+            TextWrapping = TextWrapping.NoWrap,
+            FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Consolas"),
+            FontSize = 11,
+            MinWidth = 640,
+            MinHeight = 360,
+        };
+        ScrollViewer.SetHorizontalScrollBarVisibility(logView, ScrollBarVisibility.Auto);
+        ScrollViewer.SetVerticalScrollBarVisibility(logView, ScrollBarVisibility.Auto);
+        ContentDialog dialog = new()
+        {
+            XamlRoot = ContentRoot.XamlRoot,
+            Title = resources.GetString("LogDialogTitle"),
+            Content = logView,
+            PrimaryButtonText = resources.GetString("LogCopyButton"),
+            CloseButtonText = resources.GetString("AboutCloseButton"),
+            DefaultButton = ContentDialogButton.Close,
+        };
+        dialog.PrimaryButtonClick += (_, args) =>
+        {
+            DataPackage package = new();
+            package.SetText(logStore.GetSnapshot());
+            Clipboard.SetContent(package);
+            args.Cancel = true;
+        };
+        await dialog.ShowAsync();
     }
 
     private async void AboutButton_Click(object sender, RoutedEventArgs e)

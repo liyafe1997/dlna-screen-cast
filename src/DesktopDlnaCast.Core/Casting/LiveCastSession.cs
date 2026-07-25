@@ -44,16 +44,47 @@ public sealed class LiveCastSession(
             LogLevel.Warning,
             new EventId(325, nameof(LogMonitorProbeFailed)),
             "Transport monitor probe failed {FailureCount} consecutive time(s) in session {CorrelationId}");
-    private static readonly Action<ILogger, Guid, CastStopReason, Exception?> LogRendererDisconnected =
+    private static readonly Action<ILogger, Guid, CastStopReason, Exception?> LogAutomaticStop =
         LoggerMessage.Define<Guid, CastStopReason>(
             LogLevel.Information,
-            new EventId(326, nameof(LogRendererDisconnected)),
-            "Renderer disconnect detected in session {CorrelationId} ({StopReason}); stopping the cast automatically");
+            new EventId(326, nameof(LogAutomaticStop)),
+            "Automatic stop requested in session {CorrelationId} ({StopReason})");
     private static readonly Action<ILogger, Guid, AudioCastProfile, Exception?> LogAudioProfileFallback =
         LoggerMessage.Define<Guid, AudioCastProfile>(
             LogLevel.Warning,
             new EventId(327, nameof(LogAudioProfileFallback)),
             "Audio profile {AudioProfile} failed in session {CorrelationId}; trying the next finite fallback");
+    private static readonly Action<ILogger, Guid, string, bool, int, int, string, Exception?>
+        LogEncoderSelected =
+            LoggerMessage.Define<Guid, string, bool, int, int, string>(
+                LogLevel.Information,
+                new EventId(328, nameof(LogEncoderSelected)),
+                "Session {CorrelationId} selected encoder {EncoderName}; hardware={IsHardware}; "
+                + "output={Width}x{Height}; frameRate={FrameRate}");
+    private static readonly Action<ILogger, Guid, int, bool, Exception?> LogFirstMediaChunk =
+        LoggerMessage.Define<Guid, int, bool>(
+            LogLevel.Information,
+            new EventId(329, nameof(LogFirstMediaChunk)),
+            "Session {CorrelationId} received its first muxed media chunk; bytes={Bytes}; "
+            + "randomAccessPoint={RandomAccessPoint}");
+    private static readonly Action<ILogger, Guid, Exception?> LogMediaPumpEnded =
+        LoggerMessage.Define<Guid>(
+            LogLevel.Warning,
+            new EventId(330, nameof(LogMediaPumpEnded)),
+            "Session {CorrelationId} media pump ended");
+    private static readonly Action<ILogger, Guid, string, Exception?> LogTransportState =
+        LoggerMessage.Define<Guid, string>(
+            LogLevel.Information,
+            new EventId(331, nameof(LogTransportState)),
+            "Session {CorrelationId} renderer transport state is {TransportState}");
+    private static readonly Action<ILogger, Guid, long, long, long, long, Exception?>
+        LogMediaStatistics =
+            LoggerMessage.Define<Guid, long, long, long, long>(
+                LogLevel.Information,
+                new EventId(332, nameof(LogMediaStatistics)),
+                "Session {CorrelationId} media statistics: capturedVideo={CapturedVideo}; "
+                + "encodedVideo={EncodedVideo}; droppedVideo={DroppedVideo}; "
+                + "queueOverflows={QueueOverflows}");
 
     private readonly SemaphoreSlim lifecycle = new(1, 1);
     private readonly object cancellationGate = new();
@@ -156,6 +187,16 @@ public sealed class LiveCastSession(
 
                         await startPoint.ConfigureAwait(false);
                         EncoderDiagnostics = mediaSession.GetEncoderDiagnostics();
+                        LogEncoderSelected(
+                            logger,
+                            correlationId,
+                            EncoderDiagnostics.EncoderName,
+                            EncoderDiagnostics.IsHardware,
+                            EncoderDiagnostics.AcceptedWidth,
+                            EncoderDiagnostics.AcceptedHeight,
+                            $"{EncoderDiagnostics.FrameRateNumerator}/" +
+                            $"{EncoderDiagnostics.FrameRateDenominator}",
+                            null);
                         stateMachine.Transition(CastSessionState.Publishing);
                         stateMachine.Transition(CastSessionState.SendingTransportUri);
                         string metadata = effectiveConfiguration.AudioOnly
@@ -209,7 +250,11 @@ public sealed class LiveCastSession(
 
                 stateMachine.Transition(CastSessionState.Playing);
                 monitorCancellation = new CancellationTokenSource();
-                monitorTask = MonitorRendererAsync(renderer, monitorCancellation.Token);
+                monitorTask = MonitorSessionAsync(
+                    renderer,
+                    pumpTask ?? throw new InvalidOperationException(
+                        "The media pump was not created."),
+                    monitorCancellation.Token);
                 Volatile.Write(ref startupInProgress, 0);
             }
             catch (OperationCanceledException) when (startupToken.IsCancellationRequested)
@@ -280,10 +325,24 @@ public sealed class LiveCastSession(
         // Yield once so startup orchestration is never synchronously monopolized
         // by a continuously-ready native read loop.
         await Task.Yield();
+        bool firstChunk = true;
         await foreach (MediaStreamChunk chunk in source.ReadAllAsync(cancellationToken).ConfigureAwait(false))
         {
+            if (firstChunk)
+            {
+                firstChunk = false;
+                LogFirstMediaChunk(
+                    logger,
+                    correlationId,
+                    chunk.Data.Length,
+                    chunk.StartsAtRandomAccessPoint,
+                    null);
+            }
+
             await streamPublisher.PublishAsync(chunk, cancellationToken).ConfigureAwait(false);
         }
+
+        LogMediaPumpEnded(logger, correlationId, null);
     }
 
     private async Task SetTransportUriWithFallbackAsync(
@@ -355,7 +414,10 @@ public sealed class LiveCastSession(
         EncoderDiagnostics = null;
     }
 
-    private async Task MonitorRendererAsync(RendererDevice renderer, CancellationToken cancellationToken)
+    private async Task MonitorSessionAsync(
+        RendererDevice renderer,
+        Task mediaPump,
+        CancellationToken cancellationToken)
     {
         int stoppedObservations = 0;
         int failedObservations = 0;
@@ -363,7 +425,31 @@ public sealed class LiveCastSession(
         {
             while (true)
             {
-                await Task.Delay(options.TransportMonitorInterval, cancellationToken).ConfigureAwait(false);
+                Task delay = Task.Delay(options.TransportMonitorInterval, cancellationToken);
+                Task completed = await Task.WhenAny(delay, mediaPump).ConfigureAwait(false);
+                if (ReferenceEquals(completed, mediaPump))
+                {
+                    try
+                    {
+                        await mediaPump.ConfigureAwait(false);
+                        throw new InvalidDataException(
+                            "The media pipeline ended while the cast was playing.");
+                    }
+                    catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    catch (Exception exception) when (exception is not OutOfMemoryException)
+                    {
+                        Failure ??= CreateFailure(exception, CastFailureStage.MediaPipeline);
+                        stateMachine.TryFault();
+                        LogFailed(logger, correlationId, exception);
+                        BeginAutoStop(CastStopReason.MediaPipelineFailed);
+                        return;
+                    }
+                }
+
+                await delay.ConfigureAwait(false);
                 string state;
                 try
                 {
@@ -389,6 +475,27 @@ public sealed class LiveCastSession(
                 }
 
                 failedObservations = 0;
+                LogTransportState(logger, correlationId, state, null);
+                if (mediaSession is not null)
+                {
+                    try
+                    {
+                        MediaSessionStatistics statistics = mediaSession.GetStatistics();
+                        LogMediaStatistics(
+                            logger,
+                            correlationId,
+                            statistics.CapturedVideoFrames,
+                            statistics.EncodedVideoFrames,
+                            statistics.DroppedVideoFrames,
+                            statistics.QueueOverflows,
+                            null);
+                    }
+                    catch (Exception exception) when (exception is not OutOfMemoryException)
+                    {
+                        LogCleanupWarning(logger, correlationId, "MediaStatistics", exception);
+                    }
+                }
+
                 if (state.Equals("STOPPED", StringComparison.OrdinalIgnoreCase) ||
                     state.Equals("NO_MEDIA_PRESENT", StringComparison.OrdinalIgnoreCase))
                 {
@@ -413,7 +520,7 @@ public sealed class LiveCastSession(
     private void BeginAutoStop(CastStopReason reason)
     {
         StopReason = reason;
-        LogRendererDisconnected(logger, correlationId, reason, null);
+        LogAutomaticStop(logger, correlationId, reason, null);
         _ = Task.Run(async () =>
         {
             try
@@ -566,9 +673,11 @@ public sealed class LiveCastSession(
         }
     }
 
-    private CastFailure CreateFailure(Exception exception)
+    private CastFailure CreateFailure(
+        Exception exception,
+        CastFailureStage? stageOverride = null)
     {
-        CastFailureStage stage = State switch
+        CastFailureStage stage = stageOverride ?? State switch
         {
             CastSessionState.Discovering => CastFailureStage.Discovery,
             CastSessionState.ProbingRenderer => CastFailureStage.RendererProbe,
@@ -611,7 +720,7 @@ public sealed class LiveCastSession(
             value.Height is < 2 or > 4320 ||
             (value.Width & 1) != 0 ||
             (value.Height & 1) != 0 ||
-            value.FrameRate is < 1 or > 30 ||
+            value.FrameRate is not (15 or 30 or 60) ||
             value.VideoBitrate is < 100_000 or > 100_000_000 ||
             value.GopFrames is < 1 or > 300 ||
             value.AudioBitrate is < 32_000 or > 512_000 ||

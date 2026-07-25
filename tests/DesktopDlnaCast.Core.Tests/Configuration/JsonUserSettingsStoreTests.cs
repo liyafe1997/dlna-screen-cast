@@ -25,6 +25,7 @@ public sealed class JsonUserSettingsStoreTests : IDisposable
         Assert.True(settings.IncludeAudio);
         Assert.False(settings.AudioOnly);
         Assert.False(settings.MuteLocalPlayback);
+        Assert.Equal(30, settings.FrameRate);
         Assert.Equal(AspectRatioMode.Letterbox, settings.AspectRatioMode);
         Assert.Null(settings.Display);
     }
@@ -41,6 +42,7 @@ public sealed class JsonUserSettingsStoreTests : IDisposable
             IncludeAudio = true,
             AudioOnly = true,
             MuteLocalPlayback = true,
+            FrameRate = 60,
             RendererUdn = "uuid:test-renderer",
             Display = new(2, 1920, 0, 2560, 1440, false),
         };

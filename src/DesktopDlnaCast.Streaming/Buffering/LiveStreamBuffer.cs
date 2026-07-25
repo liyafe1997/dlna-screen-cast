@@ -71,7 +71,6 @@ public sealed class LiveStreamBuffer : IDisposable
         }
 
         byte[] ownedData = chunk.Data.ToArray();
-        MediaStreamChunk ownedChunk = chunk with { Data = ownedData };
         lock (gate)
         {
             ObjectDisposedException.ThrowIf(disposed, this);
@@ -80,15 +79,24 @@ public sealed class LiveStreamBuffer : IDisposable
                 throw new InvalidOperationException("The live stream buffer is already complete.", completionError);
             }
 
-            if (latestTimestamp is TimeSpan previous && chunk.Timestamp < previous)
+            // MPEG-TS output callbacks are emitted in byte-stream order, but an
+            // interleaved audio packet may carry a timestamp slightly behind the
+            // preceding video packet. The timestamp here controls retention only;
+            // preserve byte order and clamp its buffer metadata instead of
+            // terminating an otherwise valid stream.
+            TimeSpan normalizedTimestamp = latestTimestamp is TimeSpan previous &&
+                                           chunk.Timestamp < previous
+                ? previous
+                : chunk.Timestamp;
+            MediaStreamChunk ownedChunk = chunk with
             {
-                throw new InvalidDataException("Live media timestamps must be monotonic.");
-            }
-
-            latestTimestamp = chunk.Timestamp;
+                Data = ownedData,
+                Timestamp = normalizedTimestamp,
+            };
+            latestTimestamp = normalizedTimestamp;
             chunks.AddLast(ownedChunk);
             bufferedBytes += ownedData.Length;
-            TrimUnsafe(chunk.Timestamp);
+            TrimUnsafe(normalizedTimestamp);
 
             List<long>? overflowed = null;
             foreach ((long id, Subscriber subscriber) in subscribers)

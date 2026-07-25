@@ -98,7 +98,7 @@ namespace ddc
           callback_(std::move(callback))
     {
         if (width < 2 || height < 2 || (width & 1) != 0 || (height & 1) != 0 ||
-            frame_rate < 1 || frame_rate > 30 || bitrate <= 0 || gop_frames <= 0 || !callback_)
+            frame_rate < 1 || frame_rate > 60 || bitrate <= 0 || gop_frames <= 0 || !callback_)
         {
             throw std::invalid_argument("The H.264 encoder configuration is invalid.");
         }
@@ -269,13 +269,13 @@ namespace ddc
 
         frame_->pts = timestamp_100ns;
         frame_->duration = frame_duration_100ns_;
-        const std::int64_t gop_duration_100ns =
-            static_cast<std::int64_t>(gop_frames_) * 10'000'000LL / frame_rate_;
-        const bool request_keyframe = last_requested_keyframe_timestamp_100ns_ < 0 ||
-            timestamp_100ns - last_requested_keyframe_timestamp_100ns_ >= gop_duration_100ns;
-        frame_->pict_type = request_keyframe
-            ? AV_PICTURE_TYPE_I
-            : AV_PICTURE_TYPE_NONE;
+        // h264_mf translates AV_PICTURE_TYPE_I into a dynamic
+        // CODECAPI_AVEncVideoForceKeyFrame call. Several hardware MFT drivers
+        // stop producing output after that runtime command even though their
+        // fixed GOP configuration is valid. Let the configured GOP size own
+        // periodic keyframe placement; h264_mf already requests the initial
+        // keyframe when the stream starts.
+        frame_->pict_type = AV_PICTURE_TYPE_NONE;
 
         int send_result = avcodec_send_frame(codec_context_, frame_);
         if (send_result == AVERROR(EAGAIN))
@@ -289,11 +289,11 @@ namespace ddc
             throw_ffmpeg_error(send_result, "submitting an NV12 frame");
         }
 
-        if (request_keyframe)
-        {
-            last_requested_keyframe_timestamp_100ns_ = timestamp_100ns;
-        }
-
+        // Some hardware Media Foundation MFTs return a negative or rebased packet
+        // PTS after the first few frames. B-frames are disabled, so encoded output
+        // order matches accepted input order and the submitted capture timestamp is
+        // the authoritative timestamp for the corresponding packet.
+        submitted_timestamps_100ns_.push_back(timestamp_100ns);
         receive_available_packets(false);
     }
 
@@ -320,16 +320,37 @@ namespace ddc
 
             try
             {
-                h264_encoded_sample sample;
-                sample.bytes.assign(packet_->data, packet_->data + packet_->size);
-                sample.timestamp_100ns = packet_->pts == AV_NOPTS_VALUE
-                    ? packet_->dts
-                    : packet_->pts;
-                if (sample.timestamp_100ns == AV_NOPTS_VALUE)
+                std::int64_t output_timestamp_100ns{};
+                if (!submitted_timestamps_100ns_.empty())
                 {
-                    sample.timestamp_100ns = 0;
+                    output_timestamp_100ns = submitted_timestamps_100ns_.front();
+                    submitted_timestamps_100ns_.pop_front();
+                }
+                else
+                {
+                    const std::int64_t packet_timestamp = packet_->pts == AV_NOPTS_VALUE
+                        ? packet_->dts
+                        : packet_->pts;
+                    output_timestamp_100ns =
+                        packet_timestamp == AV_NOPTS_VALUE || packet_timestamp < 0
+                        ? 0
+                        : packet_timestamp;
                 }
 
+                // A few hardware MFT drivers occasionally surface an empty output
+                // packet through h264_mf. It represents no decodable access unit
+                // and must not be forwarded to the MPEG-TS muxer. Treat it as a
+                // dropped encoder output while still consuming the corresponding
+                // submitted timestamp so later frames keep their FIFO cadence.
+                if (packet_->data == nullptr || packet_->size <= 0)
+                {
+                    av_packet_unref(packet_);
+                    continue;
+                }
+
+                h264_encoded_sample sample;
+                sample.bytes.assign(packet_->data, packet_->data + packet_->size);
+                sample.timestamp_100ns = output_timestamp_100ns;
                 sample.duration_100ns = packet_->duration > 0
                     ? packet_->duration
                     : frame_duration_100ns_;
@@ -406,5 +427,6 @@ namespace ddc
         av_packet_free(&packet_);
         av_frame_free(&frame_);
         avcodec_free_context(&codec_context_);
+        submitted_timestamps_100ns_.clear();
     }
 }

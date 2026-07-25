@@ -155,15 +155,37 @@ public sealed class LiveCastSessionTests
         Assert.Empty(events);
     }
 
-    [Fact]
-    public async Task RejectsFrameRatesAboveMilestoneTwoLimitBeforeAllocatingNativeSession()
+    [Theory]
+    [InlineData(15)]
+    [InlineData(60)]
+    public async Task AcceptsSupportedFrameRate(int frameRate)
     {
         List<string> events = [];
         FakeMediaSession media = new(events);
         FakeLivePublisher publisher = new(events);
         FakeRendererClient rendererClient = new(events);
         await using LiveCastSession session = CreateSession(media, publisher, rendererClient);
-        MediaCaptureConfiguration invalid = CreateConfiguration() with { FrameRate = 60 };
+        MediaCaptureConfiguration configuration = CreateConfiguration() with
+        {
+            FrameRate = frameRate,
+            GopFrames = frameRate,
+        };
+
+        await session.StartAsync(CreateRenderer(), configuration, CancellationToken.None);
+        await session.StopAsync(CancellationToken.None);
+
+        Assert.Contains("MediaStart", events);
+    }
+
+    [Fact]
+    public async Task RejectsUnsupportedFrameRateBeforeAllocatingNativeSession()
+    {
+        List<string> events = [];
+        FakeMediaSession media = new(events);
+        FakeLivePublisher publisher = new(events);
+        FakeRendererClient rendererClient = new(events);
+        await using LiveCastSession session = CreateSession(media, publisher, rendererClient);
+        MediaCaptureConfiguration invalid = CreateConfiguration() with { FrameRate = 45 };
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
             session.StartAsync(CreateRenderer(), invalid, CancellationToken.None));
@@ -293,6 +315,27 @@ public sealed class LiveCastSessionTests
     }
 
     [Fact]
+    public async Task MediaPumpFailureDuringPlaybackTriggersImmediateAutomaticStop()
+    {
+        List<string> events = [];
+        FakeMediaSession media = new(events);
+        FakeLivePublisher publisher = new(events);
+        FakeRendererClient rendererClient = new(events);
+        await using LiveCastSession session = CreateSession(media, publisher, rendererClient);
+        await session.StartAsync(CreateRenderer(), CreateConfiguration(), CancellationToken.None);
+
+        media.FailPump(new InvalidDataException("hardware encoder stopped producing output"));
+        await WaitForAsync(() => session.State == CastSessionState.Idle);
+
+        Assert.Equal(CastStopReason.MediaPipelineFailed, session.StopReason);
+        Assert.NotNull(session.Failure);
+        Assert.Contains("hardware encoder stopped", session.Failure.TechnicalDetail);
+        Assert.Equal(1, publisher.StopCount);
+        Assert.Equal(1, media.StopCount);
+        Assert.Equal(1, media.DisposeCount);
+    }
+
+    [Fact]
     public async Task UserStopReportsUserRequestedStopReason()
     {
         List<string> events = [];
@@ -411,6 +454,10 @@ public sealed class LiveCastSessionTests
 
     private sealed class FakeMediaSession(List<string> events) : IMediaCaptureSession
     {
+        private readonly TaskCompletionSource pumpFailure =
+            new(TaskCreationOptions.RunContinuationsAsynchronously);
+        private Exception? pumpException;
+
         public static MediaEncoderDiagnostics Diagnostics { get; } = new(
             "Test H.264 Encoder",
             IsHardware: false,
@@ -449,7 +496,14 @@ public sealed class LiveCastSessionTests
             }
 
             yield return new(new byte[188], TimeSpan.Zero, StartsAtRandomAccessPoint: true);
-            await Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken);
+            await pumpFailure.Task.WaitAsync(cancellationToken);
+            throw pumpException ?? new InvalidOperationException("The fake media pump failed.");
+        }
+
+        public void FailPump(Exception exception)
+        {
+            pumpException = exception;
+            pumpFailure.TrySetResult();
         }
 
         public MediaSessionStatistics GetStatistics() =>
