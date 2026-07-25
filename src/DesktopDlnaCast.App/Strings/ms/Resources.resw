@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Tutup</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Tidak diketahui</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Ciri ini bergantung pada peranti audio dan pemacunya. Meredamkan PC mungkin turut menyebabkan TV tiada bunyi. Jika TV tiada bunyi, pulihkan kelantangan PC. Untuk memastikan PC senyap, cuba pilih peranti output lain dalam tetapan bunyi bar tugas atau sambungkan fon kepala.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Kadar bingkai</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Log aplikasi</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Log</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>Belum ada entri log.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Salin</value></data>
 </root>

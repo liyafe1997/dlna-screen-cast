@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Tutup</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Tidak diketahui</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Fitur ini bergantung pada perangkat audio dan drivernya. Membisukan PC juga dapat membuat TV tidak bersuara. Jika TV tidak mengeluarkan suara, aktifkan kembali volume PC. Agar PC tetap senyap, coba pilih perangkat output lain di pengaturan suara bilah tugas atau sambungkan headphone.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Laju bingkai</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Log aplikasi</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Log</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>Belum ada entri log.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Salin</value></data>
 </root>

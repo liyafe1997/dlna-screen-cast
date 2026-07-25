@@ -82,4 +82,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Kapat</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Bilinmiyor</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Bu özelliğin çalışması ses cihazına ve sürücüsüne bağlıdır. Bilgisayarı sessize almak TV'nin de sessiz kalmasına neden olabilir. TV'den ses gelmiyorsa bilgisayarın sesini yeniden açın. Bilgisayarın sessiz kalmasını istiyorsanız görev çubuğundaki ses ayarlarından başka bir çıkış cihazı seçmeyi veya kulaklık bağlamayı deneyin.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Kare hızı</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Uygulama günlüğü</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Günlük</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>Henüz günlük girdisi yok.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Kopyala</value></data>
 </root>

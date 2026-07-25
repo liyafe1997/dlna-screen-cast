@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Fermer</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Inconnu</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Cette fonction dépend du périphérique audio et de son pilote. Couper le son du PC peut également couper le son du téléviseur. Si le téléviseur n’émet aucun son, rétablissez le volume du PC. Pour garder le PC silencieux, essayez de sélectionner un autre périphérique de sortie dans les paramètres audio de la barre des tâches ou branchez un casque.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Fréquence d’images</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Journal de l’application</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Journal</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>Aucune entrée dans le journal pour le moment.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Copier</value></data>
 </root>

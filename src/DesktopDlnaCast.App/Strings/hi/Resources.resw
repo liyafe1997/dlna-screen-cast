@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>बंद करें</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>अज्ञात</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>यह सुविधा ऑडियो डिवाइस और उसके ड्राइवर पर निर्भर करती है। PC को म्यूट करने से TV की आवाज़ भी बंद हो सकती है। अगर TV पर आवाज़ नहीं आती, तो PC का वॉल्यूम वापस चालू करें। PC को शांत रखने के लिए, टास्कबार की साउंड सेटिंग में कोई दूसरा आउटपुट डिवाइस चुनें या हेडफ़ोन कनेक्ट करें।</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>फ़्रेम दर</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>ऐप्लिकेशन लॉग</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>लॉग</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>अभी तक कोई लॉग प्रविष्टि नहीं है।</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>कॉपी करें</value></data>
 </root>

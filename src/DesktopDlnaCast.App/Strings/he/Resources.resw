@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>סגירה</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>לא ידוע</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>פעולת תכונה זו תלויה בהתקן השמע ובמנהל ההתקן. השתקת המחשב עלולה להשתיק גם את הטלוויזיה. אם אין קול בטלוויזיה, בטל את השתקת המחשב. כדי להשאיר את המחשב שקט, נסה לבחור התקן פלט אחר בהגדרות השמע שבשורת המשימות או לחבר אוזניות.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>קצב פריימים</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>יומן היישום</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>יומן</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>אין עדיין רשומות ביומן.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>העתקה</value></data>
 </root>

@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>閉じる</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>不明</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>この機能の動作は、オーディオ デバイスとドライバーによって異なります。PC をミュートすると、テレビの音声も消える場合があります。テレビから音が出ない場合は、PC の音量を元に戻してください。PC 側で音を出したくない場合は、タスク バーのサウンド設定で別の出力デバイスを選択するか、ヘッドホンを接続してください。</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>フレーム レート</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>アプリケーション ログ</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>ログ</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>ログ エントリはまだありません。</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>コピー</value></data>
 </root>

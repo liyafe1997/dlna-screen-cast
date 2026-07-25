@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Stäng</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Okänt</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Den här funktionen beror på ljudenheten och dess drivrutin. Om datorn stängs av kan även tv:n bli utan ljud. Om tv:n saknar ljud återställer du datorns volym. Om du vill hålla datorn tyst kan du välja en annan utenhet i ljudinställningarna i aktivitetsfältet eller ansluta hörlurar.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Bildfrekvens</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Programlogg</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Logg</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>Det finns inga loggposter ännu.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Kopiera</value></data>
 </root>

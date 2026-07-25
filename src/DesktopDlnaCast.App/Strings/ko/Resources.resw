@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>닫기</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>알 수 없음</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>이 기능은 오디오 장치와 드라이버에 따라 정상적으로 작동하지 않을 수 있습니다. PC를 음소거하면 TV에서도 소리가 나지 않을 수 있습니다. TV에서 소리가 나지 않으면 PC 볼륨을 다시 켜세요. PC에서 소리가 나지 않게 하려면 작업 표시줄의 소리 설정에서 다른 출력 장치를 선택하거나 헤드폰을 연결해 보세요.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>프레임 속도</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>애플리케이션 로그</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>로그</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>아직 로그 항목이 없습니다.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>복사</value></data>
 </root>

@@ -82,4 +82,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>ปิด</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>ไม่ทราบ</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>การทำงานของคุณสมบัตินี้ขึ้นอยู่กับอุปกรณ์เสียงและไดรเวอร์ การปิดเสียงพีซีอาจทำให้ทีวีไม่มีเสียงด้วย หากทีวีไม่มีเสียง ให้เปิดเสียงพีซีกลับมา หากต้องการให้พีซีไม่ส่งเสียง ให้ลองเลือกอุปกรณ์เอาต์พุตอื่นในการตั้งค่าเสียงบนแถบงาน หรือเชื่อมต่อหูฟัง</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>อัตราเฟรม</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>บันทึกแอปพลิเคชัน</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>บันทึก</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>ยังไม่มีรายการบันทึก</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>คัดลอก</value></data>
 </root>

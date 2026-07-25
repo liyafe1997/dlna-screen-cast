@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Cerrar</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Desconocido</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Esta función depende del dispositivo de audio y de su controlador. Al silenciar el PC, es posible que el televisor también se quede sin sonido. Si el televisor no tiene sonido, restaura el volumen del PC. Para mantener el PC en silencio, prueba a seleccionar otro dispositivo de salida en la configuración de sonido de la barra de tareas o conecta unos auriculares.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Velocidad de fotogramas</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Registro de la aplicación</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Registro</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>Aún no hay entradas en el registro.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Copiar</value></data>
 </root>

@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Đóng</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Không rõ</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Tính năng này phụ thuộc vào thiết bị âm thanh và trình điều khiển. Việc tắt tiếng máy tính cũng có thể khiến TV mất tiếng. Nếu TV không có âm thanh, hãy bật lại âm lượng máy tính. Để máy tính không phát ra âm thanh, hãy thử chọn thiết bị đầu ra khác trong cài đặt âm thanh trên thanh tác vụ hoặc kết nối tai nghe.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Tốc độ khung hình</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Nhật ký ứng dụng</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Nhật ký</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>Chưa có mục nhật ký nào.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Sao chép</value></data>
 </root>

@@ -82,4 +82,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Закрити</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Невідомо</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Робота цієї функції залежить від аудіопристрою та його драйвера. Якщо вимкнути звук на комп’ютері, звук на телевізорі також може зникнути. Якщо телевізор не відтворює звук, увімкніть звук на комп’ютері. Щоб комп’ютер залишався беззвучним, спробуйте вибрати інший пристрій виведення в параметрах звуку на панелі завдань або підключіть навушники.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Частота кадрів</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Журнал програми</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Журнал</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>У журналі ще немає записів.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Копіювати</value></data>
 </root>

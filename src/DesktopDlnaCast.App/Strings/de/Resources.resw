@@ -71,4 +71,9 @@
   <data name="AboutCloseButton" xml:space="preserve"><value>Schließen</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Unbekannt</value></data>
   <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Diese Funktion hängt vom Audiogerät und dessen Treiber ab. Wenn der PC stummgeschaltet wird, kann auch der Fernseher stumm bleiben. Falls der Fernseher keinen Ton wiedergibt, heben Sie die Stummschaltung des PCs auf. Um den PC leise zu halten, wählen Sie in den Soundeinstellungen der Taskleiste ein anderes Ausgabegerät aus oder schließen Sie Kopfhörer an.</value></data>
+  <data name="FrameRateLabel.Text" xml:space="preserve"><value>Bildrate</value></data>
+  <data name="LogDialogTitle" xml:space="preserve"><value>Anwendungsprotokoll</value></data>
+  <data name="LogButton.Content" xml:space="preserve"><value>Protokoll</value></data>
+  <data name="LogEmpty" xml:space="preserve"><value>Noch keine Protokolleinträge vorhanden.</value></data>
+  <data name="LogCopyButton" xml:space="preserve"><value>Kopieren</value></data>
 </root>
