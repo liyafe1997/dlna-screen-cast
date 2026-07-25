@@ -269,28 +269,21 @@ namespace ddc
             }
 
             current_bytes_.clear();
-            // The session clock already submits monotonic audio/video samples in
-            // live order. av_interleaved_write_frame may retain the first IDR
-            // until a later AAC call, causing its bytes to be emitted from that
-            // call and lose the random-access-point marker. Write immediately so
-            // every output chunk remains attributable to its input access unit.
-            check_ffmpeg(av_write_frame(format_context_, packet), "av_write_frame");
+            check_ffmpeg(
+                av_interleaved_write_frame(format_context_, packet),
+                "av_interleaved_write_frame");
             avio_flush(io_context_);
             throw_if_callback_failed();
-            if (sample.key_frame && !header_bytes_.empty())
+            const bool random_access_point =
+                sample.key_frame || std::exchange(pending_random_access_point_, false);
+            if (current_bytes_.empty())
             {
-                if (current_bytes_.size() + header_bytes_.size() > maximum_mux_chunk_bytes)
-                {
-                    throw std::length_error("The MPEG-TS startup chunk is too large.");
-                }
-
-                current_bytes_.insert(
-                    current_bytes_.begin(),
-                    header_bytes_.begin(),
-                    header_bytes_.end());
+                // libavformat can retain an IDR until a later audio write. Carry
+                // its start-point marker to the call that actually emits bytes.
+                pending_random_access_point_ = random_access_point;
             }
 
-            emit_current(sample.key_frame, sample.timestamp_100ns);
+            emit_current(random_access_point, sample.timestamp_100ns);
         }
         catch (...)
         {
@@ -339,23 +332,21 @@ namespace ddc
                 media_foundation_time_base,
                 audio_stream_->time_base);
             current_bytes_.clear();
-            check_ffmpeg(av_write_frame(format_context_, packet), "av_write_frame");
+            check_ffmpeg(
+                has_video_
+                    ? av_interleaved_write_frame(format_context_, packet)
+                    : av_write_frame(format_context_, packet),
+                has_video_ ? "av_interleaved_write_frame" : "av_write_frame");
             avio_flush(io_context_);
             throw_if_callback_failed();
-            if (!has_video_ && !header_bytes_.empty())
+            const bool random_access_point =
+                !has_video_ || std::exchange(pending_random_access_point_, false);
+            if (current_bytes_.empty() && random_access_point && has_video_)
             {
-                if (current_bytes_.size() + header_bytes_.size() > maximum_mux_chunk_bytes)
-                {
-                    throw std::length_error("The MPEG-TS audio startup chunk is too large.");
-                }
-
-                current_bytes_.insert(
-                    current_bytes_.begin(),
-                    header_bytes_.begin(),
-                    header_bytes_.end());
+                pending_random_access_point_ = true;
             }
 
-            emit_current(!has_video_, sample.timestamp_100ns);
+            emit_current(random_access_point, sample.timestamp_100ns);
         }
         catch (...)
         {
@@ -442,6 +433,19 @@ namespace ddc
         if (current_bytes_.empty())
         {
             return;
+        }
+
+        if (random_access_point && !header_bytes_.empty())
+        {
+            if (current_bytes_.size() + header_bytes_.size() > maximum_mux_chunk_bytes)
+            {
+                throw std::length_error("The MPEG-TS startup chunk is too large.");
+            }
+
+            current_bytes_.insert(
+                current_bytes_.begin(),
+                header_bytes_.begin(),
+                header_bytes_.end());
         }
 
         if (current_bytes_.size() % mpeg_ts_packet_size != 0)

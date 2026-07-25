@@ -71,6 +71,7 @@ namespace ddc
         std::vector<std::uint8_t> header_bytes_;
         std::vector<std::uint8_t> current_bytes_;
         std::exception_ptr callback_failure_;
+        bool pending_random_access_point_{};
         bool finished_{};
         bool has_video_{};
     };

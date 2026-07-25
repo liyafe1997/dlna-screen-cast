@@ -30,16 +30,14 @@ void run_mpeg_ts_muxer_tests()
             0x00, 0x00, 0x00, 0x01, 0x65, 0x88, 0x84, 0x00, 0x10,
         };
         muxer.write_video({ encoded_sample, 0, 333'333, true });
-        // The first IDR must be emitted by its own write even when an audio
-        // stream exists. Deferring it until a later AAC write loses the
-        // random-access marker used by the HTTP startup buffer.
-        DDC_TEST_CHECK(!output.empty());
-        DDC_TEST_CHECK((output.front().flags & DDC_PACKET_FLAG_RANDOM_ACCESS_POINT) != 0);
-
         constexpr std::array<std::uint8_t, 8> encoded_aac_sample{
             0x21, 0x10, 0x04, 0x60, 0x8C, 0x1C, 0x00, 0x00,
         };
         muxer.write_audio({ encoded_aac_sample, 0, 213'333 });
+        // Interleaving may defer the IDR until the AAC write, but the emitted
+        // bytes must retain the IDR's random-access marker.
+        DDC_TEST_CHECK(!output.empty());
+        DDC_TEST_CHECK((output.front().flags & DDC_PACKET_FLAG_RANDOM_ACCESS_POINT) != 0);
         muxer.finish();
         muxer.finish();
 

@@ -349,12 +349,20 @@ namespace ddc
                 }
 
                 h264_encoded_sample sample;
-                sample.bytes.assign(packet_->data, packet_->data + packet_->size);
+                normalized_h264_access_unit access_unit =
+                    access_unit_normalizer_.normalize(std::span<const std::uint8_t>(
+                        packet_->data,
+                        static_cast<std::size_t>(packet_->size)));
+                sample.bytes = std::move(access_unit.bytes);
                 sample.timestamp_100ns = output_timestamp_100ns;
                 sample.duration_100ns = packet_->duration > 0
                     ? packet_->duration
                     : frame_duration_100ns_;
-                sample.key_frame = (packet_->flags & AV_PKT_FLAG_KEY) != 0;
+                // Hardware MFT key flags are not reliable enough for a DLNA
+                // startup boundary. Only an actual Annex-B IDR is a random
+                // access point; cached SPS/PPS are prepended when the IDR omits
+                // them so a renderer can initialize its decoder immediately.
+                sample.key_frame = access_unit.is_random_access_point;
                 av_packet_unref(packet_);
                 callback_(std::move(sample));
             }

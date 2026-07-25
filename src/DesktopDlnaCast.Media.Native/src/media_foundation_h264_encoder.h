@@ -1,5 +1,7 @@
 #pragma once
 
+#include "h264_access_unit_normalizer.h"
+
 extern "C"
 {
 #include <libavcodec/avcodec.h>
@@ -86,6 +88,7 @@ namespace ddc
         AVFrame* frame_{};
         AVPacket* packet_{};
         std::deque<std::int64_t> submitted_timestamps_100ns_;
+        h264_access_unit_normalizer access_unit_normalizer_;
         std::vector<std::uint8_t> codec_configuration_;
         h264_encoder_diagnostics diagnostics_{};
         std::string encoder_name_;
