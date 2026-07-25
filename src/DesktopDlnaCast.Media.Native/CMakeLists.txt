@@ -3,6 +3,7 @@ find_package(FFMPEG REQUIRED)
 add_library(DesktopDlnaCast.Media.Native SHARED
   src/adts_stream_writer.cpp
   src/adts_stream_writer.h
+  src/audio_playout_clock.h
   include/ddc_media.h
   src/bounded_packet_queue.cpp
   src/bounded_packet_queue.h
@@ -61,6 +62,7 @@ set_target_properties(DesktopDlnaCast.Media.Native PROPERTIES
 if(BUILD_TESTING)
   add_executable(DesktopDlnaCast.Media.Native.Tests
     src/adts_stream_writer.cpp
+    src/audio_playout_clock.h
     src/bounded_packet_queue.cpp
     src/d3d11_video_processor.cpp
     src/h264_access_unit_normalizer.cpp
@@ -69,6 +71,7 @@ if(BUILD_TESTING)
     src/media_foundation_mp3_encoder.cpp
     src/mpeg_ts_muxer.cpp
     src/software_video_processor.cpp
+    tests/audio_playout_clock_tests.cpp
     tests/bounded_packet_queue_tests.cpp
     tests/d3d11_video_processor_tests.cpp
     tests/h264_access_unit_normalizer_tests.cpp

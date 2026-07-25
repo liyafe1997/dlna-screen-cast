@@ -34,6 +34,7 @@ namespace
 }
 
 void run_bounded_packet_queue_tests();
+void run_audio_playout_clock_tests();
 void run_d3d11_video_processor_tests();
 void run_h264_access_unit_normalizer_tests();
 void run_local_playback_mute_monitor_tests();
@@ -189,6 +190,7 @@ int main()
     ddc_session_destroy(handle);
 
     run_bounded_packet_queue_tests();
+    run_audio_playout_clock_tests();
     run_d3d11_video_processor_tests();
     run_h264_access_unit_normalizer_tests();
     run_local_playback_mute_monitor_tests();

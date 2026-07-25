@@ -1,4 +1,5 @@
 #include "wasapi_loopback_capture.h"
+#include "audio_playout_clock.h"
 #include "local_playback_mute_monitor.h"
 
 #include <audioclient.h>
@@ -358,13 +359,6 @@ namespace
             }
 
             const auto& client = result.audio_client;
-            const winrt::com_ptr<IAudioClient2> client2 = client.as<IAudioClient2>();
-            AudioClientProperties properties{};
-            properties.cbSize = sizeof(properties);
-            properties.bIsOffload = FALSE;
-            properties.eCategory = AudioCategory_Media;
-            properties.Options = AUDCLNT_STREAMOPTIONS_NONE;
-            winrt::check_hresult(client2->SetClientProperties(&properties));
             winrt::check_hresult(client->Initialize(
                 AUDCLNT_SHAREMODE_SHARED,
                 stream_flags,
@@ -388,7 +382,11 @@ namespace
         prepared_client prepared;
         try
         {
-            prepared = prepare_client(true);
+            // Endpoint loopback remains the primary path because it has the
+            // widest driver coverage and exposes reliable packet activity on
+            // machines where process loopback can initialize successfully but
+            // return only silence.
+            prepared = prepare_client(false);
         }
         catch (...)
         {
@@ -396,7 +394,7 @@ namespace
             {
                 throw;
             }
-            prepared = prepare_client(false);
+            prepared = prepare_client(true);
         }
 
         target.reset();
@@ -709,8 +707,9 @@ namespace ddc
                     std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 }
 
-                const std::int64_t target_frames = frames_from_100ns(
-                    monotonic_time_100ns() - session_start_100ns_);
+                const std::int64_t target_frames = audio_playout_clock::target_frames(
+                    monotonic_time_100ns() - session_start_100ns_,
+                    sample_rate);
                 while (emitted_frames + samples_per_frame <= target_frames && !stopping_.load())
                 {
                     std::vector<std::int16_t> frame(

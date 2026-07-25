@@ -63,7 +63,11 @@ The optional local-playback mute affects every sound on the Windows output endpo
 
 ## Muting the PC also mutes the receiver
 
-DesktopDlnaCast first captures all system audio except its own process tree through Windows process loopback. If that endpoint-independent activation is unavailable, it falls back to ordinary endpoint WASAPI loopback and explicitly requests pre-volume/mute behavior. It waits for an audible packet before muting the endpoint, then verifies that loopback remains non-silent. If an audio driver instead exposes post-volume/mute loopback, the application restores local playback after approximately 500 ms and continues casting remote audio. This safe fallback means the PC can remain audible on an incompatible driver. Updating the audio driver or selecting another output endpoint may restore local-mute support.
+DesktopDlnaCast primarily uses endpoint WASAPI loopback with the Windows default pre-volume/mute behavior. It does not apply optional `IAudioClient2` stream properties because some driver/APO combinations accept them but return only silence. If endpoint initialization fails, it falls back to Windows process loopback and excludes its own process tree. It waits for an audible packet before muting the endpoint, then verifies that loopback remains non-silent. If an audio driver instead exposes post-volume/mute loopback, the application restores local playback after approximately 500 ms and continues casting remote audio. This safe fallback means the PC can remain audible on an incompatible driver. Updating the audio driver or selecting another output endpoint may restore local-mute support.
+
+## Receiver audio crackles or clicks
+
+Audio playout intentionally trails the session clock by 100 ms so normal WASAPI packet scheduling jitter does not create partial AAC frames padded with silence. This is a bounded in-memory jitter buffer, not an additional media queue, and it does not grow over time. If crackling remains, inspect timestamp-correction and queue-overflow statistics and test without endpoint audio enhancements; persistent corrections can indicate a driver/APO timestamp discontinuity rather than network congestion.
 
 ## Firewall rule removal
 
