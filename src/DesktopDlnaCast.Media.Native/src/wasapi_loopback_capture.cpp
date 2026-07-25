@@ -622,11 +622,16 @@ namespace ddc
                                     static_cast<std::int64_t>(qpc_position) - session_start_100ns_);
                                 std::int64_t pending_end = emitted_frames +
                                     static_cast<std::int64_t>(pending_samples.size() / channels);
+                                const std::int64_t reconciliation_delta =
+                                    audio_playout_clock::reconcile_delta_frames(
+                                        packet_start,
+                                        pending_end,
+                                        sample_rate);
                                 std::uint32_t skip_frames{};
-                                if (packet_start > pending_end)
+                                if (reconciliation_delta > 0)
                                 {
                                     const auto gap = static_cast<std::size_t>(std::min<std::int64_t>(
-                                        packet_start - pending_end,
+                                        reconciliation_delta,
                                         static_cast<std::int64_t>(maximum_pending_frames)));
                                     pending_samples.insert(
                                         pending_samples.end(),
@@ -634,10 +639,10 @@ namespace ddc
                                         0);
                                     timestamp_correction_callback_();
                                 }
-                                else if (packet_start < pending_end)
+                                else if (reconciliation_delta < 0)
                                 {
                                     skip_frames = static_cast<std::uint32_t>(std::min<std::int64_t>(
-                                        pending_end - packet_start,
+                                        -reconciliation_delta,
                                         frames));
                                     if (skip_frames > 0)
                                     {

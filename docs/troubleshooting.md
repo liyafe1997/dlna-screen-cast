@@ -67,7 +67,7 @@ DesktopDlnaCast primarily uses endpoint WASAPI loopback with the Windows default
 
 ## Receiver audio crackles or clicks
 
-Audio playout intentionally trails the session clock by 100 ms so normal WASAPI packet scheduling jitter does not create partial AAC frames padded with silence. This is a bounded in-memory jitter buffer, not an additional media queue, and it does not grow over time. If crackling remains, inspect timestamp-correction and queue-overflow statistics and test without endpoint audio enhancements; persistent corrections can indicate a driver/APO timestamp discontinuity rather than network congestion.
+Audio playout intentionally trails the session clock by 100 ms so normal WASAPI packet scheduling jitter does not create partial AAC frames padded with silence. Consecutive packet timestamps also have a two-millisecond tolerance so QPC conversion noise does not insert or delete individual PCM frames. This is a bounded in-memory jitter buffer, not an additional media queue, and it does not grow over time. If crackling remains, inspect timestamp-correction and queue-overflow statistics and test without endpoint audio enhancements; persistent corrections can indicate a driver/APO timestamp discontinuity rather than network congestion.
 
 ## Firewall rule removal
 
