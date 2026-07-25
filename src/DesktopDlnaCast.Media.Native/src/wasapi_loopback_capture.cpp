@@ -1,6 +1,8 @@
 #include "wasapi_loopback_capture.h"
+#include "local_playback_mute_monitor.h"
 
 #include <audioclient.h>
+#include <audioclientactivationparams.h>
 #include <endpointvolume.h>
 #include <mmdeviceapi.h>
 #include <windows.h>
@@ -36,6 +38,114 @@ namespace
         AUDCLNT_STREAMFLAGS_SRC_DEFAULT_QUALITY;
     constexpr std::size_t maximum_pending_frames =
         static_cast<std::size_t>(ddc::wasapi_loopback_capture::sample_rate) * 2U;
+    constexpr DWORD activation_timeout_ms = 5'000;
+
+    struct process_loopback_activation_handler :
+        winrt::implements<
+            process_loopback_activation_handler,
+            IActivateAudioInterfaceCompletionHandler>
+    {
+        process_loopback_activation_handler()
+            : completed_(CreateEventW(nullptr, TRUE, FALSE, nullptr))
+        {
+            if (!completed_)
+            {
+                winrt::throw_last_error();
+            }
+        }
+
+        HRESULT STDMETHODCALLTYPE ActivateCompleted(
+            IActivateAudioInterfaceAsyncOperation* operation) noexcept final
+        {
+            result_ = E_UNEXPECTED;
+            if (operation != nullptr)
+            {
+                HRESULT activation_result = E_UNEXPECTED;
+                winrt::com_ptr<IUnknown> activated;
+                result_ = operation->GetActivateResult(
+                    &activation_result,
+                    activated.put());
+                if (SUCCEEDED(result_))
+                {
+                    result_ = activation_result;
+                }
+                if (SUCCEEDED(result_))
+                {
+                    result_ = activated->QueryInterface(
+                        __uuidof(IAudioClient),
+                        audio_client_.put_void());
+                }
+            }
+
+            SetEvent(completed_.get());
+            return S_OK;
+        }
+
+        [[nodiscard]] winrt::com_ptr<IAudioClient> wait_for_result(
+            const std::atomic<bool>& stopping)
+        {
+            DWORD waited_ms{};
+            while (waited_ms < activation_timeout_ms)
+            {
+                if (stopping.load())
+                {
+                    winrt::throw_hresult(HRESULT_FROM_WIN32(ERROR_CANCELLED));
+                }
+
+                constexpr DWORD interval_ms = 50;
+                const DWORD wait_result = WaitForSingleObject(
+                    completed_.get(),
+                    interval_ms);
+                if (wait_result == WAIT_OBJECT_0)
+                {
+                    winrt::check_hresult(result_);
+                    return std::move(audio_client_);
+                }
+                if (wait_result != WAIT_TIMEOUT)
+                {
+                    winrt::throw_last_error();
+                }
+
+                waited_ms += interval_ms;
+            }
+
+            winrt::throw_hresult(HRESULT_FROM_WIN32(ERROR_TIMEOUT));
+        }
+
+    private:
+        winrt::handle completed_;
+        HRESULT result_{ E_PENDING };
+        winrt::com_ptr<IAudioClient> audio_client_;
+    };
+
+    [[nodiscard]] winrt::com_ptr<IAudioClient> activate_process_loopback(
+        const std::atomic<bool>& stopping)
+    {
+        AUDIOCLIENT_ACTIVATION_PARAMS activation_parameters{};
+        activation_parameters.ActivationType =
+            AUDIOCLIENT_ACTIVATION_TYPE_PROCESS_LOOPBACK;
+        activation_parameters.ProcessLoopbackParams.TargetProcessId =
+            GetCurrentProcessId();
+        activation_parameters.ProcessLoopbackParams.ProcessLoopbackMode =
+            PROCESS_LOOPBACK_MODE_EXCLUDE_TARGET_PROCESS_TREE;
+
+        PROPVARIANT parameters{};
+        parameters.vt = VT_BLOB;
+        parameters.blob.cbSize = sizeof(activation_parameters);
+        parameters.blob.pBlobData =
+            reinterpret_cast<BYTE*>(&activation_parameters);
+
+        const auto handler =
+            winrt::make_self<process_loopback_activation_handler>();
+        winrt::com_ptr<IActivateAudioInterfaceAsyncOperation> operation;
+        winrt::check_hresult(ActivateAudioInterfaceAsync(
+            VIRTUAL_AUDIO_DEVICE_PROCESS_LOOPBACK,
+            __uuidof(IAudioClient),
+            &parameters,
+            handler.get(),
+            operation.put()));
+        return handler->wait_for_result(stopping);
+    }
 
     struct endpoint_volume_callback :
         winrt::implements<endpoint_volume_callback, IAudioEndpointVolumeCallback>
@@ -83,7 +193,38 @@ namespace
         std::wstring id;
         ddc::audio_event_callback mute_change_callback;
         ddc::audio_event_callback mute_restore_failure_callback;
+        ddc::local_playback_mute_monitor mute_monitor;
+        bool mute_requested{};
         bool restore_mute{};
+
+        void apply_mute_after_signal()
+        {
+            if (!mute_requested || !endpoint_volume || restore_mute)
+            {
+                return;
+            }
+
+            winrt::check_hresult(endpoint_volume->SetMute(
+                TRUE,
+                &local_mute_event_context));
+            restore_mute = true;
+            mute_change_callback();
+        }
+
+        void cancel_incompatible_mute()
+        {
+            if (!endpoint_volume || !restore_mute)
+            {
+                return;
+            }
+
+            winrt::check_hresult(endpoint_volume->SetMute(
+                FALSE,
+                &local_mute_event_context));
+            restore_mute = false;
+            mute_requested = false;
+            mute_change_callback();
+        }
 
         void reset() noexcept
         {
@@ -135,6 +276,8 @@ namespace
             id.clear();
             mute_change_callback = nullptr;
             mute_restore_failure_callback = nullptr;
+            mute_monitor = {};
+            mute_requested = false;
             restore_mute = false;
         }
 
@@ -177,18 +320,12 @@ namespace
     void open_capture_device(
         IMMDeviceEnumerator& enumerator,
         capture_device& target,
+        const std::atomic<bool>& stopping,
         const bool mute_local_playback,
         ddc::audio_event_callback mute_change_callback,
         ddc::audio_event_callback mute_restore_failure_callback)
     {
         winrt::com_ptr<IMMDevice> device = get_default_render_device(enumerator);
-        winrt::com_ptr<IAudioClient> audio_client;
-        winrt::check_hresult(device->Activate(
-            __uuidof(IAudioClient),
-            CLSCTX_ALL,
-            nullptr,
-            audio_client.put_void()));
-
         WAVEFORMATEX format{};
         format.wFormatTag = WAVE_FORMAT_PCM;
         format.nChannels = ddc::wasapi_loopback_capture::channels;
@@ -196,32 +333,77 @@ namespace
         format.wBitsPerSample = 16;
         format.nBlockAlign = format.nChannels * format.wBitsPerSample / 8;
         format.nAvgBytesPerSec = format.nSamplesPerSec * format.nBlockAlign;
-        winrt::check_hresult(audio_client->Initialize(
-            AUDCLNT_SHAREMODE_SHARED,
-            stream_flags,
-            0,
-            0,
-            &format,
-            nullptr));
-
-        winrt::handle ready_event{ CreateEventW(nullptr, FALSE, FALSE, nullptr) };
-        if (!ready_event)
+        struct prepared_client
         {
-            winrt::throw_last_error();
-        }
+            winrt::com_ptr<IAudioClient> audio_client;
+            winrt::com_ptr<IAudioCaptureClient> capture_client;
+            winrt::handle ready_event;
+        };
+        const auto prepare_client =
+            [&format, &device, &stopping](
+                const bool use_process_loopback) -> prepared_client
+        {
+            prepared_client result;
+            if (use_process_loopback)
+            {
+                result.audio_client = activate_process_loopback(stopping);
+            }
+            else
+            {
+                winrt::check_hresult(device->Activate(
+                    __uuidof(IAudioClient),
+                    CLSCTX_ALL,
+                    nullptr,
+                    result.audio_client.put_void()));
+            }
 
-        winrt::check_hresult(audio_client->SetEventHandle(ready_event.get()));
-        winrt::com_ptr<IAudioCaptureClient> capture_client;
-        winrt::check_hresult(audio_client->GetService(
-            __uuidof(IAudioCaptureClient),
-            capture_client.put_void()));
-        winrt::check_hresult(audio_client->Start());
+            const auto& client = result.audio_client;
+            const winrt::com_ptr<IAudioClient2> client2 = client.as<IAudioClient2>();
+            AudioClientProperties properties{};
+            properties.cbSize = sizeof(properties);
+            properties.bIsOffload = FALSE;
+            properties.eCategory = AudioCategory_Media;
+            properties.Options = AUDCLNT_STREAMOPTIONS_NONE;
+            winrt::check_hresult(client2->SetClientProperties(&properties));
+            winrt::check_hresult(client->Initialize(
+                AUDCLNT_SHAREMODE_SHARED,
+                stream_flags,
+                0,
+                0,
+                &format,
+                nullptr));
+            result.ready_event.attach(CreateEventW(nullptr, FALSE, FALSE, nullptr));
+            if (!result.ready_event)
+            {
+                winrt::throw_last_error();
+            }
+            winrt::check_hresult(client->SetEventHandle(result.ready_event.get()));
+            winrt::check_hresult(client->GetService(
+                __uuidof(IAudioCaptureClient),
+                result.capture_client.put_void()));
+            winrt::check_hresult(client->Start());
+            return result;
+        };
+
+        prepared_client prepared;
+        try
+        {
+            prepared = prepare_client(true);
+        }
+        catch (...)
+        {
+            if (stopping.load())
+            {
+                throw;
+            }
+            prepared = prepare_client(false);
+        }
 
         target.reset();
         target.id = get_device_id(*device);
-        target.audio_client = std::move(audio_client);
-        target.capture_client = std::move(capture_client);
-        target.ready_event = std::move(ready_event);
+        target.audio_client = std::move(prepared.audio_client);
+        target.capture_client = std::move(prepared.capture_client);
+        target.ready_event = std::move(prepared.ready_event);
         target.mute_change_callback = std::move(mute_change_callback);
         target.mute_restore_failure_callback = std::move(mute_restore_failure_callback);
 
@@ -242,11 +424,7 @@ namespace
                     target.volume_callback.get()));
                 if (initially_muted == FALSE)
                 {
-                    winrt::check_hresult(target.endpoint_volume->SetMute(
-                        TRUE,
-                        &local_mute_event_context));
-                    target.restore_mute = true;
-                    target.mute_change_callback();
+                    target.mute_requested = true;
                 }
             }
             catch (...)
@@ -368,6 +546,7 @@ namespace ddc
                         open_capture_device(
                             *enumerator,
                             device,
+                            stopping_,
                             mute_local_playback_,
                             local_mute_change_callback_,
                             local_mute_restore_failure_callback_);
@@ -473,12 +652,32 @@ namespace ddc
                                     static_cast<std::size_t>(kept_frames) * channels;
                                 if ((flags & AUDCLNT_BUFFERFLAGS_SILENT) != 0 || data == nullptr)
                                 {
+                                    if (device.restore_mute &&
+                                        device.mute_monitor.observe_after_mute({}, kept_frames))
+                                    {
+                                        device.cancel_incompatible_mute();
+                                    }
                                     pending_samples.insert(pending_samples.end(), kept_samples, 0);
                                 }
                                 else
                                 {
                                     const auto* source = reinterpret_cast<const std::int16_t*>(data) +
                                         static_cast<std::size_t>(skip_frames) * channels;
+                                    const std::span<const std::int16_t> kept_source(
+                                        source,
+                                        kept_samples);
+                                    if (device.mute_requested &&
+                                        device.mute_monitor.should_apply_mute(kept_source))
+                                    {
+                                        device.apply_mute_after_signal();
+                                    }
+                                    else if (device.restore_mute &&
+                                             device.mute_monitor.observe_after_mute(
+                                                 kept_source,
+                                                 kept_frames))
+                                    {
+                                        device.cancel_incompatible_mute();
+                                    }
                                     pending_samples.insert(
                                         pending_samples.end(),
                                         source,

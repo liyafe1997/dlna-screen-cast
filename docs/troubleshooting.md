@@ -61,6 +61,10 @@ Renderer `Stop` is best effort. Local shutdown must still invalidate the token a
 
 The optional local-playback mute affects every sound on the Windows output endpoint being captured. Normal Stop, cancellation, startup failure, application shutdown, and default-device changes restore an app-owned mute. If the user changes the endpoint mute state while casting, DesktopDlnaCast leaves that newer user state alone. A process crash or forced termination can prevent cleanup; use the Windows volume control to unmute the endpoint, then restart the application before casting again. `LocalPlaybackMuteChanges` and `LocalPlaybackMuteRestoreFailures` in native statistics help diagnose cleanup failures. The feature relies on pre-volume WASAPI loopback behavior and therefore requires physical validation on the target Windows/audio-driver combination.
 
+## Muting the PC also mutes the receiver
+
+DesktopDlnaCast first captures all system audio except its own process tree through Windows process loopback. If that endpoint-independent activation is unavailable, it falls back to ordinary endpoint WASAPI loopback and explicitly requests pre-volume/mute behavior. It waits for an audible packet before muting the endpoint, then verifies that loopback remains non-silent. If an audio driver instead exposes post-volume/mute loopback, the application restores local playback after approximately 500 ms and continues casting remote audio. This safe fallback means the PC can remain audible on an incompatible driver. Updating the audio driver or selecting another output endpoint may restore local-mute support.
+
 ## Firewall rule removal
 
 Milestone 1 does not create or modify firewall rules. If a rule was added manually, remove it in **Windows Security → Firewall & network protection → Advanced settings → Inbound Rules**, selecting only the rule created for DesktopDlnaCast. Do not disable Windows Firewall globally.

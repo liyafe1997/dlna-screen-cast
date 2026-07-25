@@ -35,6 +35,7 @@ namespace
 
 void run_bounded_packet_queue_tests();
 void run_d3d11_video_processor_tests();
+void run_local_playback_mute_monitor_tests();
 void run_media_foundation_aac_encoder_tests();
 void run_media_foundation_h264_encoder_tests();
 void run_mpeg_ts_muxer_tests();
@@ -188,6 +189,7 @@ int main()
 
     run_bounded_packet_queue_tests();
     run_d3d11_video_processor_tests();
+    run_local_playback_mute_monitor_tests();
     run_media_foundation_h264_encoder_tests();
     run_media_foundation_aac_encoder_tests();
     run_mpeg_ts_muxer_tests();
