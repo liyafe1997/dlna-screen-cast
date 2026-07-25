@@ -81,4 +81,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Bu küçük araç işinize yaradıysa bana bir kahve ısmarlayarak geliştirilmesine destek olabilirsiniz.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Kapat</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Bilinmiyor</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Bu özelliğin çalışması ses cihazına ve sürücüsüne bağlıdır. Bilgisayarı sessize almak TV'nin de sessiz kalmasına neden olabilir. TV'den ses gelmiyorsa bilgisayarın sesini yeniden açın. Bilgisayarın sessiz kalmasını istiyorsanız görev çubuğundaki ses ayarlarından başka bir çıkış cihazı seçmeyi veya kulaklık bağlamayı deneyin.</value></data>
 </root>

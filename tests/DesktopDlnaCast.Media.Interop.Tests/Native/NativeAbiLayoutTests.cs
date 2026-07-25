@@ -9,7 +9,7 @@ public sealed class NativeAbiLayoutTests
     [Fact]
     public void AbiVersionAndResultCodesMatchNativeHeaderContract()
     {
-        Assert.Equal(7, NativeAbi.Version);
+        Assert.Equal(9, NativeAbi.Version);
         Assert.Equal(0, (int)NativeResult.Success);
         Assert.Equal(1, (int)NativeResult.Timeout);
         Assert.Equal(2, (int)NativeResult.EndOfStream);
@@ -36,12 +36,14 @@ public sealed class NativeAbiLayoutTests
     public void StatisticsHasStableSequentialLayout()
     {
         Assert.Equal(LayoutKind.Sequential, typeof(NativeSessionStatistics).StructLayoutAttribute!.Value);
-        Assert.Equal(96, Marshal.SizeOf<NativeSessionStatistics>());
+        Assert.Equal(120, Marshal.SizeOf<NativeSessionStatistics>());
         Assert.Equal(8, Marshal.OffsetOf<NativeSessionStatistics>(nameof(NativeSessionStatistics.CapturedVideoFrames)).ToInt32());
         Assert.Equal(32, Marshal.OffsetOf<NativeSessionStatistics>(nameof(NativeSessionStatistics.CapturedAudioPackets)).ToInt32());
         Assert.Equal(72, Marshal.OffsetOf<NativeSessionStatistics>(nameof(NativeSessionStatistics.EncoderWait100Nanoseconds)).ToInt32());
         Assert.Equal(80, Marshal.OffsetOf<NativeSessionStatistics>(nameof(NativeSessionStatistics.LocalPlaybackMuteChanges)).ToInt32());
         Assert.Equal(88, Marshal.OffsetOf<NativeSessionStatistics>(nameof(NativeSessionStatistics.LocalPlaybackMuteRestoreFailures)).ToInt32());
+        Assert.Equal(96, Marshal.OffsetOf<NativeSessionStatistics>(nameof(NativeSessionStatistics.AudioCaptureBackend)).ToInt32());
+        Assert.Equal(112, Marshal.OffsetOf<NativeSessionStatistics>(nameof(NativeSessionStatistics.PcmRmsMicrounits)).ToInt32());
     }
 
     [Fact]

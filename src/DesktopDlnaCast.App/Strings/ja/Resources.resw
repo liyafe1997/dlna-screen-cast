@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>このツールがお役に立ちましたら、コーヒー一杯で今後の開発を応援していただけるとうれしいです。</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>閉じる</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>不明</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>この機能の動作は、オーディオ デバイスとドライバーによって異なります。PC をミュートすると、テレビの音声も消える場合があります。テレビから音が出ない場合は、PC の音量を元に戻してください。PC 側で音を出したくない場合は、タスク バーのサウンド設定で別の出力デバイスを選択するか、ヘッドホンを接続してください。</value></data>
 </root>

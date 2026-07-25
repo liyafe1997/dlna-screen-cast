@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Wenn dir dieses kleine Tool hilft, kannst du seine Weiterentwicklung mit einem Kaffee unterstützen.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Schließen</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Unbekannt</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Diese Funktion hängt vom Audiogerät und dessen Treiber ab. Wenn der PC stummgeschaltet wird, kann auch der Fernseher stumm bleiben. Falls der Fernseher keinen Ton wiedergibt, heben Sie die Stummschaltung des PCs auf. Um den PC leise zu halten, wählen Sie in den Soundeinstellungen der Taskleiste ein anderes Ausgabegerät aus oder schließen Sie Kopfhörer an.</value></data>
 </root>

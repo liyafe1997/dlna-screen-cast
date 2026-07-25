@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Si esta pequeña herramienta te resulta útil, puedes invitarme a un café y ayudar a que siga mejorando.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Cerrar</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Desconocido</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Esta función depende del dispositivo de audio y de su controlador. Al silenciar el PC, es posible que el televisor también se quede sin sonido. Si el televisor no tiene sonido, restaura el volumen del PC. Para mantener el PC en silencio, prueba a seleccionar otro dispositivo de salida en la configuración de sonido de la barra de tareas o conecta unos auriculares.</value></data>
 </root>

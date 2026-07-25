@@ -86,4 +86,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>If this little tool has helped you, consider buying me a coffee to support its continued improvement.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Close</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Unknown</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>This feature depends on the audio device and driver. Muting the PC may also silence the TV. If the TV has no sound, restore the PC volume. To keep the PC quiet, try selecting another output device in the taskbar sound settings or connect headphones.</value></data>
 </root>

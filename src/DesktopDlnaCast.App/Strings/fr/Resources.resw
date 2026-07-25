@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Si ce petit outil vous est utile, vous pouvez m’offrir un café pour soutenir son amélioration.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Fermer</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Inconnu</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Cette fonction dépend du périphérique audio et de son pilote. Couper le son du PC peut également couper le son du téléviseur. Si le téléviseur n’émet aucun son, rétablissez le volume du PC. Pour garder le PC silencieux, essayez de sélectionner un autre périphérique de sortie dans les paramètres audio de la barre des tâches ou branchez un casque.</value></data>
 </root>

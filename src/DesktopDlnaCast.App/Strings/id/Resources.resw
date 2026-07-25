@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Jika alat kecil ini bermanfaat, Anda dapat mentraktir saya kopi untuk mendukung pengembangannya.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Tutup</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Tidak diketahui</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Fitur ini bergantung pada perangkat audio dan drivernya. Membisukan PC juga dapat membuat TV tidak bersuara. Jika TV tidak mengeluarkan suara, aktifkan kembali volume PC. Agar PC tetap senyap, coba pilih perangkat output lain di pengaturan suara bilah tugas atau sambungkan headphone.</value></data>
 </root>

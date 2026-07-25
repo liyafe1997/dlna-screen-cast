@@ -81,4 +81,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Якщо цей невеликий інструмент став вам у пригоді, пригостіть мене кавою, щоб підтримати його подальший розвиток.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Закрити</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Невідомо</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Робота цієї функції залежить від аудіопристрою та його драйвера. Якщо вимкнути звук на комп’ютері, звук на телевізорі також може зникнути. Якщо телевізор не відтворює звук, увімкніть звук на комп’ютері. Щоб комп’ютер залишався беззвучним, спробуйте вибрати інший пристрій виведення в параметрах звуку на панелі завдань або підключіть навушники.</value></data>
 </root>

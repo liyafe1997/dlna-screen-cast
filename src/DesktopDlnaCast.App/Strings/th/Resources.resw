@@ -81,4 +81,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>หากเครื่องมือเล็ก ๆ นี้มีประโยชน์ โปรดพิจารณาเลี้ยงกาแฟฉันเพื่อสนับสนุนการพัฒนาต่อไป</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>ปิด</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>ไม่ทราบ</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>การทำงานของคุณสมบัตินี้ขึ้นอยู่กับอุปกรณ์เสียงและไดรเวอร์ การปิดเสียงพีซีอาจทำให้ทีวีไม่มีเสียงด้วย หากทีวีไม่มีเสียง ให้เปิดเสียงพีซีกลับมา หากต้องการให้พีซีไม่ส่งเสียง ให้ลองเลือกอุปกรณ์เอาต์พุตอื่นในการตั้งค่าเสียงบนแถบงาน หรือเชื่อมต่อหูฟัง</value></data>
 </root>

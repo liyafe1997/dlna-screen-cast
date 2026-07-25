@@ -81,4 +81,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Se questo piccolo strumento ti è utile, puoi offrirmi un caffè e sostenerne lo sviluppo.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Chiudi</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Sconosciuto</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Questa funzione dipende dal dispositivo audio e dal relativo driver. Disattivando l’audio del PC, anche il televisore potrebbe rimanere senza suono. Se il televisore non emette audio, ripristina il volume del PC. Per mantenere silenzioso il PC, prova a selezionare un altro dispositivo di output nelle impostazioni audio della barra delle applicazioni oppure collega le cuffie.</value></data>
 </root>

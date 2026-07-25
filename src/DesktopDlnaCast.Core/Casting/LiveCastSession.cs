@@ -85,7 +85,14 @@ public sealed class LiveCastSession(
                 "Session {CorrelationId} media statistics: capturedVideo={CapturedVideo}; "
                 + "encodedVideo={EncodedVideo}; droppedVideo={DroppedVideo}; "
                 + "queueOverflows={QueueOverflows}");
-
+    private static readonly Action<ILogger, Guid, AudioCaptureBackend, long, long, long, long, Exception?>
+        LogAudioStatistics =
+            LoggerMessage.Define<Guid, AudioCaptureBackend, long, long, long, long>(
+                LogLevel.Information,
+                new EventId(333, nameof(LogAudioStatistics)),
+                "Session {CorrelationId} audio statistics: backend={AudioBackend}; "
+                + "capturedPackets={CapturedAudioPackets}; encodedFrames={EncodedAudioFrames}; "
+                + "pcmPeak={PcmPeak}; pcmRmsMicrounits={PcmRmsMicrounits}");
     private readonly SemaphoreSlim lifecycle = new(1, 1);
     private readonly object cancellationGate = new();
     private RendererDevice? activeRenderer;
@@ -488,6 +495,15 @@ public sealed class LiveCastSession(
                             statistics.EncodedVideoFrames,
                             statistics.DroppedVideoFrames,
                             statistics.QueueOverflows,
+                            null);
+                        LogAudioStatistics(
+                            logger,
+                            correlationId,
+                            statistics.AudioCaptureBackend,
+                            statistics.CapturedAudioPackets,
+                            statistics.EncodedAudioFrames,
+                            statistics.PcmPeak,
+                            statistics.PcmRmsMicrounits,
                             null);
                     }
                     catch (Exception exception) when (exception is not OutOfMemoryException)

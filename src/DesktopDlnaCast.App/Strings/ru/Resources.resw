@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Если эта небольшая программа вам пригодилась, вы можете угостить меня кофе и поддержать её развитие.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Закрыть</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Неизвестно</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Работа этой функции зависит от аудиоустройства и его драйвера. При отключении звука на компьютере звук на телевизоре также может пропасть. Если на телевизоре нет звука, включите звук на компьютере. Чтобы компьютер не воспроизводил звук, попробуйте выбрать другое устройство вывода в параметрах звука на панели задач или подключить наушники.</value></data>
 </root>

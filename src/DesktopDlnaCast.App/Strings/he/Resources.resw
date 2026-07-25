@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>אם הכלי הקטן הזה עזר לך, אפשר להזמין אותי לקפה ולתמוך בהמשך הפיתוח שלו.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>סגירה</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>לא ידוע</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>פעולת תכונה זו תלויה בהתקן השמע ובמנהל ההתקן. השתקת המחשב עלולה להשתיק גם את הטלוויזיה. אם אין קול בטלוויזיה, בטל את השתקת המחשב. כדי להשאיר את המחשב שקט, נסה לבחור התקן פלט אחר בהגדרות השמע שבשורת המשימות או לחבר אוזניות.</value></data>
 </root>

@@ -86,4 +86,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>如果这个小工具对你有所帮助，欢迎请我喝杯咖啡，支持项目继续改进。</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>关闭</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>未知</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>此功能可能受音频设备和驱动影响：本机静音后，电视端也可能没有声音。如果电视端无声，请恢复本机音量。若希望本机不播放声音，可尝试从任务栏右下角的声音设置中切换到其他输出设备，或连接耳机。</value></data>
 </root>

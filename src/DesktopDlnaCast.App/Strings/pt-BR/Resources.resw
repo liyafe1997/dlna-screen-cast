@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Se esta ferramenta for útil para você, que tal me pagar um café e apoiar as próximas melhorias?</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Fechar</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Desconhecido</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Este recurso depende do dispositivo de áudio e do driver. Silenciar o PC também pode deixar a TV sem som. Se a TV ficar sem áudio, restaure o volume do PC. Para manter o PC silencioso, tente selecionar outro dispositivo de saída nas configurações de som da barra de tarefas ou conecte fones de ouvido.</value></data>
 </root>

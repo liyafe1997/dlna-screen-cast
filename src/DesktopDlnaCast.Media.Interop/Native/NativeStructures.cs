@@ -40,6 +40,9 @@ internal struct NativeSessionStatistics
     public long EncoderWait100Nanoseconds;
     public long LocalPlaybackMuteChanges;
     public long LocalPlaybackMuteRestoreFailures;
+    public long AudioCaptureBackend;
+    public long PcmPeak;
+    public long PcmRmsMicrounits;
 }
 
 [StructLayout(LayoutKind.Sequential)]

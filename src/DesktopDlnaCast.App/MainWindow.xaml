@@ -137,6 +137,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
           </Grid.RowDefinitions>
           <TextBlock x:Uid="CaptureDisplayLabel" FontWeight="SemiBold" />
           <TextBlock Grid.Column="1" x:Uid="OutputResolutionLabel" FontWeight="SemiBold" />
@@ -243,6 +244,12 @@
               x:Uid="StartAtLiveEdgeToggle"
               IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
               IsChecked="{x:Bind ViewModel.StartAtLiveEdge, Mode=TwoWay}" />
+          <TextBlock
+              Grid.Row="9"
+              Grid.ColumnSpan="2"
+              Foreground="{ThemeResource SystemFillColorCautionBrush}"
+              TextWrapping="Wrap"
+              Text="{x:Bind ViewModel.MuteLocalPlaybackNotice, Mode=OneWay}" />
           <StackPanel
               Grid.Row="6"
               Grid.ColumnSpan="2"

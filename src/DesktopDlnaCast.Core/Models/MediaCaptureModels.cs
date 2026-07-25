@@ -55,7 +55,17 @@ public sealed record MediaSessionStatistics(
     long TimestampCorrections,
     TimeSpan EncoderWaitTime,
     long LocalPlaybackMuteChanges,
-    long LocalPlaybackMuteRestoreFailures);
+    long LocalPlaybackMuteRestoreFailures,
+    AudioCaptureBackend AudioCaptureBackend = AudioCaptureBackend.Unknown,
+    long PcmPeak = 0,
+    long PcmRmsMicrounits = 0);
+
+public enum AudioCaptureBackend
+{
+    Unknown,
+    EndpointLoopback,
+    ProcessLoopback,
+}
 
 public enum MediaVideoProcessorBackend
 {

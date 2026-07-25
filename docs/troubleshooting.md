@@ -63,7 +63,9 @@ The optional local-playback mute affects every sound on the Windows output endpo
 
 ## Muting the PC also mutes the receiver
 
-DesktopDlnaCast primarily uses endpoint WASAPI loopback with the Windows default pre-volume/mute behavior. It does not apply optional `IAudioClient2` stream properties because some driver/APO combinations accept them but return only silence. If endpoint initialization fails, it falls back to Windows process loopback and excludes its own process tree. It waits for an audible packet before muting the endpoint, then verifies that loopback remains non-silent. If an audio driver instead exposes post-volume/mute loopback, the application restores local playback after approximately 500 ms and continues casting remote audio. This safe fallback means the PC can remain audible on an incompatible driver. Updating the audio driver or selecting another output endpoint may restore local-mute support.
+DesktopDlnaCast primarily uses endpoint WASAPI loopback with the Windows default pre-volume/mute behavior. It does not apply optional `IAudioClient2` stream properties because some driver/APO combinations accept them but return only silence. If endpoint initialization fails, it falls back to Windows process loopback and excludes its own process tree. Audio drivers differ: on some systems endpoint mute also silences loopback capture and therefore the receiver. The application does not attempt to classify this behavior and does not automatically restore local playback during a cast.
+
+If the receiver becomes silent, turn off local mute or restore the PC volume. To keep the PC quiet, try selecting another output device from the taskbar sound settings or connect headphones. Structured logs still include the selected audio backend, captured/encoded counts, PCM peak, and RMS. A zero peak while other applications should be producing sound indicates that the capture path is silent.
 
 ## Receiver audio crackles or clicks
 

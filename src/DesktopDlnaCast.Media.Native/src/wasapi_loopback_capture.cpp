@@ -1,6 +1,5 @@
 #include "wasapi_loopback_capture.h"
 #include "audio_playout_clock.h"
-#include "local_playback_mute_monitor.h"
 
 #include <audioclient.h>
 #include <audioclientactivationparams.h>
@@ -194,13 +193,11 @@ namespace
         std::wstring id;
         ddc::audio_event_callback mute_change_callback;
         ddc::audio_event_callback mute_restore_failure_callback;
-        ddc::local_playback_mute_monitor mute_monitor;
-        bool mute_requested{};
         bool restore_mute{};
 
-        void apply_mute_after_signal()
+        void apply_mute()
         {
-            if (!mute_requested || !endpoint_volume || restore_mute)
+            if (!endpoint_volume || restore_mute)
             {
                 return;
             }
@@ -209,21 +206,6 @@ namespace
                 TRUE,
                 &local_mute_event_context));
             restore_mute = true;
-            mute_change_callback();
-        }
-
-        void cancel_incompatible_mute()
-        {
-            if (!endpoint_volume || !restore_mute)
-            {
-                return;
-            }
-
-            winrt::check_hresult(endpoint_volume->SetMute(
-                FALSE,
-                &local_mute_event_context));
-            restore_mute = false;
-            mute_requested = false;
             mute_change_callback();
         }
 
@@ -277,8 +259,6 @@ namespace
             id.clear();
             mute_change_callback = nullptr;
             mute_restore_failure_callback = nullptr;
-            mute_monitor = {};
-            mute_requested = false;
             restore_mute = false;
         }
 
@@ -324,7 +304,8 @@ namespace
         const std::atomic<bool>& stopping,
         const bool mute_local_playback,
         ddc::audio_event_callback mute_change_callback,
-        ddc::audio_event_callback mute_restore_failure_callback)
+        ddc::audio_event_callback mute_restore_failure_callback,
+        ddc::audio_status_callback backend_callback)
     {
         winrt::com_ptr<IMMDevice> device = get_default_render_device(enumerator);
         WAVEFORMATEX format{};
@@ -339,6 +320,7 @@ namespace
             winrt::com_ptr<IAudioClient> audio_client;
             winrt::com_ptr<IAudioCaptureClient> capture_client;
             winrt::handle ready_event;
+            std::int32_t backend{};
         };
         const auto prepare_client =
             [&format, &device, &stopping](
@@ -348,6 +330,7 @@ namespace
             if (use_process_loopback)
             {
                 result.audio_client = activate_process_loopback(stopping);
+                result.backend = 2;
             }
             else
             {
@@ -356,6 +339,7 @@ namespace
                     CLSCTX_ALL,
                     nullptr,
                     result.audio_client.put_void()));
+                result.backend = 1;
             }
 
             const auto& client = result.audio_client;
@@ -404,6 +388,7 @@ namespace
         target.ready_event = std::move(prepared.ready_event);
         target.mute_change_callback = std::move(mute_change_callback);
         target.mute_restore_failure_callback = std::move(mute_restore_failure_callback);
+        backend_callback(prepared.backend, 0);
 
         if (mute_local_playback)
         {
@@ -422,7 +407,7 @@ namespace
                     target.volume_callback.get()));
                 if (initially_muted == FALSE)
                 {
-                    target.mute_requested = true;
+                    target.apply_mute();
                 }
             }
             catch (...)
@@ -461,11 +446,13 @@ namespace ddc
         audio_event_callback timestamp_correction_callback,
         audio_event_callback local_mute_change_callback,
         audio_event_callback local_mute_restore_failure_callback,
+        audio_status_callback backend_callback,
         audio_failure_callback failure_callback)
     {
         if (worker_.joinable() || session_start_100ns <= 0 || !pcm_callback ||
             !packet_callback || !device_change_callback || !timestamp_correction_callback ||
-            !local_mute_change_callback || !local_mute_restore_failure_callback || !failure_callback)
+            !local_mute_change_callback || !local_mute_restore_failure_callback ||
+            !backend_callback || !failure_callback)
         {
             throw std::invalid_argument("The WASAPI loopback capture configuration is invalid.");
         }
@@ -478,6 +465,7 @@ namespace ddc
         timestamp_correction_callback_ = std::move(timestamp_correction_callback);
         local_mute_change_callback_ = std::move(local_mute_change_callback);
         local_mute_restore_failure_callback_ = std::move(local_mute_restore_failure_callback);
+        backend_callback_ = std::move(backend_callback);
         failure_callback_ = std::move(failure_callback);
         stopping_.store(false);
         worker_ = std::thread([this] { run(); });
@@ -547,7 +535,8 @@ namespace ddc
                             stopping_,
                             mute_local_playback_,
                             local_mute_change_callback_,
-                            local_mute_restore_failure_callback_);
+                            local_mute_restore_failure_callback_,
+                            backend_callback_);
                         if (opened_once)
                         {
                             device_change_callback_();
@@ -655,11 +644,6 @@ namespace ddc
                                     static_cast<std::size_t>(kept_frames) * channels;
                                 if ((flags & AUDCLNT_BUFFERFLAGS_SILENT) != 0 || data == nullptr)
                                 {
-                                    if (device.restore_mute &&
-                                        device.mute_monitor.observe_after_mute({}, kept_frames))
-                                    {
-                                        device.cancel_incompatible_mute();
-                                    }
                                     pending_samples.insert(pending_samples.end(), kept_samples, 0);
                                 }
                                 else
@@ -669,18 +653,6 @@ namespace ddc
                                     const std::span<const std::int16_t> kept_source(
                                         source,
                                         kept_samples);
-                                    if (device.mute_requested &&
-                                        device.mute_monitor.should_apply_mute(kept_source))
-                                    {
-                                        device.apply_mute_after_signal();
-                                    }
-                                    else if (device.restore_mute &&
-                                             device.mute_monitor.observe_after_mute(
-                                                 kept_source,
-                                                 kept_frames))
-                                    {
-                                        device.cancel_incompatible_mute();
-                                    }
                                     pending_samples.insert(
                                         pending_samples.end(),
                                         source,

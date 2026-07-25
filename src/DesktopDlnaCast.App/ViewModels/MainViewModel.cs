@@ -70,6 +70,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     private bool includeAudio = true;
     private bool audioOnly;
     private bool muteLocalPlayback;
+    private string muteLocalPlaybackNotice = string.Empty;
     private bool startAtLiveEdge;
     private bool isBusy;
     private bool isDiscoveringDevices;
@@ -381,9 +382,15 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             }
 
             muteLocalPlayback = effectiveValue;
+            muteLocalPlaybackNotice = effectiveValue
+                ? resources.GetString("MuteLocalPlaybackNotice")
+                : string.Empty;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(MuteLocalPlaybackNotice));
         }
     }
+
+    public string MuteLocalPlaybackNotice => muteLocalPlaybackNotice;
 
     public string EncoderText
     {

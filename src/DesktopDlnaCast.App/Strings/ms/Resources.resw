@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Jika alat kecil ini membantu anda, bolehlah belanja saya secawan kopi untuk menyokong penambahbaikannya.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Tutup</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Tidak diketahui</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Ciri ini bergantung pada peranti audio dan pemacunya. Meredamkan PC mungkin turut menyebabkan TV tiada bunyi. Jika TV tiada bunyi, pulihkan kelantangan PC. Untuk memastikan PC senyap, cuba pilih peranti output lain dalam tetapan bunyi bar tugas atau sambungkan fon kepala.</value></data>
 </root>

@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Om du har nytta av det här lilla verktyget får du gärna bjuda mig på en kaffe och stödja fortsatt utveckling.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Stäng</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Okänt</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Den här funktionen beror på ljudenheten och dess drivrutin. Om datorn stängs av kan även tv:n bli utan ljud. Om tv:n saknar ljud återställer du datorns volym. Om du vill hålla datorn tyst kan du välja en annan utenhet i ljudinställningarna i aktivitetsfältet eller ansluta hörlurar.</value></data>
 </root>

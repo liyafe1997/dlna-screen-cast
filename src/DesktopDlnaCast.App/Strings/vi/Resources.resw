@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>Nếu công cụ nhỏ này hữu ích với bạn, hãy mời tôi một ly cà phê để ủng hộ việc tiếp tục cải thiện ứng dụng.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>Đóng</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>Không rõ</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>Tính năng này phụ thuộc vào thiết bị âm thanh và trình điều khiển. Việc tắt tiếng máy tính cũng có thể khiến TV mất tiếng. Nếu TV không có âm thanh, hãy bật lại âm lượng máy tính. Để máy tính không phát ra âm thanh, hãy thử chọn thiết bị đầu ra khác trong cài đặt âm thanh trên thanh tác vụ hoặc kết nối tai nghe.</value></data>
 </root>

@@ -81,4 +81,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>ဤကိရိယာငယ်က အကူအညီဖြစ်ပါက ဆက်လက်တိုးတက်စေရန် ကော်ဖီတစ်ခွက် တိုက်ရန် စဉ်းစားပေးပါ။</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>ပိတ်ရန်</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>မသိပါ</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>ဤလုပ်ဆောင်ချက်သည် အသံစက်နှင့် ဒရိုင်ဘာပေါ် မူတည်ပါသည်။ PC ကို အသံပိတ်လိုက်ပါက TV တွင်လည်း အသံမထွက်နိုင်ပါ။ TV တွင် အသံမရှိပါက PC အသံကို ပြန်ဖွင့်ပါ။ PC မှ အသံမထွက်စေလိုပါက taskbar ရှိ အသံဆက်တင်များတွင် အခြား output စက်တစ်ခုကို ရွေးချယ်ပါ သို့မဟုတ် နားကြပ်တပ်ပါ။</value></data>
 </root>

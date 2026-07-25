@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define DDC_ABI_VERSION 7
+#define DDC_ABI_VERSION 9
 #define DDC_PACKET_FLAG_RANDOM_ACCESS_POINT 0x1
 
 typedef void* ddc_session_handle;
@@ -91,6 +91,9 @@ typedef struct ddc_session_statistics {
     int64_t encoder_wait_100ns;
     int64_t local_playback_mute_changes;
     int64_t local_playback_mute_restore_failures;
+    int64_t audio_capture_backend;
+    int64_t pcm_peak;
+    int64_t pcm_rms_microunits;
 } ddc_session_statistics;
 
 typedef struct ddc_encoder_diagnostics {

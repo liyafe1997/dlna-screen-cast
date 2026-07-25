@@ -70,4 +70,5 @@
   <data name="AboutDonateDescription" xml:space="preserve"><value>إذا أفادتك هذه الأداة الصغيرة، يمكنك دعوتي إلى فنجان قهوة ودعم استمرار تطويرها.</value></data>
   <data name="AboutCloseButton" xml:space="preserve"><value>إغلاق</value></data>
   <data name="AboutUnknownValue" xml:space="preserve"><value>غير معروف</value></data>
+  <data name="MuteLocalPlaybackNotice" xml:space="preserve"><value>تعتمد هذه الميزة على جهاز الصوت وبرنامج التشغيل. قد يؤدي كتم صوت الكمبيوتر إلى كتم صوت التلفزيون أيضًا. إذا لم يصدر صوت من التلفزيون، فأعد تشغيل صوت الكمبيوتر. ولإبقاء الكمبيوتر صامتًا، جرّب اختيار جهاز إخراج آخر من إعدادات الصوت في شريط المهام أو توصيل سماعات رأس.</value></data>
 </root>

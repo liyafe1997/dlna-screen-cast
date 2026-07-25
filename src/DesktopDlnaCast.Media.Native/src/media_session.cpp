@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <cstring>
 #include <exception>
 #include <limits>
@@ -510,6 +511,26 @@ namespace ddc
                 config_.mute_local_playback != 0,
                 [this](std::vector<std::int16_t> pcm, const std::int64_t start_sample)
                 {
+                    std::int64_t peak{};
+                    long double square_sum{};
+                    for (const std::int16_t sample : pcm)
+                    {
+                        const std::int64_t value = sample;
+                        const std::int64_t magnitude = value < 0 ? -value : value;
+                        peak = std::max(peak, magnitude);
+                        square_sum += static_cast<long double>(value) *
+                            static_cast<long double>(value);
+                    }
+                    const long double rms = pcm.empty()
+                        ? 0.0L
+                        : std::sqrt(square_sum / static_cast<long double>(pcm.size()));
+                    {
+                        std::scoped_lock lock(mutex_);
+                        statistics_.pcm_peak = peak;
+                        statistics_.pcm_rms_microunits = static_cast<std::int64_t>(
+                            rms * 1'000'000.0L / 32'768.0L);
+                    }
+
                     if (mp3_encoder_)
                     {
                         mp3_encoder_->encode(std::span<const std::int16_t>(pcm), start_sample);
@@ -565,6 +586,11 @@ namespace ddc
                 {
                     std::scoped_lock lock(mutex_);
                     ++statistics_.local_playback_mute_restore_failures;
+                },
+                [this](const std::int32_t backend, const std::int32_t)
+                {
+                    std::scoped_lock lock(mutex_);
+                    statistics_.audio_capture_backend = backend;
                 },
                 [this](std::exception_ptr failure)
                 {

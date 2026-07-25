@@ -99,7 +99,15 @@ internal sealed class NativeMediaCaptureSession(NativeMediaSessionHandle handle)
             statistics.TimestampCorrections,
             TimeSpan.FromTicks(statistics.EncoderWait100Nanoseconds),
             statistics.LocalPlaybackMuteChanges,
-            statistics.LocalPlaybackMuteRestoreFailures);
+            statistics.LocalPlaybackMuteRestoreFailures,
+            statistics.AudioCaptureBackend switch
+            {
+                1 => AudioCaptureBackend.EndpointLoopback,
+                2 => AudioCaptureBackend.ProcessLoopback,
+                _ => AudioCaptureBackend.Unknown,
+            },
+            statistics.PcmPeak,
+            statistics.PcmRmsMicrounits);
     }
 
     public MediaEncoderDiagnostics GetEncoderDiagnostics()

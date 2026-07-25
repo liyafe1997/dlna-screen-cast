@@ -14,7 +14,6 @@ add_library(DesktopDlnaCast.Media.Native SHARED
   src/graphics_capture_source.h
   src/h264_access_unit_normalizer.cpp
   src/h264_access_unit_normalizer.h
-  src/local_playback_mute_monitor.h
   src/media_foundation_aac_encoder.cpp
   src/media_foundation_aac_encoder.h
   src/media_foundation_h264_encoder.cpp
@@ -75,7 +74,6 @@ if(BUILD_TESTING)
     tests/bounded_packet_queue_tests.cpp
     tests/d3d11_video_processor_tests.cpp
     tests/h264_access_unit_normalizer_tests.cpp
-    tests/local_playback_mute_monitor_tests.cpp
     tests/media_foundation_aac_encoder_tests.cpp
     tests/media_foundation_h264_encoder_tests.cpp
     tests/mpeg_ts_muxer_tests.cpp

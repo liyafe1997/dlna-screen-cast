@@ -37,7 +37,6 @@ void run_bounded_packet_queue_tests();
 void run_audio_playout_clock_tests();
 void run_d3d11_video_processor_tests();
 void run_h264_access_unit_normalizer_tests();
-void run_local_playback_mute_monitor_tests();
 void run_media_foundation_aac_encoder_tests();
 void run_media_foundation_h264_encoder_tests();
 void run_mpeg_ts_muxer_tests();
@@ -47,9 +46,9 @@ int main()
 {
     winrt::init_apartment(winrt::apartment_type::multi_threaded);
 
-    static_assert(DDC_ABI_VERSION == 7);
+    static_assert(DDC_ABI_VERSION == 9);
     static_assert(sizeof(ddc_stream_config) == 80);
-    static_assert(sizeof(ddc_session_statistics) == 96);
+    static_assert(sizeof(ddc_session_statistics) == 120);
     static_assert(sizeof(ddc_encoder_diagnostics) == 64);
 
     DDC_TEST_CHECK(ddc_session_create(nullptr, nullptr) == DDC_E_INVALID_ARGUMENT);
@@ -193,7 +192,6 @@ int main()
     run_audio_playout_clock_tests();
     run_d3d11_video_processor_tests();
     run_h264_access_unit_normalizer_tests();
-    run_local_playback_mute_monitor_tests();
     run_media_foundation_h264_encoder_tests();
     run_media_foundation_aac_encoder_tests();
     run_mpeg_ts_muxer_tests();
