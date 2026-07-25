@@ -203,7 +203,7 @@
               SelectedItem="{x:Bind ViewModel.SelectedFrameRateOption, Mode=TwoWay}"
               DisplayMemberPath="DisplayName" />
           <CheckBox
-              Grid.Row="6"
+              Grid.Row="7"
               Margin="0,4,0,0"
               MinWidth="0"
               MinHeight="0"
@@ -211,7 +211,7 @@
               IsEnabled="{x:Bind ViewModel.IsVideoOptionsEnabled, Mode=OneWay}"
               IsChecked="{x:Bind ViewModel.IncludeCursor, Mode=TwoWay}" />
           <StackPanel
-              Grid.Row="6"
+              Grid.Row="7"
               Grid.Column="1"
               Margin="0,4,0,0"
               Orientation="Horizontal"
@@ -229,14 +229,14 @@
                 IsChecked="{x:Bind ViewModel.AudioOnly, Mode=TwoWay}" />
           </StackPanel>
           <CheckBox
-              Grid.Row="7"
+              Grid.Row="8"
               MinWidth="0"
               MinHeight="0"
               x:Uid="MuteLocalPlaybackToggle"
               IsEnabled="{x:Bind ViewModel.IncludeAudio, Mode=OneWay}"
               IsChecked="{x:Bind ViewModel.MuteLocalPlayback, Mode=TwoWay}" />
           <CheckBox
-              Grid.Row="7"
+              Grid.Row="8"
               Grid.Column="1"
               MinWidth="0"
               MinHeight="0"

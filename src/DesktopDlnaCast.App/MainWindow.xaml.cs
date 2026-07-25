@@ -55,24 +55,30 @@ public sealed partial class MainWindow : Window
             logText = resources.GetString("LogEmpty");
         }
 
-        TextBox logView = new()
+        TextBlock logView = new()
         {
             Text = logText,
-            IsReadOnly = true,
-            AcceptsReturn = true,
             TextWrapping = TextWrapping.NoWrap,
+            IsTextSelectionEnabled = true,
             FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Consolas"),
             FontSize = 11,
-            MinWidth = 640,
-            MinHeight = 360,
         };
-        ScrollViewer.SetHorizontalScrollBarVisibility(logView, ScrollBarVisibility.Auto);
-        ScrollViewer.SetVerticalScrollBarVisibility(logView, ScrollBarVisibility.Auto);
+        ScrollViewer logScroller = new()
+        {
+            Content = logView,
+            Width = 720,
+            Height = 480,
+            Padding = new Thickness(12),
+            HorizontalScrollMode = ScrollMode.Enabled,
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+            VerticalScrollMode = ScrollMode.Enabled,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+        };
         ContentDialog dialog = new()
         {
             XamlRoot = ContentRoot.XamlRoot,
             Title = resources.GetString("LogDialogTitle"),
-            Content = logView,
+            Content = logScroller,
             PrimaryButtonText = resources.GetString("LogCopyButton"),
             CloseButtonText = resources.GetString("AboutCloseButton"),
             DefaultButton = ContentDialogButton.Close,
