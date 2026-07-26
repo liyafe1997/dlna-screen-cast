@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>מכשיר נגן</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>מחפש נגני DLNA…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>אין נגנים זמינים</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>מסך לשיקוף</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>מסך או חלון לשיקוף</value></data><data name="WindowName" xml:space="preserve"><value>חלון — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>רזולוציית השידור</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>כלול את מצביע העכבר</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>כלול את שמע המערכת</value></data>

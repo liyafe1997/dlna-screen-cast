@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>再生デバイス</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>DLNA 再生デバイスを検索しています…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>利用可能な再生デバイスがありません</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>ミラーリングするディスプレイ</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>ミラーリングするディスプレイまたはウィンドウ</value></data><data name="WindowName" xml:space="preserve"><value>ウィンドウ — {0}（{1} × {2}）</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>配信解像度</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>マウスポインターを含める</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>システム音声を含める</value></data>

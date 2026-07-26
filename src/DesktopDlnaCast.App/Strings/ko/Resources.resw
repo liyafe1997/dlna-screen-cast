@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>재생 장치</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>DLNA 재생 장치를 검색하는 중…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>사용 가능한 재생 장치가 없습니다</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>미러링할 디스플레이</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>미러링할 디스플레이 또는 창</value></data><data name="WindowName" xml:space="preserve"><value>창 — {0}({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>스트리밍 해상도</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>마우스 포인터 포함</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>시스템 소리 포함</value></data>

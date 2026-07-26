@@ -67,9 +67,16 @@ Every test/cast attempt has a correlation ID and a structured `CastFailure` cont
 
 The application also registers a bounded in-memory log provider. The session-status card opens its recent snapshot in a copyable dialog; entries contain timestamps, levels, categories, event IDs, formatted messages, and exception details. The buffer is capped at 500 entries and 64 KiB, is never persisted automatically, and redacts stream and HLS session tokens.
 
-The display picker refreshes one bounded, downscaled snapshot per active monitor when its
-drop-down opens. Preview capture runs off the UI thread, is cancelled when a newer refresh
-starts, and stops after the still images are produced; the live stream continues to use WGC.
+The capture-source picker lists active monitors first and eligible visible top-level application
+windows second. It refreshes one bounded, downscaled snapshot per source when its drop-down
+opens. Preview capture runs off the UI thread, is cancelled when a newer refresh starts, and
+stops after the still images are produced; the selected display or window then streams through
+the same WGC pipeline. Hidden, minimized, cloaked, untitled, tool, and DesktopDlnaCast-owned
+windows are excluded.
+For a selected window, WGC's `GraphicsCaptureItem.Closed` event and a native HWND liveness
+check both terminate the media pipeline when the window is closed or otherwise lost. A minimized
+window remains a valid HWND and therefore keeps the cast session alive; the last available frame
+may repeat until Windows resumes delivering frames after the window is restored.
 
 SSDP datagrams, XML, SOAP, URIs, and renderer HTTP requests are untrusted. All network operations are cancellable, time-bounded, and size-bounded. XML DTDs and external entities are disabled. Full tokens, credentials, cookies, and media payloads must not enter diagnostics.
 

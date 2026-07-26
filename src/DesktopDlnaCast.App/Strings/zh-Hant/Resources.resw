@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>播放裝置</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>正在搜尋 DLNA 播放裝置...</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>無可用播放裝置</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>要鏡射的顯示器</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>要鏡射的顯示器或視窗</value></data><data name="WindowName" xml:space="preserve"><value>視窗 — {0}（{1} × {2}）</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>投放解析度</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>包含滑鼠指標</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>包含系統音訊</value></data>

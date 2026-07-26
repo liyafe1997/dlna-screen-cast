@@ -56,6 +56,10 @@ namespace ddc
         void on_frame_arrived(
             const winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool& sender,
             const winrt::Windows::Foundation::IInspectable& args) noexcept;
+        void on_item_closed(
+            const winrt::Windows::Graphics::Capture::GraphicsCaptureItem& sender,
+            const winrt::Windows::Foundation::IInspectable& args) noexcept;
+        void stop_for_lost_source() noexcept;
         void record_failure(std::exception_ptr failure) noexcept;
         [[nodiscard]] winrt::Windows::Graphics::Capture::GraphicsCaptureItem create_item(
             const ddc_stream_config& config) const;
@@ -77,6 +81,9 @@ namespace ddc
         winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool frame_pool_{ nullptr };
         winrt::Windows::Graphics::Capture::GraphicsCaptureSession capture_session_{ nullptr };
         winrt::event_token frame_arrived_token_{};
+        winrt::event_token item_closed_token_{};
+        std::int32_t source_kind_{};
+        std::uintptr_t source_handle_{};
         winrt::Windows::Graphics::SizeInt32 last_size_{};
         winrt::com_ptr<ID3D11Texture2D> latest_texture_;
         std::int32_t latest_width_{};

@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Oynatıcı cihaz</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>DLNA oynatıcıları aranıyor…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>Kullanılabilir oynatıcı yok</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Yansıtılacak ekran</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Yansıtılacak ekran veya pencere</value></data><data name="WindowName" xml:space="preserve"><value>Pencere — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Akış çözünürlüğü</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Fare işaretçisini dahil et</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Sistem sesini dahil et</value></data>

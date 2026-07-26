@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Проигрыватель</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>Поиск проигрывателей DLNA…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>Нет доступных проигрывателей</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Дублируемый экран</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Экран или окно для трансляции</value></data><data name="WindowName" xml:space="preserve"><value>Окно — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Разрешение трансляции</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Показывать указатель мыши</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Передавать системный звук</value></data>

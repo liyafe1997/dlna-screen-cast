@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Wiedergabegerät</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>DLNA-Wiedergabegeräte werden gesucht…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>Keine Wiedergabegeräte verfügbar</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Zu spiegelnder Bildschirm</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Zu spiegelnder Bildschirm oder Fenster</value></data><data name="WindowName" xml:space="preserve"><value>Fenster — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Streamingauflösung</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Mauszeiger einschließen</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Systemaudio einschließen</value></data>

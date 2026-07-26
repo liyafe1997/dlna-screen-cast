@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Perangkat pemutar</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>Mencari perangkat pemutar DLNA…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>Tidak ada perangkat pemutar yang tersedia</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Layar yang akan dicerminkan</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Layar atau jendela yang akan dicerminkan</value></data><data name="WindowName" xml:space="preserve"><value>Jendela — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Resolusi streaming</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Sertakan penunjuk mouse</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Sertakan audio sistem</value></data>

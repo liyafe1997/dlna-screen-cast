@@ -20,7 +20,9 @@ public sealed record DisplayCaptureSource(
     int Top,
     int Width,
     int Height,
-    bool IsPrimary);
+    bool IsPrimary,
+    CaptureSourceKind Kind = CaptureSourceKind.Display,
+    string? Title = null);
 
 public sealed record DisplayPreviewFrame(
     int Width,

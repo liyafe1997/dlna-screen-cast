@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Uppspelningsenhet</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>Söker efter DLNA-spelare…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>Inga spelare tillgängliga</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Skärm som ska speglas</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Skärm eller fönster som ska speglas</value></data><data name="WindowName" xml:space="preserve"><value>Fönster — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Strömningsupplösning</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Inkludera muspekaren</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Inkludera systemljud</value></data>

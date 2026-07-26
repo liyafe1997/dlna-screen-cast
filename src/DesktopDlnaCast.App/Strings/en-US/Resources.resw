@@ -34,7 +34,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Renderer device</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>Searching for DLNA renderers…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>No playback devices available</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Display to mirror</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Display or window to mirror</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Streaming resolution</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Include pointer</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Include system audio</value></data>
@@ -51,6 +51,7 @@
   <data name="QualityLow" xml:space="preserve"><value>Low quality ({0} Mbps, smoother)</value></data>
   <data name="DisplayName" xml:space="preserve"><value>Display {0} ({1} × {2})</value></data>
   <data name="PrimaryDisplayName" xml:space="preserve"><value>Display {0} — primary ({1} × {2})</value></data>
+  <data name="WindowName" xml:space="preserve"><value>Window — {0} ({1} × {2})</value></data>
   <data name="Resolution720p" xml:space="preserve"><value>1280 × 720 (compatible)</value></data>
   <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080 (standard)</value></data>
   <data name="LiveCastStarted" xml:space="preserve"><value>The renderer is pulling the live Windows desktop stream.</value></data>

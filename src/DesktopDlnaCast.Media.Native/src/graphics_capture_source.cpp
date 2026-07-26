@@ -1,4 +1,5 @@
 #include "graphics_capture_source.h"
+#include "capture_source_liveness.h"
 
 #include <windows.graphics.capture.h>
 #include <windows.graphics.capture.interop.h>
@@ -205,6 +206,19 @@ namespace ddc
                     }
                 }
 
+                if (source_kind_ == DDC_CAPTURE_SOURCE_WINDOW)
+                {
+                    const auto window = reinterpret_cast<HWND>(source_handle_);
+                    if (capture_source_was_lost(
+                            source_kind_,
+                            window != nullptr && IsWindow(window) != FALSE,
+                            window != nullptr && IsIconic(window) != FALSE))
+                    {
+                        stop_for_lost_source();
+                        break;
+                    }
+                }
+
                 winrt::com_ptr<ID3D11Texture2D> texture;
                 std::int32_t width{};
                 std::int32_t height{};
@@ -265,6 +279,8 @@ namespace ddc
     {
         callback_ = std::move(callback);
         failure_callback_ = std::move(failure_callback);
+        source_kind_ = config.source_kind;
+        source_handle_ = static_cast<std::uintptr_t>(config.source_handle);
         d3d_device_ = create_d3d_device();
         d3d_device_->GetImmediateContext(d3d_context_.put());
         winrt_device_ = create_winrt_device(d3d_device_);
@@ -287,6 +303,11 @@ namespace ddc
         next_capture_time_ = {};
         frame_arrived_token_ = frame_pool_.FrameArrived(
             { this, &graphics_capture_source::on_frame_arrived });
+        if (source_kind_ == DDC_CAPTURE_SOURCE_WINDOW)
+        {
+            item_closed_token_ = item_.Closed(
+                { this, &graphics_capture_source::on_item_closed });
+        }
         capture_session_.StartCapture();
     }
 
@@ -295,6 +316,11 @@ namespace ddc
         std::scoped_lock frame_lock(frame_mutex_);
         try
         {
+            if (item_ && source_kind_ == DDC_CAPTURE_SOURCE_WINDOW)
+            {
+                item_.Closed(item_closed_token_);
+            }
+
             if (frame_pool_)
             {
                 frame_pool_.FrameArrived(frame_arrived_token_);
@@ -327,6 +353,8 @@ namespace ddc
         winrt_device_ = nullptr;
         d3d_context_ = nullptr;
         d3d_device_ = nullptr;
+        source_kind_ = DDC_CAPTURE_SOURCE_DISPLAY;
+        source_handle_ = 0;
     }
 
     void graphics_capture_source::on_frame_arrived(
@@ -435,6 +463,30 @@ namespace ddc
         catch (...)
         {
         }
+    }
+
+    void graphics_capture_source::on_item_closed(
+        const winrt::Windows::Graphics::Capture::GraphicsCaptureItem&,
+        const winrt::Windows::Foundation::IInspectable&) noexcept
+    {
+        stop_for_lost_source();
+    }
+
+    void graphics_capture_source::stop_for_lost_source() noexcept
+    {
+        {
+            std::scoped_lock lock(lifecycle_mutex_);
+            if (stopping_)
+            {
+                return;
+            }
+
+            stopping_ = true;
+        }
+
+        record_failure(std::make_exception_ptr(
+            std::runtime_error("The selected application window was closed or is no longer available.")));
+        stop_requested_.notify_all();
     }
 
     winrt::Windows::Graphics::Capture::GraphicsCaptureItem

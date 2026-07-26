@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Thiết bị phát</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>Đang tìm thiết bị phát DLNA…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>Không có thiết bị phát khả dụng</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Màn hình cần phản chiếu</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Màn hình hoặc cửa sổ cần phản chiếu</value></data><data name="WindowName" xml:space="preserve"><value>Cửa sổ — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Độ phân giải truyền</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Bao gồm con trỏ chuột</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Bao gồm âm thanh hệ thống</value></data>

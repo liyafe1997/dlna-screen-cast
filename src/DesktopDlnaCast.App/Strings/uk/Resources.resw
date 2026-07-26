@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Пристрій відтворення</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>Пошук пристроїв відтворення DLNA…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>Немає доступних пристроїв відтворення</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Екран для трансляції</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Екран або вікно для трансляції</value></data><data name="WindowName" xml:space="preserve"><value>Вікно — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Роздільна здатність трансляції</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Показувати вказівник</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Передавати системний звук</value></data>

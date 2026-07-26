@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>อุปกรณ์เล่น</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>กำลังค้นหาอุปกรณ์เล่น DLNA…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>ไม่มีอุปกรณ์เล่นที่พร้อมใช้งาน</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>จอภาพที่จะส่ง</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>จอภาพหรือหน้าต่างที่จะส่ง</value></data><data name="WindowName" xml:space="preserve"><value>หน้าต่าง — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>ความละเอียดการสตรีม</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>รวมตัวชี้เมาส์</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>รวมเสียงระบบ</value></data>

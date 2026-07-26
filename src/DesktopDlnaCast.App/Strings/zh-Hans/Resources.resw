@@ -34,7 +34,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>播放设备</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>正在搜索 DLNA 播放设备...</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>无可用播放设备</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>需要镜像的显示器</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>需要镜像的显示器或窗口</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>投屏分辨率</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>包含鼠标指针</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>包含系统声音</value></data>
@@ -51,6 +51,7 @@
   <data name="QualityLow" xml:space="preserve"><value>低画质（{0} Mbps，更流畅）</value></data>
   <data name="DisplayName" xml:space="preserve"><value>显示器 {0}（{1} × {2}）</value></data>
   <data name="PrimaryDisplayName" xml:space="preserve"><value>显示器 {0} — 主显示器（{1} × {2}）</value></data>
+  <data name="WindowName" xml:space="preserve"><value>窗口 — {0}（{1} × {2}）</value></data>
   <data name="Resolution720p" xml:space="preserve"><value>1280 × 720（兼容）</value></data>
   <data name="Resolution1080p" xml:space="preserve"><value>1920 × 1080（标准）</value></data>
   <data name="LiveCastStarted" xml:space="preserve"><value>播放设备正在拉取 Windows 桌面实时流。</value></data>

@@ -40,7 +40,12 @@ public sealed partial class WindowsDisplayPreviewProvider : IDisplayPreviewProvi
     {
         cancellationToken.ThrowIfCancellationRequested();
         (int previewWidth, int previewHeight) = CalculatePreviewSize(display.Width, display.Height);
-        nint screenDc = GetDC(nint.Zero);
+        nint sourceWindow = display.Kind == CaptureSourceKind.Window
+            ? new nint(display.Handle)
+            : nint.Zero;
+        nint screenDc = display.Kind == CaptureSourceKind.Window
+            ? GetWindowDC(sourceWindow)
+            : GetDC(nint.Zero);
         if (screenDc == nint.Zero)
         {
             throw new Win32Exception(Marshal.GetLastWin32Error(), "Windows could not open the desktop for preview capture.");
@@ -95,8 +100,8 @@ public sealed partial class WindowsDisplayPreviewProvider : IDisplayPreviewProvi
                     previewWidth,
                     previewHeight,
                     screenDc,
-                    display.Left,
-                    display.Top,
+                    display.Kind == CaptureSourceKind.Window ? 0 : display.Left,
+                    display.Kind == CaptureSourceKind.Window ? 0 : display.Top,
                     display.Width,
                     display.Height,
                     SourceCopy))
@@ -125,12 +130,15 @@ public sealed partial class WindowsDisplayPreviewProvider : IDisplayPreviewProvi
                 _ = DeleteDC(memoryDc);
             }
 
-            _ = ReleaseDC(nint.Zero, screenDc);
+            _ = ReleaseDC(sourceWindow, screenDc);
         }
     }
 
     [LibraryImport("user32.dll", SetLastError = true)]
     private static partial nint GetDC(nint window);
+
+    [LibraryImport("user32.dll", SetLastError = true)]
+    private static partial nint GetWindowDC(nint window);
 
     [LibraryImport("user32.dll")]
     private static partial int ReleaseDC(nint window, nint deviceContext);

@@ -30,7 +30,7 @@
   <data name="DeviceListLabel.Text" xml:space="preserve"><value>Lettore</value></data>
   <data name="DeviceListSearching" xml:space="preserve"><value>Ricerca di lettori DLNA…</value></data>
   <data name="DeviceListEmpty" xml:space="preserve"><value>Nessun lettore disponibile</value></data>
-  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Schermo da duplicare</value></data>
+  <data name="CaptureDisplayLabel.Text" xml:space="preserve"><value>Schermo o finestra da duplicare</value></data><data name="WindowName" xml:space="preserve"><value>Finestra — {0} ({1} × {2})</value></data>
   <data name="OutputResolutionLabel.Text" xml:space="preserve"><value>Risoluzione dello streaming</value></data>
   <data name="IncludeCursorToggle.Content" xml:space="preserve"><value>Includi puntatore del mouse</value></data>
   <data name="IncludeAudioToggle.Content" xml:space="preserve"><value>Includi audio di sistema</value></data>

@@ -33,7 +33,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         LoggerMessage.Define<long>(
             LogLevel.Warning,
             new EventId(402, nameof(LogDisplayPreviewFailed)),
-            "Display preview capture failed for monitor handle {MonitorHandle}");
+            "Capture-source preview failed for handle {SourceHandle}");
 
     private readonly IDlnaDiscoveryService discoveryService;
     private readonly IDlnaRendererClient rendererClient;
@@ -520,6 +520,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
 
     public async Task RefreshDisplayPreviewsAsync()
     {
+        RefreshDisplays();
         displayPreviewRefresh?.Cancel();
         displayPreviewRefresh?.Dispose();
         displayPreviewRefresh = new CancellationTokenSource();
@@ -567,7 +568,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
             StartAtLiveEdge = StartAtLiveEdge,
             AspectRatioMode = SelectedAspectRatioOption?.Mode ?? restoredSettings.AspectRatioMode,
             RendererUdn = SelectedDevice?.Device.Udn ?? restoredSettings.RendererUdn,
-            Display = display is null
+            Display = display is null || display.Kind != CaptureSourceKind.Display
                 ? restoredSettings.Display
                 : new(
                     display.Index,
@@ -684,7 +685,7 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         int frameRate = SelectedFrameRateOption?.FramesPerSecond ?? 30;
         int gopFramesAt30Fps = SelectedGopOption?.Frames ?? 30;
         MediaCaptureConfiguration configuration = new(
-            CaptureSourceKind.Display,
+            display.Kind,
             display.Handle,
             IncludeCursor,
             profile.Width,
@@ -883,21 +884,30 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
     private void RefreshDisplays()
     {
         long? selectedHandle = SelectedDisplay?.Source.Handle;
+        CaptureSourceKind? selectedKind = SelectedDisplay?.Source.Kind;
         Displays.Clear();
         foreach (DisplayCaptureSource display in displaySourceProvider.GetDisplays())
         {
-            string name = string.Format(
-                CultureInfo.CurrentCulture,
-                display.IsPrimary
-                    ? resources.GetString("PrimaryDisplayName")
-                    : resources.GetString("DisplayName"),
-                display.Index,
-                display.Width,
-                display.Height);
+            string name = display.Kind == CaptureSourceKind.Window
+                ? string.Format(
+                    CultureInfo.CurrentCulture,
+                    resources.GetString("WindowName"),
+                    display.Title,
+                    display.Width,
+                    display.Height)
+                : string.Format(
+                    CultureInfo.CurrentCulture,
+                    display.IsPrimary
+                        ? resources.GetString("PrimaryDisplayName")
+                        : resources.GetString("DisplayName"),
+                    display.Index,
+                    display.Width,
+                    display.Height);
             Displays.Add(new(display, name));
         }
 
-        SelectedDisplay = Displays.FirstOrDefault(item => item.Source.Handle == selectedHandle) ??
+        SelectedDisplay = Displays.FirstOrDefault(item =>
+            item.Source.Kind == selectedKind && item.Source.Handle == selectedHandle) ??
             Displays.FirstOrDefault();
     }
 
@@ -940,16 +950,19 @@ public sealed class MainViewModel : INotifyPropertyChanged, IDisposable
         }
 
         SelectedDisplay = Displays.FirstOrDefault(display =>
+            display.Source.Kind == CaptureSourceKind.Display &&
             display.Source.Left == preferredDisplay.Left &&
             display.Source.Top == preferredDisplay.Top &&
             display.Source.Width == preferredDisplay.Width &&
             display.Source.Height == preferredDisplay.Height) ??
             Displays.FirstOrDefault(display =>
+                display.Source.Kind == CaptureSourceKind.Display &&
                 display.Source.Index == preferredDisplay.Index &&
                 display.Source.Width == preferredDisplay.Width &&
                 display.Source.Height == preferredDisplay.Height) ??
             (preferredDisplay.IsPrimary
-                ? Displays.FirstOrDefault(display => display.Source.IsPrimary)
+                ? Displays.FirstOrDefault(display =>
+                    display.Source.Kind == CaptureSourceKind.Display && display.Source.IsPrimary)
                 : null) ??
             Displays.FirstOrDefault();
     }

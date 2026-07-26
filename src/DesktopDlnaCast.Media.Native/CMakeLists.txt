@@ -7,6 +7,7 @@ add_library(DesktopDlnaCast.Media.Native SHARED
   include/ddc_media.h
   src/bounded_packet_queue.cpp
   src/bounded_packet_queue.h
+  src/capture_source_liveness.h
   src/ddc_api.cpp
   src/d3d11_video_processor.cpp
   src/d3d11_video_processor.h
@@ -63,6 +64,7 @@ if(BUILD_TESTING)
     src/adts_stream_writer.cpp
     src/audio_playout_clock.h
     src/bounded_packet_queue.cpp
+    src/capture_source_liveness.h
     src/d3d11_video_processor.cpp
     src/h264_access_unit_normalizer.cpp
     src/media_foundation_aac_encoder.cpp

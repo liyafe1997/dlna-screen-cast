@@ -1,4 +1,5 @@
 #include "ddc_media.h"
+#include "capture_source_liveness.h"
 #include "test_assert.h"
 
 #include <winrt/base.h>
@@ -50,6 +51,18 @@ int main()
     static_assert(sizeof(ddc_stream_config) == 80);
     static_assert(sizeof(ddc_session_statistics) == 120);
     static_assert(sizeof(ddc_encoder_diagnostics) == 64);
+    static_assert(ddc::capture_source_was_lost(
+        DDC_CAPTURE_SOURCE_WINDOW,
+        false,
+        false));
+    static_assert(!ddc::capture_source_was_lost(
+        DDC_CAPTURE_SOURCE_WINDOW,
+        true,
+        true));
+    static_assert(!ddc::capture_source_was_lost(
+        DDC_CAPTURE_SOURCE_DISPLAY,
+        false,
+        false));
 
     DDC_TEST_CHECK(ddc_session_create(nullptr, nullptr) == DDC_E_INVALID_ARGUMENT);
     auto invalid = valid_config();
