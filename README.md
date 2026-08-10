@@ -9,8 +9,7 @@ Audio-only casting is also supported, allowing you to cast currently playing aud
 
 This project was brought to life with Claude Code and Codex.
 
-<img width="757" height="481" alt="图片" src="https://github.com/user-attachments/assets/f90a6ed6-1b14-4f61-b19c-d5f761212302" />
-
+<img width="1147" height="762" alt="图片" src="https://github.com/user-attachments/assets/063d8023-0af5-4d4b-94e2-946f4ffcd29c" />
 
 ## Download and Installation
 
@@ -131,7 +130,7 @@ Run `build-release-nsis-x64.bat` or `build-release-nsis-arm64.bat` (both are thi
 
 该项目使用 Claude Code 和 Codex 落地。
 
-<img width="758" height="482" alt="图片" src="https://github.com/user-attachments/assets/bb2a06ba-1e9e-4de0-85fe-9a46bc730f02" />
+<img width="1144" height="734" alt="图片" src="https://github.com/user-attachments/assets/4c92549a-708b-46fb-a8b4-12f62b51ecc1" />
 
 
 ## 下载和安装
